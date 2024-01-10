@@ -1,0 +1,28 @@
+.menu-nav {
+    display: flex;
+    align-items: center;
+    height: 60px;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+
+}
+
+li a {
+    color: #D14836;
+    font-size: 16px;
+}
+li a:hover{
+    font-weight: 800;
+}
+
+.active {
+    color: #D14836;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
