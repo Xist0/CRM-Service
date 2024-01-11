@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { IoClose } from 'react-icons/io5';
 import './components.css';
 import XS from './img/XS.svg';
+import App from '../App';
 
 function NavMenu() {
   const [nav, setNav] = useState(false);
+
+
 
   return (
     <div className="menu-nav">
       <div className="menu--nav">
         <div className="burger-menu-mav" onClick={() => setNav(!nav)}>
-          {nav ? <IoClose size={25} /> : <GiHamburgerMenu size={25} />}
+          {nav ? <IoClose /> : <GiHamburgerMenu />}
         </div>
+
         <span className="logo">
           <img src={XS} alt="" />
         </span>

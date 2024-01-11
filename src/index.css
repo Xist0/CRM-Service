@@ -41,7 +41,13 @@ main {
 
 h1,
 h2,
-h3,
+h3 {
+	font-size: calc(16px + 8 * (100vw - 450px) / 1920);
+	font-weight: inherit;
+	font-family: 'Montserrat', sans-serif;
+}
+
+
 h4,
 h5,
 h6,

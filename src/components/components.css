@@ -2,26 +2,27 @@
     display: flex;
     align-items: center;
     height: 60px;
+    
 }
 
-.nav {
+.navi {
     display: flex;
     justify-content: space-around;
     width: 100%;
 }
 
 li a {
-    color: #D14836;
+    color: black;
     font-size: 16px;
 }
 
 li a:hover {
     font-weight: 800;
-    color: #ECD06F;
+    color: #1776CD;
 }
 
 .active {
-    color: #ECD06F;
+    color: #1776CD;
     font-size: 16px;
     font-style: normal;
     font-weight: 800;
@@ -32,21 +33,36 @@ li a:hover {
     display: none;
 }
 
-@media (max-width: 800px) {
+/* AppMedia */
+.container {
+    display: none;
+}
+
+
+@media (max-width: 1280px) {
     .burger-menu-mav {
         display: block;
         position: absolute;
-        top: 10px;
+        top: 15px;
         right: 10px;
         cursor: pointer;
-        z-index: 20;
+        z-index: 9990;
+
+    }
+
+    .burger-menu-mav>svg {
+        background: #1776CD;
+        color: #FFFFFF;
+        border-radius: 6px;
+        size: 40px;
+        width: 40px;
+        height: 30px;
     }
 
     .logo {
         display: block;
         position: absolute;
         top: 10px;
-        left: 10px;
 
     }
 
@@ -54,7 +70,11 @@ li a:hover {
         display: flex;
         align-items: center;
         height: 60px;
-        position: relative;
+        background: #ffffff;
+        z-index: 999;
+        top: 0;
+        position: sticky;
+        margin-bottom: 20px;
     }
 
     .navi {
@@ -65,13 +85,55 @@ li a:hover {
         left: -100%;
         top: 40px;
         height: 100vh;
-        z-index: 10;
+        z-index: 9999;
         justify-content: left;
     }
 
     .navi-active {
-        left: 20px;
         position: absolute;
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+        background: rgb(255, 255, 255);
+        width: 100%;
+        height: 100vh;
+        gap: 20px;
         top: 50px;
     }
+
+}
+
+/* AppMedia */
+@media (max-width: 800px) {
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        width: 98%;
+        margin: auto;
+    }
+
+    .block-top {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .block {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #1776CD;
+        padding: 20px 40px;
+        border-radius: 6px;
+        box-shadow: 0px 0px 4px 1px rgba(45, 45, 45, 0.4);
+    }
+    .block a {
+        color: #FFF1F1;
+    }
+
 }
