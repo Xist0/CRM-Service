@@ -1,4 +1,5 @@
 /* Orders */
+
 .box {
     width: 100%;
     display: flex;
@@ -87,6 +88,27 @@ td>a:hover {
     color: #0D7082;
 }
 
+.pagination-custom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    gap: 20px;
+}
+
+.pagination-custom svg {
+    width: 30px;
+    height: 30px;
+    padding: 10px;
+    cursor: pointer;
+    background: #1776CD;
+    color: #FFFFFF;
+    border-radius: 6px;
+}
+.search-results-active{
+    background: #61616136;
+}
 @media (max-width: 1280px) {
     .box-serah {
         width: calc(100% - 30%);
