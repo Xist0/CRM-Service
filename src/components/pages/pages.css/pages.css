@@ -116,7 +116,9 @@ td>a:hover {
 .scaner {
     display: none;
 }
-
+.start-button {
+  display: none;
+}
 
 @media (max-width: 1280px) {
     .box-serah {
@@ -195,6 +197,7 @@ td>a:hover {
     
     .start-button {
         background-color: #1776CD;
+        display: flex;
         border: 0;
         border-radius: 7px;
         font-size: 20px;

@@ -1,8 +1,9 @@
-import React from 'react';
+import React from 'react';  
+import './orders.css';
 
 const Summary = ({ formData, onEditClick }) => {
   return (
-    <div>
+    <div className='forma-input'>
       <h2>Итог: Просмотр данных</h2>
       <p>
         <strong>Вариант:</strong> {formData.option}
