@@ -1,0 +1,18 @@
+/* orders.css */
+.input-error {
+    border: 1px solid red;
+  }
+  
+  .button {
+    background-color: #1776CD;
+    color: white;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+  }
+  
+  .button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
