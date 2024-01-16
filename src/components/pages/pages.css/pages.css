@@ -87,7 +87,9 @@ td>a {
 td>a:hover {
     color: #0D7082;
 }
-
+#table-active{
+    background: #bebebe44;
+}
 .pagination-custom {
     display: flex;
     justify-content: center;
@@ -125,19 +127,33 @@ td>a:hover {
         width: 20px;
     }
     .scaner {
+        display: none;
+
+    }
+    .visible{
         display: flex;
-        height: 100vh;
+        flex-direction: column;
         justify-content: center;
+        align-items: center;
+        gap: 20px;
+        padding-top: 20px;
+    }
+    .scaner.visible{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
         left: 0;
-        position: fixed;
         width: 100%
+    }
+    .scaner.hidden {
+        display: none;
     }
     
     #qrCodeContainer {
         border-radius: 7px;
         height: 300px;
         overflow: hidden;
-        position: relative;
         width: 300px
     }
     
@@ -174,7 +190,6 @@ td>a:hover {
     .qr-message,
     .start-button {
         color: #fff;
-        position: absolute
     }
     
     .start-button {
@@ -182,11 +197,8 @@ td>a:hover {
         border: 0;
         border-radius: 7px;
         font-size: 20px;
-        height: 30px;
-        padding: 0;
-        right: 30px;
-        top: 30px;
-        width: 40px
+        padding: 5px 10px;
+        width: auto
     }
 }
 

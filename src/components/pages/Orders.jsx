@@ -4,6 +4,7 @@ import { CiSearch } from 'react-icons/ci';
 import { SlArrowRight } from "react-icons/sl";
 import { SlArrowLeft } from "react-icons/sl";
 import './pages.css/pages.css';
+import QRScaner from './QRScaner';
 
 function Orders() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -77,10 +78,13 @@ function Orders() {
     <div>
       <Header />
       <div className="box">
+
         <div className="box-title">
           <h1>Заказы</h1>
         </div>
+        
         <div className="box-line"></div>
+        
         <div className="box-serah">
           <input
             type="text"
@@ -89,6 +93,7 @@ function Orders() {
           />
           <CiSearch onClick={handleSearch} />
         </div>
+        <QRScaner/>
         <div className="box-main">
           <table>
             <thead>
@@ -125,7 +130,7 @@ function Orders() {
                     </td>
                   </tr>
                   {expandedRowIndex === index && (
-                    <tr>
+                    <tr id='table-active'>
                       <td>
                         <p>Доп. 1</p>
                       </td>
