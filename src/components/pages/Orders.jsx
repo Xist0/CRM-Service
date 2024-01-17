@@ -15,8 +15,6 @@ function Orders() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    // Ваш блок кода для загрузки и обработки данных
-    // Пример запроса к вашему API
     fetch('http://192.168.1.65/api/users')
       .then(res => res.json())
       .then(json => {
