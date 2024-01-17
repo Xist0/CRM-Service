@@ -6,27 +6,32 @@ const fs = require('fs');
 const app = express();
 const port = 3000;
 
+// Разрешение CORS
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*'); 
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
 });
 
+// Сертификат безопасности
 const options = {
     key: fs.readFileSync('./CRMServe-private.key'),
     cert: fs.readFileSync('./CRMServe.crt')
 };
 
-app.get('/api/users', (req, res) => {
-    // Здесь вы можете обработать запрос и отправить данные
-    const users = [
-        { id: 1, name: 'Пользователь 1' },
-        { id: 2, name: 'Пользователь 2' },
-        // Добавьте своих пользователей по мере необходимости
-    ];
+// Запрос к внешнейБэку
+app.get('', async (req, res) => {
+    try {
+        // Делаем GET-запрос к другому бэкенду на HTTP
+        const response = await axios.get('http://192.168.1.68');
 
-    res.json(users);
+        // Возвращаем данные из ответа в вашем HTTPS бэкенде
+        res.json(response.data);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 const server = https.createServer(options, app);
 
