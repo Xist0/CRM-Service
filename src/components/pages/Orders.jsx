@@ -10,12 +10,12 @@ function Orders() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [expandedRowIndex, setExpandedRowIndex] = useState(null);
-  const [originalData, setOriginalData] = useState([]);
+  const [originalData, setOriginalData] = useState([]); 
   const [displayData, setDisplayData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch('http://192.168.1.65/api/users')
+    fetch('/api/users')
       .then(res => res.json())
       .then(json => {
         setOriginalData(json);
