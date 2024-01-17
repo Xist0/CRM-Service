@@ -4,12 +4,17 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
-    "build": "vite build",
+    "dev": "concurrently \"npm:dev:backend\" \"npm:dev:frontend\"",
+    "build": "concurrently \"npm:build:backend\" \"npm:build:frontend\"",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev:backend": "node ./express-backend/server.js",
+    "dev:frontend": "vite --host",
+    "build:backend": "your-build-command-for-backend",
+    "build:frontend": "vite build"
   },
   "dependencies": {
+    "concurrently": "^8.2.2",
     "html5-qrcode": "^2.3.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
