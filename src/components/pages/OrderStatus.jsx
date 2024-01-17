@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Summary from './Summary'; // Укажите правильный путь до вашего компонента Summary
+import Summary from './Summary';
 import Header from '../Header';
-import './orders.css'; // Импортируем стили
+import './orders.css';
 
 const OrderStatus = () => {
   const [step, setStep] = useState(1);
@@ -10,7 +10,6 @@ const OrderStatus = () => {
     fullName: '',
     phoneNumber: '',
     address: '',
-    // Добавьте дополнительные поля по необходимости
   });
 
   const [validation, setValidation] = useState({
@@ -18,35 +17,32 @@ const OrderStatus = () => {
     fullName: false,
     phoneNumber: false,
     address: false,
-    // Добавьте дополнительные поля по необходимости
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     if (name === "phoneNumber") {
-      // Валидация и форматирование для номера телефона
-      const formattedValue = value.replace(/\D/g, ''); // Удаляем все нецифровые символы
-      const formattedPhoneNumber = `+7${formattedValue.slice(1, 11)}`; // Добавляем +7 и ограничиваем до 10 символов
+      const formattedValue = value.replace(/\D/g, '');
+      const formattedPhoneNumber = `+7 ${formattedValue.slice(1, 4)} ${formattedValue.slice(4, 7)}-${formattedValue.slice(7, 9)}-${formattedValue.slice(9, 11)}`;
       setFormData((prevData) => ({
         ...prevData,
         [name]: formattedPhoneNumber,
       }));
-      // При изменении значения, снова проверяем валидность
+
       setValidation((prevValidation) => ({
         ...prevValidation,
-        [name]: formattedValue.length === 11, // Устанавливаем в true, если символов 11
+        [name]: formattedValue.length === 11,
       }));
     } else {
-      // Для других полей
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
       }));
-      // При изменении значения, снова проверяем валидность
+
       setValidation((prevValidation) => ({
         ...prevValidation,
-        [name]: value.trim() !== '', // Устанавливаем в true, если значение не пустое
+        [name]: value.trim() !== '',
       }));
     }
   };
@@ -61,28 +57,45 @@ const OrderStatus = () => {
     setStep((prevStep) => prevStep - 1);
   };
 
-  const handleSubmit = () => {
-    // Здесь вы можете добавить логику для отправки данных в базу данных
-    console.log('Отправка данных в базу данных:', formData);
-
-    if (step < 3) {
-      // Если это не последний шаг, перейдите к следующему шагу
-      setStep((prevStep) => prevStep + 1);
-    } else {
-      // Если это последний шаг, сбросьте состояние формы и вернитесь на первый шаг
-      setFormData({
-        option: '',
-        fullName: '',
-        phoneNumber: '',
-        address: '',
-        // Сбросьте дополнительные поля по необходимости
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch('http://192.168.1.65/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          option: formData.option,
+          fullName: formData.fullName,
+          phoneNumber: formData.phoneNumber,
+          address: formData.address,
+        }),
       });
-      setStep(1);
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log('Order submitted:', result);
+
+      if (step < 3) {
+        setStep((prevStep) => prevStep + 1);
+      } else {
+        setFormData({
+          option: '',
+          fullName: '',
+          phoneNumber: '',
+          address: '',
+        });
+        setStep(1);
+      }
+    } catch (error) {
+      console.error('Error during fetch:', error.message);
     }
   };
 
   const handleEditClick = () => {
-    // Вернуться на предыдущий этап (редактирование данных)
     setStep((prevStep) => prevStep - 1);
   };
 
@@ -103,7 +116,6 @@ const OrderStatus = () => {
                 <option value="">Выберите вариант</option>
                 <option value="вариант1">Вариант 1</option>
                 <option value="вариант2">Вариант 2</option>
-                {/* Добавьте дополнительные варианты по необходимости */}
               </select>
               <button onClick={handleNextStep} disabled={!validation.option}>Далее</button>
             </label>
@@ -143,7 +155,6 @@ const OrderStatus = () => {
                 placeholder="Введите адрес"
               />
             </label>
-            {/* Добавьте дополнительные поля по необходимости */}
             <div className="divButton">
               <button onClick={handleSubmit} disabled={!isFormValid}>Отправить</button>
               <button onClick={handlePrevStep}>Назад</button>
