@@ -15,14 +15,22 @@ function Orders() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch('api/users')
-      .then(res => res.json())
-      .then(json => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`api/order/${itemsPerPage}/${(currentPage - 1) * itemsPerPage}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const json = await response.json();
         setOriginalData(json);
         setDisplayData(json.slice(0, itemsPerPage));
-      })
-      .catch(error => console.error('Ошибка загрузки данных:', error));
-  }, [itemsPerPage]);
+      } catch (error) {
+        console.error('Ошибка загрузки данных:', error);
+      }
+    };
+
+    fetchData();
+  }, [itemsPerPage, currentPage]);
 
   const handlePrevPage = () => {
     setExpandedRowIndex(null); // Закрыть открытый список при переключении страницы
@@ -43,12 +51,6 @@ function Orders() {
   const handleSearch = () => {
     const filteredData = originalData.filter((item) => {
       const searchFields = [
-        item.id_user,
-        item.first_name,
-        item.last_name,
-        item.midl_name,
-        item.name_user,
-        item.phone_user,
       ];
 
       return searchFields.some((field) =>
@@ -81,11 +83,11 @@ function Orders() {
             <thead>
               <tr>
                 <th># Акта</th>
-                <th>Имя</th>
-                <th>Фамилия</th>
-                <th>Отчество</th>
-                <th>Пользователь</th>
-                <th>Телефон</th>
+                <th>ФИО</th>
+                <th>Аппарат</th>
+                <th>Модель </th>
+                <th>Мастер</th>
+                <th>Состояние</th>
               </tr>
             </thead>
             <tbody id="search-results">
@@ -93,22 +95,22 @@ function Orders() {
                 <React.Fragment key={index}>
                   <tr onClick={() => setExpandedRowIndex((prevIndex) => (prevIndex === index ? null : index))}>
                     <td>
-                      <p>{item.id_user}</p>
+                      <p>{item.id_order} </p>
+                    </td>
+                    <td id='FIO'>
+                      <p>{item.user.first_name} </p>
                     </td>
                     <td>
-                      <p>{item.first_name}</p>
+                      <p>{item.device.type}</p>
                     </td>
                     <td>
-                      <p>{item.last_name}</p>
+                      <p>{item.device.model}</p>
+                    </td>
+                    <td id='FIO'>
+                      <p>{item.staff.first_name}</p>
                     </td>
                     <td>
-                      <p>{item.midl_name}</p>
-                    </td>
-                    <td>
-                      <p>{item.name_user}</p>
-                    </td>
-                    <td>
-                      <p>{item.phone_user}</p>
+                      <p>{item.status.status_order}</p>
                     </td>
                   </tr>
                   {expandedRowIndex === index && (
@@ -116,8 +118,8 @@ function Orders() {
                       <td>
                         <p>Доп. 1</p>
                       </td>
-                      <td>
-                        <p>Доп. 2</p>
+                      <td id='FIO'>
+                        <p>{item.user.last_name} {item.user.midl_name}</p>
                       </td>
                       <td>
                         <p>Доп. 3</p>
@@ -125,11 +127,11 @@ function Orders() {
                       <td>
                         <p>Доп. 4</p>
                       </td>
-                      <td>
-                        <p>Доп. 5</p>
+                      <td id='FIO'>
+                        <p>{item.staff.last_name} {item.staff.midl_name}</p>
                       </td>
                       <td>
-                        <p>Доп. 6</p>
+                        <button>Перейти</button>
                       </td>
                     </tr>
                   )}
@@ -145,7 +147,7 @@ function Orders() {
         <SlArrowRight onClick={handleNextPage} disabled={currentPage === Math.ceil(originalData.length / itemsPerPage)} />
       </div>
     </div>
-  ); 
+  );
 }
 
 export default Orders;

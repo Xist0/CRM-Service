@@ -76,21 +76,19 @@ td img {
     padding: 10px;
 }
 
-td>p {
-    max-width: 90%;
-}
-
 td>a {
     color: #16C1DF;
-    
+
 }
 
 td>a:hover {
     color: #0D7082;
 }
-#table-active{
+
+#table-active {
     background: #bebebe44;
 }
+
 .pagination-custom {
     display: flex;
     justify-content: center;
@@ -113,12 +111,25 @@ td>a:hover {
 .search-results-active {
     background: #61616136;
 }
+
 .scaner {
     display: none;
 }
+
 .start-button {
-  display: none;
+    display: none;
 }
+
+td button {
+    background-color: #1776CD;
+    color: #FFF;
+    border: 0;
+    border-radius: 7px;
+    font-size: 20px;
+    padding: 5px 16px;
+    width: auto
+}
+
 
 @media (max-width: 1280px) {
     .box-serah {
@@ -129,11 +140,13 @@ td>a:hover {
         cursor: pointer;
         width: 20px;
     }
+
     .scaner {
         display: none;
 
     }
-    .visible{
+
+    .visible {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -141,7 +154,8 @@ td>a:hover {
         gap: 20px;
         padding-top: 20px;
     }
-    .scaner.visible{
+
+    .scaner.visible {
         display: flex;
         justify-content: center;
         flex-direction: column;
@@ -149,21 +163,22 @@ td>a:hover {
         left: 0;
         width: 100%
     }
+
     .scaner.hidden {
         display: none;
     }
-    
+
     #qrCodeContainer {
         border-radius: 7px;
         height: 300px;
         overflow: hidden;
         width: 300px
     }
-    
+
     #qr-shaded-region {
         border-width: 50px !important
     }
-    
+
     video {
         left: 50%;
         min-height: 100%;
@@ -174,7 +189,7 @@ td>a:hover {
         transform: translate(-50%, -50%);
         width: auto !important
     }
-    
+
     .qr-message {
         align-items: center;
         background-color: rgba(0, 0, 0, .5);
@@ -189,20 +204,33 @@ td>a:hover {
         width: 100%;
         word-break: break-all
     }
-    
+
     .qr-message,
     .start-button {
         color: #fff;
     }
-    
+
     .start-button {
         background-color: #1776CD;
         display: flex;
         border: 0;
         border-radius: 7px;
         font-size: 20px;
-        padding: 5px 10px;
+        padding: 5px 16px;
         width: auto
     }
-}
 
+    td #FIO>p {
+        text-align: left;
+    }
+    td button {
+        background-color: #1776CD;
+        color: #FFF;
+        border: 0;
+        border-radius: 7px;
+        font-size: 11px;
+        padding: 4px 3px;
+        width: auto
+    }
+    
+}
