@@ -9,16 +9,10 @@ const Calls = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchData = async () => {
-    try {
-      const response = await fetch(`/api/order/record/${date}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      setRecords(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
+
+    const response = await fetch(`/api/order/record/${date}`);
+    const data = await response.json();
+    setRecords(data);
   };
 
   useEffect(() => {
@@ -26,30 +20,18 @@ const Calls = () => {
   }, [date]);
 
   const fetchRecordDetails = async (name) => {
-    try {
-      const response = await fetch(`/api/order/record/${date}/${name}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      setSelectedRecord({ name, data });
-      setIsModalOpen(true); // Открываем модальное окно после получения данных
-    } catch (error) {
-      console.error('Error fetching record details:', error);
-    }
-  };
 
-  const saveChangePart = () => {
-    // Handle save change logic
-  };
+    const response = await fetch(`/api/order/record/${date}/${name}`);
+
+    const data = await response.json();
+    setSelectedRecord({ name, data });
+    setIsModalOpen(true); // Открываем модальное окно после получения данных
+
+  }
+
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
-  };
-
-  const downloadAudio = () => {
-    // Handle audio download logic
-    // You can use selectedRecord to get the necessary data for downloading
   };
 
   const renderModal = (cal) => {
@@ -64,14 +46,14 @@ const Calls = () => {
               </div>
               <div className="modal-body">
                 <audio controls>
-                  <source src= {cal.url} type="audio/mpeg"/>
+                  <source src={cal.url} type="audio/mpeg" />
                 </audio>
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-primary btn-sm" onClick={toggleModal}>
                   Закрыть
                 </button>
-                <button className="btn btn-primary btn-sm" type="button" onClick={downloadAudio}>
+                <button className="btn btn-primary btn-sm" type="button">
                   Скачать
                 </button>
               </div>
