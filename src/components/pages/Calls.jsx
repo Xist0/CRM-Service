@@ -6,6 +6,7 @@ const Calls = () => {
   const [date, setDate] = useState('');
   const [records, setRecords] = useState([]);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -32,6 +33,7 @@ const Calls = () => {
       }
       const data = await response.json();
       setSelectedRecord({ name, data });
+      setIsModalOpen(true); // Открываем модальное окно после получения данных
     } catch (error) {
       console.error('Error fetching record details:', error);
     }
@@ -39,6 +41,45 @@ const Calls = () => {
 
   const saveChangePart = () => {
     // Handle save change logic
+  };
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  const downloadAudio = () => {
+    // Handle audio download logic
+    // You can use selectedRecord to get the necessary data for downloading
+  };
+
+  const renderModal = (cal) => {
+    return cal.size_record > 60000 && (
+      <div key={cal.name_record} className={`modal-door${isModalOpen ? 'modal-dialog' : ''}`}>
+        <div className="modal fade" id={`exampleModal-${cal.name_record}`} tabIndex="-1" aria-labelledby={`exampleModalLabel-${cal.name_record}`} aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id={`exampleModalLabel-${cal.name_record}`}>{cal.name_record}</h5>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+              </div>
+              <div className="modal-body">
+                <audio controls>
+                  <source src= {cal.url} type="audio/mpeg"/>
+                </audio>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-primary btn-sm" onClick={toggleModal}>
+                  Закрыть
+                </button>
+                <button className="btn btn-primary btn-sm" type="button" onClick={downloadAudio}>
+                  Скачать
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   const renderRecords = () => {
@@ -54,9 +95,7 @@ const Calls = () => {
           <td className="table-success" style={{ textAlign: 'center' }}>
             <button
               className="btn btn-primary btn-sm"
-              data-bs-toggle="modal"
-              data-bs-target={`#exampleModal-${cal.name_record}`} // Unique modal ID for each record
-              onClick={() => fetchRecordDetails(cal.name_record)}
+              onClick={toggleModal}
             >
               Воспроизвести
             </button>
@@ -77,30 +116,6 @@ const Calls = () => {
           <td>{cal.time_record}</td>
           {playButton}
           <td>{logoCall}</td>
-          {cal.size_record > 60000 && (
-            <td>
-              <div className="modal fade" id={`exampleModal-${cal.name_record}`} tabIndex="-1" aria-labelledby={`exampleModalLabel-${cal.name_record}`} aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id={`exampleModalLabel-${cal.name_record}`}>{cal.name_record}</h5>
-                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-                    </div>
-                    <div className="modal-body">
-                      <audio controls>
-                        <source src={`/static/song/${cal.name_record}`} type="audio/mpeg" />
-                        Your browser does not support the audio element.
-                      </audio>
-                    </div>
-                    <div className="modal-footer">
-                      <button type="button" className="btn btn-primary btn-sm" data-bs-dismiss="modal">Закрыть</button>
-                      <button className="btn btn-primary btn-sm" type="submit" data-bs-dismiss="modal">Сохранить</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          )}
         </tr>
       );
     });
@@ -141,10 +156,10 @@ const Calls = () => {
             </div>
           </div>
         </div>
-        <form onSubmit={(e) => { e.preventDefault(); saveChangePart(); }}>
-          {/* No need to render modal here */}
-        </form>
       </div>
+
+      {/* Модальные окна после таблицы */}
+      {records.map((cal, index) => renderModal(cal))}
     </div>
   );
 };
