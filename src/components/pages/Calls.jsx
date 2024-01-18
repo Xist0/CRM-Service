@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../Header';
 import './orders.css'; // Подключение файла стилей
+import { url } from 'inspector';
 
 const Calls = () => {
   const [date, setDate] = useState('');
   const [records, setRecords] = useState([]);
-  const [selectedRecord, setSelectedRecord] = useState(null);
+  const [selectedRecord, setSelectedRecord] = useState({ name: null, data: [], audioUrl: null });
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchData = async () => {
@@ -25,62 +26,43 @@ const Calls = () => {
     fetchData();
   }, [date]);
 
-  const fetchRecordDetails = async (name) => {
-    try {
-      const response = await fetch(`/api/order/record/${date}/${name}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const data = await response.json();
-      setSelectedRecord({ name, data });
-      setIsModalOpen(true); // Открываем модальное окно после получения данных
-    } catch (error) {
-      console.error('Error fetching record details:', error);
-    }
-  };
-
-  const saveChangePart = () => {
-    // Handle save change logic
-  };
-
-  const toggleModal = () => {
+  const fetchRecordDetails = () => {
     setIsModalOpen(!isModalOpen);
-  };
+  }
 
-  const downloadAudio = () => {
-    // Handle audio download logic
-    // You can use selectedRecord to get the necessary data for downloading
-  };
+
 
   const renderModal = (cal) => {
-    return cal.size_record > 60000 && (
-      <div key={cal.name_record} className={`modal-door${isModalOpen ? 'modal-dialog' : ''}`}>
-        <div className="modal fade" id={`exampleModal-${cal.name_record}`} tabIndex="-1" aria-labelledby={`exampleModalLabel-${cal.name_record}`} aria-hidden="true">
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id={`exampleModalLabel-${cal.name_record}`}>{cal.name_record}</h5>
-                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-              </div>
-              <div className="modal-body">
-                <audio controls>
-                  <source src= {cal.url} type="audio/mpeg"/>
-                </audio>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-primary btn-sm" onClick={toggleModal}>
-                  Закрыть
-                </button>
-                <button className="btn btn-primary btn-sm" type="button" onClick={downloadAudio}>
-                  Скачать
-                </button>
-              </div>
+    return <>      
+    <div key={cal.name_record} className={`modal-door${isModalOpen ? 'modal-dialog' : ''}`}>
+      <div className="modal fade" id={`exampleModal-${cal.name_record}`} tabIndex="-1" aria-labelledby={`exampleModalLabel-${cal.name_record}`} aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id={`exampleModalLabel-${cal.name_record}`}>{cal.name_record}</h5>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div className="modal-body">
+              <audio controls>
+                <source src={url} type="audio/mpeg" />
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-primary btn-sm" onClick={fetchRecordDetails}>
+                Закрыть
+              </button>
+              <button className="btn btn-primary btn-sm" type="button" >
+                Скачать
+              </button>
             </div>
           </div>
         </div>
       </div>
-    );
-  };
+    </div>
+    </>
+
+  }
 
   const renderRecords = () => {
     return records.map((cal, index) => {
@@ -95,10 +77,11 @@ const Calls = () => {
           <td className="table-success" style={{ textAlign: 'center' }}>
             <button
               className="btn btn-primary btn-sm"
-              onClick={toggleModal}
+              onClick={() => fetchRecordDetails(cal.name_record, date)}
             >
               Воспроизвести
             </button>
+
           </td>
         );
         logoCall = cal.types_record === 'входящий' ? <img src="/static/pic/inCallOk.svg" /> : <img src="/static/pic/outCallOk.svg" />;
@@ -157,9 +140,9 @@ const Calls = () => {
           </div>
         </div>
       </div>
-
-      {/* Модальные окна после таблицы */}
+      
       {records.map((cal, index) => renderModal(cal))}
+
     </div>
   );
 };
