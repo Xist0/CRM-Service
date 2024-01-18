@@ -10,12 +10,12 @@ function Orders() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [expandedRowIndex, setExpandedRowIndex] = useState(null);
-  const [originalData, setOriginalData] = useState([]); 
+  const [originalData, setOriginalData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    fetch('/api/users')
+    fetch('api/users')
       .then(res => res.json())
       .then(json => {
         setOriginalData(json);
@@ -89,7 +89,7 @@ function Orders() {
               </tr>
             </thead>
             <tbody id="search-results">
-              {displayData.map((item, index) => (
+              {Array.isArray(displayData) && displayData.map((item, index) => (
                 <React.Fragment key={index}>
                   <tr onClick={() => setExpandedRowIndex((prevIndex) => (prevIndex === index ? null : index))}>
                     <td>
@@ -145,7 +145,7 @@ function Orders() {
         <SlArrowRight onClick={handleNextPage} disabled={currentPage === Math.ceil(originalData.length / itemsPerPage)} />
       </div>
     </div>
-  );
+  ); 
 }
 
 export default Orders;
