@@ -122,7 +122,7 @@ function Orders() {
                         <p>{item.user.last_name} {item.user.midl_name}</p>
                       </td>
                       <td>
-                        <p>Доп. 3</p>
+                        <p>{item.device.brand}</p>
                       </td>
                       <td>
                         <p>Доп. 4</p>
