@@ -35,18 +35,18 @@ const Calls = () => {
   };
 
   const renderModal = (cal) => {
-    return cal.size_record > 60000 && (
-      <div key={cal.name_record} className={`modal-door${isModalOpen ? 'modal-dialog' : ''}`}>
-        <div className="modal fade" id={`exampleModal-${cal.name_record}`} tabIndex="-1" aria-labelledby={`exampleModalLabel-${cal.name_record}`} aria-hidden="true">
+    return (
+      <div key={cal.id_record} className={`modal-door${isModalOpen ? 'modal-dialog' : ''}`}>
+        <div className="modal fade" id={`exampleModal-${cal.id_record}`} tabIndex="-1" aria-labelledby={`exampleModalLabel-${cal.name_record}`} aria-hidden="true">
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id={`exampleModalLabel-${cal.name_record}`}>{cal.name_record}</h5>
+                <h5 className="modal-title" id={`exampleModalLabel-${cal.id_record}`}>{cal.name_record}</h5>
                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
               </div>
               <div className="modal-body">
                 <audio controls>
-                  <source src={cal.url} type="audio/mpeg" />
+                  <source src={cal.name_record} type="audio/mpeg" />
                 </audio>
               </div>
               <div className="modal-footer">
