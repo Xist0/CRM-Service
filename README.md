@@ -9,12 +9,12 @@ Currently, two official plugins are available:
 
 npm i 
 
-
 npm i react-icons
-
 
 npm i react-router-dom
 
 npm install concurrently --force
 
 npm i express --force
+
+npm install node-fetch --force
