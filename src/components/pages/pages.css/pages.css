@@ -130,6 +130,19 @@ td button {
     width: auto
 }
 
+.modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1rem);
+}
+
+.modal.fade:not(.show) .modal-dialog.modal-dialog-centered {
+    transform: translate(0, -50%);
+}
+
+.modal-content {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
 
 @media (max-width: 1280px) {
     .box-serah {
@@ -223,6 +236,7 @@ td button {
     td #FIO>p {
         text-align: left;
     }
+
     td button {
         background-color: #1776CD;
         color: #FFF;
@@ -232,5 +246,5 @@ td button {
         padding: 4px 3px;
         width: auto
     }
-    
+
 }
