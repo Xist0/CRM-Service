@@ -55,6 +55,14 @@ const Calls = () => {
     setSearchTerm(term);
   };
 
+  const downloadAudio = (name) => {
+    const audioUrl = `http://192.168.1.68/static/song/${name}`;
+    const link = document.createElement('a');
+    link.href = audioUrl;
+    link.download = name;
+    link.click();
+  };
+
   const renderModal = (cal) => {
     return (
       <div key={cal.id_record} className={`modal-door${isModalOpen ? 'modal-dialog' : ''}`}>
@@ -74,7 +82,11 @@ const Calls = () => {
                 <button type="button" className="btn btn-primary btn-sm" onClick={toggleModal}>
                   Закрыть
                 </button>
-                <button className="btn btn-primary btn-sm" type="button">
+                <button
+                  className="btn btn-primary btn-sm"
+                  type="button"
+                  onClick={() => downloadAudio(cal.name)}
+                >
                   Скачать
                 </button>
               </div>
@@ -126,7 +138,6 @@ const Calls = () => {
           <td>{logoCall}</td>
           <td >{playButton}</td>
         </tr>
-
       );
     });
   };
