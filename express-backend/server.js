@@ -41,9 +41,13 @@ app.get('/api/:resource', async (req, res) => {
   }
 });
 
+
+
 // Обработчик для /api/order/:limit/:offset
 app.get('/api/order/:limit/:offset', async (req, res) => {
   const { limit, offset } = req.params;
+  console.log(limit);
+  console.log(offset);
 
   try {
     const { default: fetch } = await import('node-fetch');
@@ -63,6 +67,27 @@ app.get('/api/order/:limit/:offset', async (req, res) => {
   }
 });
 
+
+app.get('/api/order/record/:date/:name', async (req, res) => {
+  const { date, name } = req.params;
+
+  try {
+    const { default: fetch } = await import('node-fetch');
+
+    const response = await fetch(`http://192.168.1.68/api/order/record/${date}/${name}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+
+    res.json(responseData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 // Исправленная строка создания HTTPS-сервера
 const server = https.createServer(options, app);

@@ -10,7 +10,7 @@ const Calls = () => {
 
   const fetchData = async () => {
 
-    const response = await fetch(`/api/order/record/${date}`);
+    const response = await fetch(`https://localhost:3000/api/order/record/${date}`);
     const data = await response.json();
     setRecords(data);
   };
@@ -21,11 +21,21 @@ const Calls = () => {
 
   const fetchRecordDetails = async (name) => {
 
-    const response = await fetch(`/api/order/record/${date}/${name}`);
+    console.log(name);
 
-    const data = await response.json();
-    setSelectedRecord({ name, data });
-    setIsModalOpen(true); // Открываем модальное окно после получения данных
+    const response = await fetch(`https://localhost:3000/api/order/record/${date}/${name}`);
+
+
+    try {
+      console.log(response);
+      const data = await response.json();
+      console.log(data);
+      setSelectedRecord({ name, data });
+      setIsModalOpen(true); // Открываем модальное окно после получения данных
+      console.log(selectedRecord);
+    } catch (error) {
+      console.log(error);
+    }
 
   }
 
@@ -41,12 +51,12 @@ const Calls = () => {
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title" id={`exampleModalLabel-${cal.id_record}`}>{cal.name_record}</h5>
+                <h5 className="modal-title" id={`exampleModalLabel-${cal.id_record}`}>{cal.name}</h5>
                 <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
               </div>
               <div className="modal-body">
                 <audio controls>
-                  <source src={cal.name_record} type="audio/mpeg" />
+                  <source src={`http://192.168.1.68/static/song/${cal.name}`} type="audio/mpeg" />
                 </audio>
               </div>
               <div className="modal-footer">
@@ -77,7 +87,9 @@ const Calls = () => {
           <td className="table-success" style={{ textAlign: 'center' }}>
             <button
               className="btn btn-primary btn-sm"
-              onClick={toggleModal}
+              onClick={() => {
+                fetchRecordDetails(cal.name_record)
+              }}
             >
               Воспроизвести
             </button>
@@ -139,9 +151,9 @@ const Calls = () => {
           </div>
         </div>
       </div>
-
-      {/* Модальные окна после таблицы */}
-      {records.map((cal, index) => renderModal(cal))}
+      {
+        selectedRecord && renderModal(selectedRecord)
+      }
     </div>
   );
 };
