@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Summary from './Summary';
 import Header from '../Header';
 import './orders.css';
+import Messenger from './messenger/Messenger';
 
 const OrderStatus = () => {
   const [step, setStep] = useState(1);
@@ -166,6 +167,7 @@ const OrderStatus = () => {
           <Summary formData={formData} onEditClick={handleEditClick} />
         )}
       </div>
+      <Messenger/>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React from 'react'
 import Header from '../Header'
+import Messenger from './messenger/Messenger'
 
 function Works() {
   return (
@@ -7,7 +8,8 @@ function Works() {
     <div>
       <Header />
       Работа
-      </div>
+      <Messenger />
+    </div>
   )
 }
 

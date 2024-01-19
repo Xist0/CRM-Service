@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../Header';
 import './orders.css';
+import Messenger from './messenger/Messenger';
 
 const Calls = () => {
   const [date, setDate] = useState('');
@@ -145,6 +146,7 @@ const Calls = () => {
   return (
     <div>
       <Header />
+      <Messenger/>
       <div className="calls-container">
         <div className="row row-cols-auto">
           <div className="p-3 mb-2">

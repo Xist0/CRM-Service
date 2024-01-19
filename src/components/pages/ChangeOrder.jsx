@@ -1,11 +1,14 @@
 import React from 'react'
 import Header from '../Header'
+import Messenger from './messenger/Messenger'
 
 function ChangeOrder() {
   return (
     <div>
       <Header/>
-      Изменить order</div>
+      Изменить order
+      <Messenger/>
+      </div>
   )
 }
 

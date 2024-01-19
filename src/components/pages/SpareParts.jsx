@@ -1,11 +1,14 @@
 import React from 'react'
 import Header from '../Header'
+import Messenger from './messenger/Messenger'
 
 function SpareParts() {
     return (
         <div>
             <Header />
-            Запчасти</div>
+            Запчасти
+            <Messenger/>
+            </div>
     )
 }
 
