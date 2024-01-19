@@ -132,6 +132,25 @@ form {
 .form-control {
   width: 10%;
 }
+.btn-td{
+  background-color: #1776CD;
+  color: #FFF;
+  padding: 10px;
+  width: 100%;
+  font-size: 14px;
+}
+.icon{
+  width: 45px;
+}
+.tdRed {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  background: rgba(192, 35, 35, 0.334);
+  cursor: default;
+  pointer-events: none;
+  padding: 5px 4px;
+}
 
 .btn-primary {
   background-color: #1776cd;
@@ -164,7 +183,7 @@ form {
 td img {
   width: 40px;
   height: 40px;
-  padding: 10px;
+  padding: 3px;
 }
 
 @media (max-width: 1280px) {

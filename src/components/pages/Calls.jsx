@@ -70,13 +70,13 @@ const Calls = () => {
       let playButton;
 
       if (cal.size_record <= 60000) {
-        playButton = <td className="table-danger" style={{ textAlign: 'center', cursor: 'default' }}><label>Отсутствует</label></td>;
+        playButton = <td className='tdRed' id='td'><label>Отсутствует</label></td>;
         logoCall = cal.types_record === 'входящий' ? <img src="/pic/inCallErr.svg" style={{ color: 'transparent' }} /> : <img src="/pic/outCallErr.svg" style={{ color: 'blue' }} />;
       } else {
         playButton = (
-          <td className="table-success" style={{ textAlign: 'center', backgroundColor: 'green' }}>
+          <td className="table-success" style={{ textAlign: 'center', backgroundColor: '#52f65257' }}>
             <button
-              className="btn btn-primary btn-sm"
+              className="btn-td"
               onClick={() => {
                 fetchRecordDetails(cal.name_record)
               }}
@@ -98,7 +98,8 @@ const Calls = () => {
           <td></td>
           <td>{cal.date_record}</td>
           <td>{cal.time_record}</td>
-          <td>{logoCall}{playButton}</td>
+          <td>{logoCall}</td>
+          <td >{playButton}</td>
         
         </tr>
       );
@@ -132,6 +133,7 @@ const Calls = () => {
                     <th scope="col">заказ наряд</th>
                     <th scope="col">дата звонка</th>
                     <th scope="col">время звонка</th>
+                    <th className="icon"></th>
                     <th scope="col">воспроизвести</th>
                   </tr>
                 </thead>
