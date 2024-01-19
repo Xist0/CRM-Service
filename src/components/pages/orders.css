@@ -154,7 +154,9 @@ form {
   pointer-events: none;
   padding: 5px 4px;
 }
-
+.input-search{
+  width: 20%;
+}
 .col {
   display: flex;
   justify-content: center;
@@ -195,17 +197,25 @@ td img {
   height: 40px;
   padding: 3px;
 }
-
+.table-media-container{
+  display: none;
+}
 @media (max-width: 1280px) {
-
+  .table-media-container{
+    display: flex;
+  }
+  .calls-container{
+    display: none;
+  }
   form {
     display: flex;
     width: 100%;
     align-items: center;
     gap: 20px;
+    flex-direction: column;
   }
-
-  .form-control {
+  form > label input>.form-control{
+    display: flex;
     width: 40%;
   }
 
