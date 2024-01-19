@@ -17,7 +17,7 @@ const Calls = () => {
     }
     setIsLoading(true);
     try {
-      const response = await fetch(`https://localhost:3000/api/order/record/${date}`);
+      const response = await fetch(`/api/order/record/${date}`);
       const data = await response.json();
       setRecords(data);
       setTableHeaderVisibility(true);
@@ -34,7 +34,7 @@ const Calls = () => {
   };
 
   const fetchRecordDetails = async (name) => {
-    const response = await fetch(`https://localhost:3000/api/order/record/${date}/${name}`);
+    const response = await fetch(`/api/order/record/${date}/${name}`);
 
     try {
       const data = await response.json();
@@ -115,8 +115,8 @@ const Calls = () => {
 
       return (
         <tr key={index}>
-          <td>{cal.id_record}</td>
-          <td>{cal.types_record}</td>
+          <td id='type_call'>{cal.id_record}</td>
+          <td id='type_call'>{cal.types_record}</td>
           <td>{cal.inNomberP_record}</td>
           <td>{cal.outNombr_record}</td>
           <td></td>
@@ -126,7 +126,7 @@ const Calls = () => {
           <td>{logoCall}</td>
           <td >{playButton}</td>
         </tr>
-        
+
       );
     });
   };
@@ -138,8 +138,10 @@ const Calls = () => {
         <div className="row row-cols-auto">
           <div className="p-3 mb-2">
             <form onSubmit={handleSubmit}>
-              <label>Введите дату поиска записей</label>
-              <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="form-control" />
+              <div className="row-cols">
+                <label>Введите дату поиска записей</label>
+                <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="form-control" />
+              </div>
               <input
                 type="text"
                 value={searchTerm}
@@ -182,24 +184,6 @@ const Calls = () => {
         </div>
       </div>
       {selectedRecord && renderModal(selectedRecord)}
-      <div className="table-media-container">
-        <div className="row row-cols-auto">
-          <div className="p-3 mb-2">
-            <form onSubmit={handleSubmit}>
-              <label>Введите дату поиска записей</label>
-              <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="form-control" />
-              <input
-                type="text"
-                value={searchTerm}
-                className='input-search'
-                onChange={handleSearchTermChange}
-                placeholder="Поиск по номеру телефона"
-              />
-              <button type="submit" className="btn btn-primary">поиск</button>
-            </form>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

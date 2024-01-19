@@ -66,7 +66,7 @@ th {
 td {
     border-top: 1px solid #47474727;
     text-align: center;
-    padding: 5px 4px;
+    padding: 5px 13px;
 
 }
 
@@ -135,18 +135,7 @@ td button {
     display: none;
 }
 
-.modal-dialog {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0px 3px 0 rgba(219, 219, 219, 0.178);
-    background-color: #fff;
-    padding: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 
 /* .modal {
     position: absolute;
