@@ -151,12 +151,20 @@ form {
   justify-content: center;
 }
 
+
 .btn-primary:hover {
   background-color: #156699;
 }
 
+
 .btn-primary button:active {
   transform: scale(0.95);
+}
+
+td img {
+  width: 40px;
+  height: 40px;
+  padding: 10px;
 }
 
 @media (max-width: 1280px) {
