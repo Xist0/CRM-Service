@@ -5,6 +5,7 @@ import { SlArrowRight } from "react-icons/sl";
 import { SlArrowLeft } from "react-icons/sl";
 import './pages.css/pages.css';
 import QRScaner from './QRScaner';
+import Messenger from './messenger/Messenger';
 
 function Orders() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -145,6 +146,7 @@ function Orders() {
         <span>{currentPage}</span>
         <SlArrowRight onClick={handleNextPage} disabled={currentPage === Math.ceil(originalData.length / itemsPerPage)} />
       </div>
+      <Messenger/>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import './App.css'
 import './index.css'
 import Header from './components/Header'
 import AppMedia from './components/AppMedia'
+import Messenger from './components/pages/messenger/Messenger'
 
 function App() {
 
@@ -11,6 +12,7 @@ function App() {
     <>
       <Header />
       <AppMedia/>
+      <Messenger/>
     </>
   )
 }
