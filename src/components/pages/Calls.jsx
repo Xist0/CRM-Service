@@ -1,22 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../Header';
-import './orders.css'; 
+import './orders.css';
 
 const Calls = () => {
   const [date, setDate] = useState('');
   const [records, setRecords] = useState([]);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isTableHeaderVisible, setTableHeaderVisibility] = useState(false);
 
   const fetchData = async () => {
-    const response = await fetch(`https://localhost:3000/api/order/record/${date}`);
-    const data = await response.json();
-    setRecords(data);
+    if (date.trim() === '') {
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(`https://localhost:3000/api/order/record/${date}`);
+      const data = await response.json();
+      setRecords(data);
+      setTableHeaderVisibility(true);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetchData();
   };
 
   useEffect(() => {
-    fetchData();
-  }, [date]);
+    // Здесь оставьте пустой массив зависимостей, чтобы useEffect вызывался только при монтировании компонента
+  }, []);
 
   const fetchRecordDetails = async (name) => {
     const response = await fetch(`https://localhost:3000/api/order/record/${date}/${name}`);
@@ -28,7 +48,7 @@ const Calls = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -100,7 +120,6 @@ const Calls = () => {
           <td>{cal.time_record}</td>
           <td>{logoCall}</td>
           <td >{playButton}</td>
-        
         </tr>
       );
     });
@@ -112,7 +131,7 @@ const Calls = () => {
       <div className="calls-container">
         <div className="row row-cols-auto">
           <div className="p-3 mb-2">
-            <form onSubmit={(e) => { e.preventDefault(); fetchData(); }}>
+            <form onSubmit={handleSubmit}>
               <label>Введите дату поиска записей</label>
               <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="form-control" />
               <button type="submit" className="btn btn-primary">поиск</button>
@@ -122,30 +141,34 @@ const Calls = () => {
         <div className="calls-container">
           <div className="row row-cols-auto">
             <div className="col">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">тип звонка</th>
-                    <th scope="col">набранный номер</th>
-                    <th scope="col">номер звонящий</th>
-                    <th scope="col">Ф.И.О</th>
-                    <th scope="col">заказ наряд</th>
-                    <th scope="col">дата звонка</th>
-                    <th scope="col">время звонка</th>
-                    <th className="icon"></th>
-                    <th scope="col">воспроизвести</th>
-                  </tr>
-                </thead>
-                <tbody>{renderRecords()}</tbody>
-              </table>
+              {isLoading ? (
+                <img src="/pic/4.gif" alt="" />
+              ) : (
+                <table className="table">
+                  {isTableHeaderVisible && (
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">тип звонка</th>
+                        <th scope="col">набранный номер</th>
+                        <th scope="col">номер звонящий</th>
+                        <th scope="col">Ф.И.О</th>
+                        <th scope="col">заказ наряд</th>
+                        <th scope="col">дата звонка</th>
+                        <th scope="col">время звонка</th>
+                        <th className="icon"></th>
+                        <th scope="col">воспроизвести</th>
+                      </tr>
+                    </thead>
+                  )}
+                  <tbody>{renderRecords()}</tbody>
+                </table>
+              )}
             </div>
           </div>
         </div>
       </div>
-      {
-        selectedRecord && renderModal(selectedRecord)
-      }
+      {selectedRecord && renderModal(selectedRecord)}
     </div>
   );
 };
