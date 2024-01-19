@@ -9,14 +9,13 @@ const Calls = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isTableHeaderVisible, setTableHeaderVisibility] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchData = async () => {
     if (date.trim() === '') {
       return;
     }
-
     setIsLoading(true);
-
     try {
       const response = await fetch(`https://localhost:3000/api/order/record/${date}`);
       const data = await response.json();
@@ -34,10 +33,6 @@ const Calls = () => {
     fetchData();
   };
 
-  useEffect(() => {
-    // Здесь оставьте пустой массив зависимостей, чтобы useEffect вызывался только при монтировании компонента
-  }, []);
-
   const fetchRecordDetails = async (name) => {
     const response = await fetch(`https://localhost:3000/api/order/record/${date}/${name}`);
 
@@ -45,6 +40,7 @@ const Calls = () => {
       const data = await response.json();
       setSelectedRecord({ name, data });
       setIsModalOpen(true);
+      handleSearchTermChange({});
     } catch (error) {
       console.log(error);
     }
@@ -52,6 +48,11 @@ const Calls = () => {
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  const handleSearchTermChange = (e) => {
+    const term = e.target.value;
+    setSearchTerm(term);
   };
 
   const renderModal = (cal) => {
@@ -85,7 +86,11 @@ const Calls = () => {
   };
 
   const renderRecords = () => {
-    return records.map((cal, index) => {
+    const filteredRecords = searchTerm.trim() === ''
+      ? records
+      : records.filter(record => record.outNombr_record.includes(searchTerm));
+
+    return filteredRecords.map((cal, index) => {
       let logoCall;
       let playButton;
 
@@ -121,6 +126,7 @@ const Calls = () => {
           <td>{logoCall}</td>
           <td >{playButton}</td>
         </tr>
+        
       );
     });
   };
@@ -134,6 +140,13 @@ const Calls = () => {
             <form onSubmit={handleSubmit}>
               <label>Введите дату поиска записей</label>
               <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="form-control" />
+              <input
+                type="text"
+                value={searchTerm}
+                className='input-search'
+                onChange={handleSearchTermChange}
+                placeholder="Поиск по номеру телефона"
+              />
               <button type="submit" className="btn btn-primary">поиск</button>
             </form>
           </div>
@@ -169,6 +182,24 @@ const Calls = () => {
         </div>
       </div>
       {selectedRecord && renderModal(selectedRecord)}
+      <div className="table-media-container">
+        <div className="row row-cols-auto">
+          <div className="p-3 mb-2">
+            <form onSubmit={handleSubmit}>
+              <label>Введите дату поиска записей</label>
+              <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="form-control" />
+              <input
+                type="text"
+                value={searchTerm}
+                className='input-search'
+                onChange={handleSearchTermChange}
+                placeholder="Поиск по номеру телефона"
+              />
+              <button type="submit" className="btn btn-primary">поиск</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

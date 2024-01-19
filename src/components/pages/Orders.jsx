@@ -38,8 +38,7 @@ function Orders() {
   };
 
   const handleNextPage = () => {
-    setExpandedRowIndex(null); // Закрыть открытый список при переключении страницы
-    // Предполагается, что у вас есть общее количество данных или другой способ определения общего числа страниц
+    setExpandedRowIndex(null); 
     const totalPages = Math.ceil(originalData.length / itemsPerPage);
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
   };
