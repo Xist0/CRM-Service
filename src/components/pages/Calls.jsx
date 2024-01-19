@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../Header';
-import './orders.css'; // Подключение файла стилей
+import './orders.css'; 
 
 const Calls = () => {
   const [date, setDate] = useState('');
@@ -9,7 +9,6 @@ const Calls = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchData = async () => {
-
     const response = await fetch(`https://localhost:3000/api/order/record/${date}`);
     const data = await response.json();
     setRecords(data);
@@ -20,25 +19,16 @@ const Calls = () => {
   }, [date]);
 
   const fetchRecordDetails = async (name) => {
-
-    console.log(name);
-
     const response = await fetch(`https://localhost:3000/api/order/record/${date}/${name}`);
 
-
     try {
-      console.log(response);
       const data = await response.json();
-      console.log(data);
       setSelectedRecord({ name, data });
-      setIsModalOpen(true); // Открываем модальное окно после получения данных
-      console.log(selectedRecord);
+      setIsModalOpen(true);
     } catch (error) {
       console.log(error);
     }
-
   }
-
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -80,11 +70,11 @@ const Calls = () => {
       let playButton;
 
       if (cal.size_record <= 60000) {
-        playButton = <td className="table-danger" style={{ textAlign: 'center' }}><label>Отсутствует</label></td>;
-        logoCall = cal.types_record === 'входящий' ? <img src="/static/pic/inCallErr.svg" /> : <img src="/static/pic/outCallErr.svg" />;
+        playButton = <td className="table-danger" style={{ textAlign: 'center', cursor: 'default' }}><label>Отсутствует</label></td>;
+        logoCall = cal.types_record === 'входящий' ? <img src="/pic/inCallErr.svg" style={{ color: 'transparent' }} /> : <img src="/pic/outCallErr.svg" style={{ color: 'blue' }} />;
       } else {
         playButton = (
-          <td className="table-success" style={{ textAlign: 'center' }}>
+          <td className="table-success" style={{ textAlign: 'center', backgroundColor: 'green' }}>
             <button
               className="btn btn-primary btn-sm"
               onClick={() => {
@@ -95,7 +85,7 @@ const Calls = () => {
             </button>
           </td>
         );
-        logoCall = cal.types_record === 'входящий' ? <img src="/static/pic/inCallOk.svg" /> : <img src="/static/pic/outCallOk.svg" />;
+        logoCall = cal.types_record === 'входящий' ? <img src="/pic/inCallOk.svg" style={{ color: 'red' }} /> : <img src="/pic/outCallOk.svg" style={{ color: 'blue' }} />;
       }
 
       return (
@@ -108,8 +98,8 @@ const Calls = () => {
           <td></td>
           <td>{cal.date_record}</td>
           <td>{cal.time_record}</td>
-          {playButton}
-          <td>{logoCall}</td>
+          <td>{logoCall}{playButton}</td>
+        
         </tr>
       );
     });

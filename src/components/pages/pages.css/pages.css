@@ -70,11 +70,11 @@ td {
 
 }
 
-td img {
+/* td img {
     width: 150px;
     height: 150px;
     padding: 10px;
-}
+} */
 
 td>a {
     color: #16C1DF;
