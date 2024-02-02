@@ -17,7 +17,7 @@ const Summary = ({ formData, onEditClick }) => {
       <p>
         <strong>Адрес:</strong> {formData.address}
       </p>
-      {/* Добавьте отображение дополнительных данных по необходимости */}
+
       <button onClick={onEditClick}>Редактировать</button>
     </div>
   );

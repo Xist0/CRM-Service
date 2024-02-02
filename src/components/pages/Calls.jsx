@@ -57,7 +57,7 @@ const Calls = () => {
   };
 
   const downloadAudio = (name) => {
-    const audioUrl = `http://192.168.1.68/static/song/${name}`;
+    const audioUrl = `http://192.168.1.10/static/song/${name}`;
     const link = document.createElement('a');
     link.href = audioUrl;
     link.download = name;
@@ -76,7 +76,7 @@ const Calls = () => {
               </div>
               <div className="modal-body">
                 <audio controls>
-                  <source src={`http://192.168.1.68/static/song/${cal.name}`} type="audio/mpeg" />
+                  <source src={`http://192.168.1.10/static/song/${cal.name}`} type="audio/mpeg" />
                 </audio>
               </div>
               <div className="modal-footer">
