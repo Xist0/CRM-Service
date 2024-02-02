@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { IoClose } from 'react-icons/io5';
+
 import './components.css';
 
 function NavMenu() {
@@ -24,6 +25,7 @@ function NavMenu() {
       <ul className={nav ? 'navi, navi-active' : 'navi'}>
         <li><NavLink to="/">Главная</NavLink></li>
         <li><NavLink to="/Orders">Заказы</NavLink></li>
+        <li><NavLink to="/Contractors">Контрагенты</NavLink></li>
         <li><NavLink to="/OrderStatus">Состояние заказа</NavLink></li>
         <li><NavLink to="/SpareParts">Запчасти</NavLink></li>
         <li><NavLink to="/WarrantyRepair">Гарантийные ремонты</NavLink></li>

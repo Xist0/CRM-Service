@@ -16,6 +16,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import Contractors from "./components/pages/Contractors.jsx";
 
 
 
@@ -56,6 +57,10 @@ const routes = createBrowserRouter([
   {
     path: '/Calls',
     element: <Calls/>
+  },
+  {
+    path: '/Contractors',
+    element: <Contractors/>
   },
 
 ])
