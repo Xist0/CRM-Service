@@ -113,28 +113,7 @@ function Orders() {
                       <p>{item.status.status_order}</p>
                     </td>
                   </tr>
-                  {expandedRowIndex === index && (
-                    <tr id='table-active'>
-                      <td>
-                        <p>Доп. 1</p>
-                      </td>
-                      <td id='FIO'>
-                        <p>{item.user.last_name} {item.user.midl_name}</p>
-                      </td>
-                      <td>
-                        <p>{item.device.brand}</p>
-                      </td>
-                      <td>
-                        <p>Доп. 4</p>
-                      </td>
-                      <td id='FIO'>
-                        <p>{item.staff.last_name} {item.staff.midl_name}</p>
-                      </td>
-                      <td>
-                        <button>Перейти</button>
-                      </td>
-                    </tr>
-                  )}
+                 
                 </React.Fragment>
               ))}
             </tbody>
