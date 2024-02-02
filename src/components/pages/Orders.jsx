@@ -39,7 +39,7 @@ function Orders() {
   };
 
   const handleNextPage = () => {
-    setExpandedRowIndex(null); 
+    setExpandedRowIndex(null);
     const totalPages = Math.ceil(originalData.length / itemsPerPage);
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
   };
@@ -146,7 +146,7 @@ function Orders() {
         <span>{currentPage}</span>
         <SlArrowRight onClick={handleNextPage} disabled={currentPage === Math.ceil(originalData.length / itemsPerPage)} />
       </div>
-      <Messenger/>
+      <Messenger />
     </div>
   );
 }
