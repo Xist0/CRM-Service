@@ -68,6 +68,25 @@ app.get('/api/order/:limit/:offset', async (req, res) => {
 });
 
 
+app.get('/api/typeofrepaire', async (req, res) => {
+
+  try {
+    const { default: fetch } = await import('node-fetch');
+
+    const response = await fetch(`http://192.168.1.10/api/typeofrepaire/`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+
+    res.json(responseData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 app.get('/api/order/record/:date/:name', async (req, res) => {
   const { date, name } = req.params;
 

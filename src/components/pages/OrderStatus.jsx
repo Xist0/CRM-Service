@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Summary from './Summary';
 import Header from '../Header';
 import './orders.css';
@@ -19,6 +19,22 @@ const OrderStatus = () => {
     phoneNumber: false,
     address: false,
   });
+
+  const [types, setTypes] = useState([]);
+
+  useEffect(() => {
+    fetchTypes();
+  }, []);
+
+  const fetchTypes = async () => {
+    try {
+      const response = await fetch('/api/typeofrepaire');
+      const data = await response.json();
+      setTypes(data.types);
+    } catch (error) {
+      console.error('Error fetching types:', error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -88,6 +104,7 @@ const OrderStatus = () => {
           fullName: '',
           phoneNumber: '',
           address: '',
+          source_user: '',
         });
         setStep(1);
       }
@@ -100,13 +117,14 @@ const OrderStatus = () => {
     setStep((prevStep) => prevStep - 1);
   };
 
+
   return (
     <div>
       <Header />
       <div className='Multi-forma'>
-        {step === 1 && (
+      {step === 1 && (
           <div className='forma-input'>
-            <h2>Тип ремонта</h2>
+            <h2>Шаг 1: Тип ремонта</h2>
             <label className="input-column">
               <select
                 name="option"
@@ -114,15 +132,11 @@ const OrderStatus = () => {
                 onChange={handleChange}
                 className={validation.option ? '' : 'input-error'}
               >
-                <option value="">Выберите вариант</option>
-                <option value="вариант1">Авторизованный ремонт</option>
-                <option value="вариант2">Наша гарантия</option>
-                <option value="вариант3">Обслуживание картриджей</option>
-                <option value="вариант4">Поставка товаров</option>
-                <option value="вариант5">Проверка качества</option>
-                <option value="вариант6">Простой ремонт</option>
-                <option value="вариант7">Сложный ремонт</option>
-                <option value="вариант8">Хоз работы</option>
+                <option value="" disabled selected hidden>Выберите тип ремонта</option>
+    
+                {types.map((type, index) => (
+                  <option key={index} value={type}>{type}</option>
+                ))}
               </select>
               <button onClick={handleNextStep} disabled={!validation.option}>Далее</button>
             </label>
@@ -162,8 +176,10 @@ const OrderStatus = () => {
               />
             </label>
             <select name="option-step-2" id="">
-              <option value="">
-                
+            <option value="" disabled selected hidden>Как узнали о нас</option>
+              <option 
+              value={formData.source_user}>
+1
               </option>
             </select>
             <div className="divButton">
@@ -174,6 +190,7 @@ const OrderStatus = () => {
         )}
         {step === 3 && (
           <div className='forma-input input-column'>
+            <h4>Шаг 3: Устройство</h4>
             <label>
               <input
                 type=""
@@ -211,7 +228,7 @@ const OrderStatus = () => {
               <textarea
                 type="text"
                 id='comment-inp'
-
+                className={`input-style ${validation.address ? 'input-valid' : 'input-error'}`}
               />
             </label>
             <label id='comments'>
@@ -219,7 +236,7 @@ const OrderStatus = () => {
               <textarea
                 type="text"
                 id='comment-inp'
-
+                className={`input-style ${validation.address ? 'input-valid' : 'input-error'}`}
               />
             </label>
             <label id='comments'>
@@ -238,6 +255,7 @@ const OrderStatus = () => {
         )}
         {step === 4 && (
           <div className='forma-input input-column'>
+            <h4>Шаг 4: Мастер</h4>
             <label>
               <input
                 type=""
