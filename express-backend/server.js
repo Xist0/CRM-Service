@@ -26,7 +26,7 @@ app.get('/api/:resource', async (req, res) => {
   try {
     const { default: fetch } = await import('node-fetch');
 
-    const response = await fetch(`http://192.168.1.68/api/${resource}`);
+    const response = await fetch(`http://192.168.1.10/api/${resource}`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -52,7 +52,7 @@ app.get('/api/order/:limit/:offset', async (req, res) => {
   try {
     const { default: fetch } = await import('node-fetch');
 
-    const response = await fetch(`http://192.168.1.68/api/order/${limit}/${offset}`);
+    const response = await fetch(`http://192.168.1.10/api/order/${limit}/${offset}`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -74,7 +74,7 @@ app.get('/api/order/record/:date/:name', async (req, res) => {
   try {
     const { default: fetch } = await import('node-fetch');
 
-    const response = await fetch(`http://192.168.1.68/api/order/record/${date}/${name}`);
+    const response = await fetch(`http://192.168.1.10/api/order/record/${date}/${name}`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
