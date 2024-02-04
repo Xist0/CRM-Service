@@ -17,6 +17,33 @@ const Summary = ({ formData, onEditClick }) => {
       <p>
         <strong>Адрес:</strong> {formData.address}
       </p>
+      <p>
+        <strong>Тип устройства:</strong> {formData.deviceType}
+      </p>
+      <p>
+        <strong>Фирма:</strong> {formData.brand}
+      </p>
+      <p>
+        <strong>Модель:</strong> {formData.model}
+      </p>
+      <p>
+        <strong>Серийный номер:</strong> {formData.serialNumber}
+      </p>
+      <p>
+        <strong>Комментарии к внешнему виду:</strong> {formData.appearanceComments}
+      </p>
+      <p>
+        <strong>Комментарии к комплектации:</strong> {formData.equipmentComments}
+      </p>
+      <p>
+        <strong>Пожелания:</strong> {formData.wishes}
+      </p>
+      <p>
+        <strong>Мастер:</strong> {formData.master}
+      </p>
+      <p>
+        <strong>Статус:</strong> {formData.status}
+      </p>
 
       <button onClick={onEditClick}>Редактировать</button>
     </div>
