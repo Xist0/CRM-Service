@@ -170,7 +170,7 @@ const Calls = () => {
           <div className="row row-cols-auto">
             <div className="col">
               {isLoading ? (
-                <img src="/pic/4.gif" alt="" />
+               <div className="loading-animation"> <img src="/pic/4.gif" alt="" /></div>
               ) : (
                 <table className="table">
                   {isTableHeaderVisible && (
