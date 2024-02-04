@@ -11,6 +11,16 @@ const OrderStatus = () => {
     fullName: '',
     phoneNumber: '',
     address: '',
+    source_user: '',
+    deviceType: '',
+    brand: '',
+    model: '',
+    serialNumber: '',
+    appearanceComments: '',
+    equipmentComments: '',
+    wishes: '',
+    master: '',
+    status: '',
   });
 
   const [validation, setValidation] = useState({
@@ -18,6 +28,15 @@ const OrderStatus = () => {
     fullName: false,
     phoneNumber: false,
     address: false,
+    deviceType: false,
+    brand: false,
+    model: false,
+    serialNumber: false,
+    appearanceComments: false,
+    equipmentComments: false,
+    wishes: false,
+    master: false,
+    status: false,
   });
 
   const [types, setTypes] = useState([]);
@@ -67,7 +86,9 @@ const OrderStatus = () => {
   const isFormValid = Object.values(validation).every((isValid) => isValid);
 
   const handleNextStep = () => {
-    setStep((prevStep) => prevStep + 1);
+    if (step < 5 && isFormValid) {
+      setStep((prevStep) => prevStep + 1);
+    }
   };
 
   const handlePrevStep = () => {
@@ -81,12 +102,7 @@ const OrderStatus = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          option: formData.option,
-          fullName: formData.fullName,
-          phoneNumber: formData.phoneNumber,
-          address: formData.address,
-        }),
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
@@ -96,18 +112,23 @@ const OrderStatus = () => {
       const result = await response.json();
       console.log('Order submitted:', result);
 
-      if (step < 5) {
-        setStep((prevStep) => prevStep + 1);
-      } else {
-        setFormData({
-          option: '',
-          fullName: '',
-          phoneNumber: '',
-          address: '',
-          source_user: '',
-        });
-        setStep(1);
-      }
+      setFormData({
+        option: '',
+        fullName: '',
+        phoneNumber: '',
+        address: '',
+        source_user: '',
+        deviceType: '',
+        brand: '',
+        model: '',
+        serialNumber: '',
+        appearanceComments: '',
+        equipmentComments: '',
+        wishes: '',
+        master: '',
+        status: '',
+      });
+      setStep(1);
     } catch (error) {
       console.error('Error during fetch:', error.message);
     }
@@ -116,6 +137,8 @@ const OrderStatus = () => {
   const handleEditClick = () => {
     setStep((prevStep) => prevStep - 1);
   };
+
+
 
 
   return (
@@ -179,7 +202,6 @@ const OrderStatus = () => {
             <option value="" disabled selected hidden>Как узнали о нас</option>
               <option 
               value={formData.source_user}>
-1
               </option>
             </select>
             <div className="divButton">
