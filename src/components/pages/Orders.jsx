@@ -3,7 +3,6 @@ import Header from '../Header';
 import { CiSearch } from 'react-icons/ci';
 import { SlArrowRight } from "react-icons/sl";
 import { SlArrowLeft } from "react-icons/sl";
-import './pages.css/pages.css';
 import QRScaner from './QRScaner';
 import Messenger from './messenger/Messenger';
 
@@ -14,6 +13,7 @@ function Orders() {
   const [originalData, setOriginalData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true); // Добавляем состояние для отображения анимации загрузки
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +25,7 @@ function Orders() {
         const json = await response.json();
         setOriginalData(json);
         setDisplayData(json.slice(0, itemsPerPage));
+        setLoading(false); // Устанавливаем loading в false после загрузки данных
       } catch (error) {
         console.error('Ошибка загрузки данных:', error);
       }
@@ -113,11 +114,15 @@ function Orders() {
                       <p>{item.status.status_order}</p>
                     </td>
                   </tr>
-                 
                 </React.Fragment>
               ))}
             </tbody>
           </table>
+          {loading && (
+            <div className="loading-animation">
+              <img src="/pic/4.gif" alt="" />
+            </div>
+          )}
         </div>
       </div>
       <div className="pagination-custom">

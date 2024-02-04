@@ -1,17 +1,31 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
-import { IoClose } from 'react-icons/io5';
+import { IoClose } from "react-icons/io5";
+import { IoChevronDownOutline } from 'react-icons/io5';
+
 
 import './components.css';
 
 function NavMenu() {
   const [nav, setNav] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  const toggleExpanded = () => {
+    setExpanded(!expanded);
+  };
+
+  const toggleNav = () => {
+    setNav(!nav);
+    if (expanded) {
+      toggleExpanded(); // Переключаем состояние раскрытого меню
+    }
+  };
 
   return (
     <div className="menu-nav">
       <div className="menu--nav">
-        <div className="burger-menu-mav" onClick={() => setNav(!nav)}>
+        <div className="burger-menu-mav" onClick={toggleNav}>
           {nav ? <IoClose size={25} /> : <GiHamburgerMenu size={25} />}
         </div>
         <svg height="34" viewBox="0 0 191 45" width="144" xmlns="http://www.w3.org/2000/svg">
@@ -22,14 +36,24 @@ function NavMenu() {
           <path d="M12.1406 8.28906H31.0469L30.3438 11.6484H15.2461L9.89453 37H6.04688L12.1406 8.28906Z" fill="#F13737" />
         </svg>
       </div>
-      <ul className={nav ? 'navi, navi-active' : 'navi'}>
-        <li><NavLink to="/">Главная</NavLink></li>
-        <li><NavLink to="/Orders">Заказы</NavLink></li>
+      <ul className={nav ? 'navi navi-active' : 'navi'}>
+        <li><NavLink exact to="/">Главная</NavLink></li>
+        <li>
+          <div className="dropdown">
+            <span onClick={toggleExpanded} >
+
+              Заказы<IoChevronDownOutline className={expanded ? 'rotate' : '' } />
+            </span>
+            <div className={`dropdown-content ${expanded ? 'show' : ''}`}>
+              <NavLink to="/Orders">Список заказов</NavLink>
+              <NavLink to="/OrderStatus">Состояние заказа</NavLink>
+              <NavLink to="/ChangeOrder">Изменить заказ</NavLink>
+              <NavLink to="/WarrantyRepair">Гарантийные ремонты</NavLink>
+            </div>
+          </div>
+        </li>
         <li><NavLink to="/Contractors">Контрагенты</NavLink></li>
-        <li><NavLink to="/OrderStatus">Состояние заказа</NavLink></li>
         <li><NavLink to="/SpareParts">Запчасти</NavLink></li>
-        <li><NavLink to="/WarrantyRepair">Гарантийные ремонты</NavLink></li>
-        <li><NavLink to="/ChangeOrder">Изменить заказ</NavLink></li>
         <li><NavLink to="/Works">Работы</NavLink></li>
         <li><NavLink to="/Employees">Сотрудники</NavLink></li>
         <li><NavLink to="/Calls">Записи звонков</NavLink></li>
