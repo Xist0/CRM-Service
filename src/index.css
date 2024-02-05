@@ -88,6 +88,17 @@ select {
 	color: inherit;
 	background-color: transparent;
 }
+input {
+    width: calc(100% - 80%);
+	border: 1px solid #1776CD;
+	padding: 5px 10px;
+	border-radius: 6px;
+    cursor: pointer;
+}
+input:focus {
+    border: 1px #1776CD;
+    box-shadow: 0 0 7px #1776CD; /* добавляем тень при фокусировке */
+}
 
 input::-ms-clear {
 	display: none;
@@ -125,4 +136,13 @@ legend {
 body {
 	width: calc(100% - 10%);
 	margin: auto;
+}
+@media (max-width: 800px) {
+	input {
+        width: calc(100% - 40%);
+        border: 1px solid #1776CD;
+        border-radius: 6px;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
 }

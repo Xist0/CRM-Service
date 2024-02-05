@@ -69,7 +69,7 @@ function SearcOrder() {
             return <p>Ничего не найдено</p>;
         }
         return (
-            <div>
+            <div >
                 <div className="container-search-result">
                     <div className="container-search-result-title">
                         <h1>Заказ: {records.id_order}</h1>
@@ -131,7 +131,7 @@ function SearcOrder() {
         <div>
             <Header />
             <div className="container-search">
-                <input type="text" value={number} onChange={handleChange} onKeyPress={handleKeyPress} placeholder='Введите номер заказа' />
+                <input type="number"   pattern="\d*" value={number} onChange={handleChange} onKeyPress={handleKeyPress} placeholder='Введите номер заказа' />
                 <CiSearch onClick={() => fetchData(number)} />
             </div>
             <QRcodeScaner updateSearchWithQRCode={updateSearchWithQRCode} />
