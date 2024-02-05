@@ -53,7 +53,7 @@ function QRcodeScaner({ updateSearchWithQRCode }) {
             <div className='visible'>
                 <div id='qrCodeContainer' className={`scaner ${isEnabled ? 'visible' : 'hidden'}`}></div>
                 <button className='start-button' onClick={() => setEnable(!isEnabled)}>
-                    {isEnabled ? 'Выкл' : ` Сканировать документ `}
+                    {isEnabled ? 'Выкл' : ` Сканировать QRCode `}
                 </button>
             </div>
         </div>
