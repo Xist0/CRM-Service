@@ -1,21 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { CiSearch } from "react-icons/ci";
 import Header from '../Header';
-import './pages.css/SeacrOrder.css'
+import './pages.css/SeacrOrder.css';
 import QRcodeScaner from './QRcodeScaner';
+import { useLocation } from 'react-router-dom';
 
 function SearcOrder() {
     const [number, setNumber] = useState('');
     const [records, setRecords] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const location = useLocation();
 
-    const fetchData = async () => {
-        if (number.trim() === '') {
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const orderNumber = queryParams.get('orderNumber');
+        if (orderNumber) {
+            setNumber(orderNumber); // Устанавливаем номер заказа
+            fetchData(orderNumber); // Выполняем поиск
+        }
+    }, [location.search]);
+
+    const fetchData = async (searchNumber) => {
+        if (searchNumber.trim() === '') {
             return;
         }
         setIsLoading(true);
         try {
-            const response = await fetch(`/api/byt/order/${number}`);
+            const response = await fetch(`/api/byt/order/${searchNumber}`);
             const data = await response.json();
             setRecords(data);
         } catch (error) {
@@ -27,24 +38,19 @@ function SearcOrder() {
 
     const handleChange = (e) => {
         setNumber(e.target.value);
-        fetchData();
-    };
-
-    const handleSearch = () => {
-        fetchData();
-        setNumber(e.target.value);
     };
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-            fetchData();
+            fetchData(number);
         }
     };
 
-    const updateSearchWithQRCode = (e) => {
-        setNumber(e); 
-        fetchData();
+    const updateSearchWithQRCode = (qrCode) => {
+        setNumber(qrCode); // Обновляем состояние номера заказа
+        fetchData(qrCode); // Выполняем поиск
     };
+    
     const renderData = () => {
         if (isLoading) {
             return (
@@ -121,13 +127,12 @@ function SearcOrder() {
             </div>
         );
     };
-
     return (
         <div>
             <Header />
             <div className="container-search">
                 <input type="text" value={number} onChange={handleChange} onKeyPress={handleKeyPress} placeholder='Введите номер заказа' />
-                <CiSearch onClick={handleSearch} />
+                <CiSearch onClick={() => fetchData(number)} />
             </div>
             <QRcodeScaner updateSearchWithQRCode={updateSearchWithQRCode} />
             <div className="container-results">{renderData()}</div>
