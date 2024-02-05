@@ -1,11 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import Header from '../Header';
-import { Html5Qrcode } from 'html5-qrcode';
-import './pages.css/pages.css';
+// QRcodeScaner.jsx
 
-function QRScaner() {
+import React, { useState, useEffect } from 'react';
+import { Html5Qrcode } from 'html5-qrcode';
+import './pages.css/QrScaner.css'
+
+function QRcodeScaner({ updateSearchWithQRCode }) {
     const [isEnabled, setEnable] = useState(false);
     const [qrMessage, setQrMessenge] = useState('');
+
+    const qrCodeSuccess = (decodedText) => {
+        setQrMessenge(decodedText);
+        setEnable(false);
+        updateSearchWithQRCode(decodedText); // Вызываем функцию из родительского компонента
+    };
 
     useEffect(() => {
         const config = { fps: 10, qrbox: { width: 200, height: 200 } };
@@ -30,11 +37,6 @@ function QRScaner() {
             }
         };
 
-        const qrCodeSuccess = (decodedText) => {
-            setQrMessenge(decodedText);
-            setEnable(false);
-        };
-
         if (isEnabled) {
             startScanner();
         } else {
@@ -47,14 +49,15 @@ function QRScaner() {
     }, [isEnabled]);
 
     return (
-        <div className='visible'>
-            <div id='qrCodeContainer' className={`scaner ${isEnabled ? 'visible' : 'hidden'}`}></div>
-            {qrMessage && <div className='qr-message'>{qrMessage}</div>}
-            <button className='start-button' onClick={() => setEnable(!isEnabled)}>
-                {isEnabled ? 'Выкл' : 'Сканировать QRCode'}
-            </button>
+        <div className="">
+            <div className='visible'>
+                <div id='qrCodeContainer' className={`scaner ${isEnabled ? 'visible' : 'hidden'}`}></div>
+                <button className='start-button' onClick={() => setEnable(!isEnabled)}>
+                    {isEnabled ? 'Выкл' : ` Сканировать документ `}
+                </button>
+            </div>
         </div>
     );
 }
 
-export default QRScaner
+export default QRcodeScaner;
