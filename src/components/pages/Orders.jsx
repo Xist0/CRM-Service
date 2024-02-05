@@ -3,7 +3,6 @@ import Header from '../Header';
 import { CiSearch } from 'react-icons/ci';
 import { SlArrowRight } from "react-icons/sl";
 import { SlArrowLeft } from "react-icons/sl";
-import QRScaner from './QRScaner';
 import Messenger from './messenger/Messenger';
 
 function Orders() {
@@ -78,7 +77,6 @@ function Orders() {
           />
           <CiSearch onClick={handleSearch} />
         </div>
-        <QRScaner />
         <div className="box-main">
           <table>
             <thead>

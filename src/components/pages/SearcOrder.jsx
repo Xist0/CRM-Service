@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CiSearch } from "react-icons/ci";
 import Header from '../Header';
 import './pages.css/SeacrOrder.css'
+import QRcodeScaner from './QRcodeScaner';
 
 function SearcOrder() {
     const [number, setNumber] = useState('');
@@ -26,19 +27,24 @@ function SearcOrder() {
 
     const handleChange = (e) => {
         setNumber(e.target.value);
+        fetchData();
     };
 
     const handleSearch = () => {
         fetchData();
+        setNumber(e.target.value);
     };
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             fetchData();
-            
         }
     };
 
+    const updateSearchWithQRCode = (e) => {
+        setNumber(e); 
+        fetchData();
+    };
     const renderData = () => {
         if (isLoading) {
             return (
@@ -119,11 +125,11 @@ function SearcOrder() {
     return (
         <div>
             <Header />
-
             <div className="container-search">
                 <input type="text" value={number} onChange={handleChange} onKeyPress={handleKeyPress} placeholder='Введите номер заказа' />
                 <CiSearch onClick={handleSearch} />
             </div>
+            <QRcodeScaner updateSearchWithQRCode={updateSearchWithQRCode} />
             <div className="container-results">{renderData()}</div>
         </div>
     );
