@@ -1,5 +1,3 @@
-// QRcodeScaner.jsx
-
 import React, { useState, useEffect } from 'react';
 import { Html5Qrcode } from 'html5-qrcode';
 import './pages.css/QrScaner.css'
