@@ -35,6 +35,7 @@ function SearcOrder() {
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             fetchData();
+            
         }
     };
 
