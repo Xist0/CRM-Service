@@ -12,7 +12,7 @@ function Contractors() {
 
     useEffect(() => {
         fetchData();
-    }, [currentPage]);
+    }, [currentPage, searchTerm]);
 
     const fetchData = async () => {
         try {

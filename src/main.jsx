@@ -17,6 +17,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Contractors from "./components/pages/Contractors.jsx";
+import SearcOrder from "./components/pages/SearcOrder.jsx";
 
 
 
@@ -61,6 +62,10 @@ const routes = createBrowserRouter([
   {
     path: '/Contractors',
     element: <Contractors/>
+  },
+  {
+    path: '/SearcOrder',
+    element: <SearcOrder/>
   },
 
 ])
