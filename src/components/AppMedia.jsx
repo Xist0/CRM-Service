@@ -6,6 +6,7 @@ function AppMedia() {
     return (
         <div className="container">
             <div className="block-top">
+                <NavLink to="/SearcOrder" className="block"><div >Поиск заказа</div></NavLink>
                 <NavLink to="/Orders" className="block"><div >Заказы</div></NavLink>
                 <NavLink to="/Employees" className="block"><div >Сотрудники</div></NavLink>
                 <NavLink to="/Calls" className="block"><div >Записи звонков</div></NavLink>
