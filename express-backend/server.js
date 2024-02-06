@@ -121,7 +121,7 @@ app.get('/api/1c/users/search', async (req, res) => {
     // Фильтрация пользователей по ФИО и номеру телефона
     const filteredUsers = users.filter(user => {
       return user.name_user.toLowerCase().includes(query.toLowerCase()) ||
-        user.phone_user.includes(query);
+             user.phone_user.includes(query);
     });
     res.json(filteredUsers);
   } catch (error) {
