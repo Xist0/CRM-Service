@@ -9,7 +9,20 @@ function QRcodeScaner({ updateSearchWithQRCode }) {
     const qrCodeSuccess = (decodedText) => {
         setQrMessenge(decodedText);
         setEnable(false);
-        updateSearchWithQRCode(decodedText); // Вызываем функцию из родительского компонента
+    
+        // Проверяем, содержит ли распознанный текст ссылку на страницу поиска заказа
+        const searchOrderUrlRegex = /^https?:\/\/\d+\.\d+\.\d+\.\d+:\d+\/SearcOrder\?orderNumber=(\d+)$/;
+        const match = decodedText.match(searchOrderUrlRegex);
+        
+        if (match) {
+            // Если QR-код содержит ссылку на страницу поиска заказа с номером, извлекаем номер и заполняем поле ввода
+            const orderNumber = match[1];
+            setNumber(orderNumber);
+            fetchData(orderNumber);
+        } else {
+            // Если QR-код содержит только номер заказа, просто заполняем поле ввода и выполняем поиск
+            updateSearchWithQRCode(decodedText);
+        }
     };
 
     useEffect(() => {
