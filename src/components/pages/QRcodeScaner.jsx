@@ -13,14 +13,16 @@ function QRcodeScaner({ updateSearchWithQRCode }) {
         // Проверяем, содержит ли распознанный текст ссылку на страницу поиска заказа
         const searchOrderUrlRegex = /^https?:\/\/\d+\.\d+\.\d+\.\d+:\d+\/SearcOrder\?orderNumber=(\d+)$/;
         const match = decodedText.match(searchOrderUrlRegex);
+
+        console.log(match);
         
         if (match) {
             // Если QR-код содержит ссылку на страницу поиска заказа с номером, извлекаем номер и заполняем поле ввода
             const orderNumber = match[1];
-            setNumber(orderNumber);
-            fetchData(orderNumber);
+            updateSearchWithQRCode(orderNumber);
         } else {
             // Если QR-код содержит только номер заказа, просто заполняем поле ввода и выполняем поиск
+            console.log(decodedText);
             updateSearchWithQRCode(decodedText);
         }
     };
