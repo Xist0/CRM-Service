@@ -1,4 +1,3 @@
-/* Добавлены стили для Multi-forma и forma-input */
 .Multi-forma {
   display: flex;
   flex-direction: column;
@@ -19,7 +18,38 @@
   padding: 30px;
   text-align: center;
 }
-
+.forma-input-main{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+  align-items: start;
+}
+.forma-input-main-content{
+  width: 100%;
+  display: flex;
+}
+.forma-input-main-content > h3{
+  width: 50%;
+  display: flex;
+  align-items: start;
+}
+.forma-input-main-content > p{
+  width: 50%;
+}
+.forma-input-end{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: calc(100% - max-content);
+  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+}
 .input-column {
   display: flex;
   flex-direction: column;
@@ -114,6 +144,25 @@
   justify-content: center;
 }
 
+button {
+  background-color: #1776cd;
+  cursor: pointer;
+  border: none;
+  color: white;
+  padding: 15px 80px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  text-transform: uppercase;
+  font-size: 13px;
+  box-shadow: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .input-column button:hover .input-column button[disabled] {
   background-color: #156699;
 }

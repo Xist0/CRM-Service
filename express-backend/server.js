@@ -75,7 +75,7 @@ app.get('/api/typeofrepaire', async (req, res) => {
   try {
     const { default: fetch } = await import('node-fetch');
 
-    const response = await fetch(`http://192.168.1.10/api/typeofrepaire/`);
+    const response = await fetch(`http://192.168.1.10/api/typeofrepaire`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -108,6 +108,29 @@ app.get('/api/1c/users', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+app.get('/api/1c/users/search', async (req, res) => {
+  const { query } = req.query;
+  try {
+    const { default: fetch } = await import('node-fetch');
+    const response = await fetch(`http://192.168.1.10/api/1c/users`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const users = await response.json();
+    // Фильтрация пользователей по ФИО и номеру телефона
+    const filteredUsers = users.filter(user => {
+      return user.name_user.toLowerCase().includes(query.toLowerCase()) ||
+        user.phone_user.includes(query);
+    });
+    res.json(filteredUsers);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
 app.get('/api/byt/order/:number', async (req, res) => {
   const { number } = req.params;
 
