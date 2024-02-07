@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import './Login.css';
 import axios from 'axios';
+import { FaRegCircleQuestion } from "react-icons/fa6";
 
 function Login() {
     const [userLogin, setUserLogin] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const [error, setError] = useState('');
+    const [showQuestion, setShowQuestion] = useState(false); // Состояние для отображения/скрытия дополнительного блока
 
     const serverAddress = 'https://localhost:3000'; // Исправлен адрес сервера
 
@@ -27,6 +29,10 @@ function Login() {
         }
     };
 
+    const toggleQuestion = () => {
+        setShowQuestion(!showQuestion); 
+    };
+
     return (
         <div>
             <div className="container-login">
@@ -34,7 +40,15 @@ function Login() {
                     <h1>Авторизация</h1>
                 </div>
                 <div className="container-login-main">
-                    <input type="text" value={userLogin} onChange={(e) => setUserLogin(e.target.value)} placeholder="Логин" />
+                    <div className="container-login-main-qweru">
+                        <input type="number" value={userLogin} onChange={(e) => setUserLogin(e.target.value)} placeholder="Номер телефона +7" />
+                        <FaRegCircleQuestion onClick={toggleQuestion} />
+                    </div>
+                    {showQuestion && (
+                        <div className="additional-block">
+                            Можно использовать сокращённый номер, например: 101
+                        </div>
+                    )}
                     <input type="password" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} placeholder="Пароль" />
                 </div>
                 <div className="container-login-footer">

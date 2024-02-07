@@ -26,6 +26,20 @@
     gap: 20px;
 }
 
+.container-login-main-qweru {
+    display: flex;
+    width: 100%;
+    margin: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-login-main-qweru svg {
+    position: fixed;
+    cursor: pointer;
+    right: calc(100% - 58%);
+}
+
 .container-login-main input {
     width: calc(100% - 50%);
 }
@@ -33,6 +47,15 @@
 .container-login-footer {
     margin: 20px 0;
 }
+.additional-block{
+    display: flex;
+    width: calc(100% - 50%);
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    margin: auto;
+}
+
 
 @media (max-width: 600px) {
     .container-login {
@@ -48,8 +71,21 @@
         border-radius: 6px;
         box-shadow: 0px 0px 65px 5px rgba(56, 115, 159, 0.3);
     }
+
     .container-login-main input {
         width: calc(100% - 10%);
     }
+
+    .container-login-main-qweru svg {
+        position: fixed;
+        right: calc(100% - 89%);
+    }
+    .additional-block{
+        display: flex;
+        width: calc(100% - 10%);
+        justify-content: center;
+        align-items: center;
+    }
+    
 
 }
