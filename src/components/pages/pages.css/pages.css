@@ -83,25 +83,6 @@ td>a:hover {
     background: #bebebe44;
 }
 
-.pagination-custom {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 40px;
-    gap: 20px;
-}
-
-.pagination-custom svg {
-    width: 30px;
-    height: 30px;
-    padding: 10px;
-    cursor: pointer;
-    background: #1776CD;
-    color: #FFFFFF;
-    border-radius: 6px;
-}
-
 .search-results-active {
     background: #61616136;
 }

@@ -8,16 +8,6 @@
     gap: 10px;
 }
 
-.container-search input {
-    width: calc(100% - 80%);
-    border: 1px #1776CD;
-    cursor: pointer;
-}
-.container-search input:focus {
-    border: 1px #1776CD;
-    box-shadow: 0 0 7px #1776CD; /* добавляем тень при фокусировке */
-}
-
 .container-search svg:hover {
     transform: scale(1.2);
     cursor: pointer;
