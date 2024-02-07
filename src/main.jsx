@@ -18,13 +18,14 @@ import {
 } from "react-router-dom";
 import Contractors from "./components/pages/Contractors.jsx";
 import SearcOrder from "./components/pages/SearcOrder.jsx";
+import Login from "./components/pages/UserAutorizechions/Login.jsx";
 
 
 
 
 const routes = createBrowserRouter([
   {
-    path: '/',
+    path: '/app',
     element: <App />
   },
   {
@@ -66,6 +67,10 @@ const routes = createBrowserRouter([
   {
     path: '/SearcOrder',
     element: <SearcOrder/>
+  },
+  {
+    path: '/',
+    element: <Login/>
   },
 
 ])

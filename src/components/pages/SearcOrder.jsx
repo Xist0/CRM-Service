@@ -4,7 +4,6 @@ import Header from '../Header';
 import './pages.css/SeacrOrder.css';
 import QRcodeScaner from './QRcodeScaner';
 import { useLocation } from 'react-router-dom';
-import SearchUsers from './SearchUsers';
 
 function SearcOrder() {
     const [number, setNumber] = useState('');
@@ -136,7 +135,6 @@ function SearcOrder() {
                 <CiSearch onClick={() => fetchData(number)} />
             </div>
             <QRcodeScaner updateSearchWithQRCode={updateSearchWithQRCode} />
-            <SearchUsers/>
             <div className="container-results">{renderData()}</div>
         </div>
     );
