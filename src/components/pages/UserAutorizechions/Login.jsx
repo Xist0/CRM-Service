@@ -7,9 +7,10 @@ function Login() {
     const [userLogin, setUserLogin] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const [error, setError] = useState('');
-    const [showQuestion, setShowQuestion] = useState(false); // Состояние для отображения/скрытия дополнительного блока
+    const [showQuestion, setShowQuestion] = useState(false);
 
-    const serverAddress = 'https://localhost:3000'; // Исправлен адрес сервера
+    const isBrowser = typeof window !== 'undefined';
+    const serverAddress = isBrowser ? 'https://192.168.1.163:3000' : 'https://localhost:5173/';
 
     const authorize = async () => {
         try {
@@ -41,7 +42,7 @@ function Login() {
                 </div>
                 <div className="container-login-main">
                     <div className="container-login-main-qweru">
-                        <input type="number" value={userLogin} onChange={(e) => setUserLogin(e.target.value)} placeholder="Номер телефона +7" />
+                        <input type="number" pattern="\d*" value={userLogin} onChange={(e) => setUserLogin(e.target.value)} placeholder="Номер телефона +7" />
                         <FaRegCircleQuestion onClick={toggleQuestion} />
                     </div>
                     {showQuestion && (

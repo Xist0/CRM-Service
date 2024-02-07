@@ -22,10 +22,7 @@ const options = {
 
 app.use(express.json()); // Добавляем middleware для обработки JSON
 
-app.use(cors({
-  origin: 'https://localhost:5173', // Укажите порт вашего фронтенда
-  credentials: true // Разрешить передачу учетных данных (например, куки)
-}));
+
 
 
 let users = [

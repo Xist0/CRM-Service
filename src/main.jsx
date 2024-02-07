@@ -19,6 +19,7 @@ import {
 import Contractors from "./components/pages/Contractors.jsx";
 import SearcOrder from "./components/pages/SearcOrder.jsx";
 import Login from "./components/pages/UserAutorizechions/Login.jsx";
+import PersonalAccount from "./components/pages/PersonalAccount.jsx";
 
 
 
@@ -30,51 +31,55 @@ const routes = createBrowserRouter([
   },
   {
     path: '/Works',
-    element: <Works/>
+    element: <Works />
   },
   {
     path: '/WarrantyRepair',
-    element: <WarrantyRepair/>
+    element: <WarrantyRepair />
   },
   {
     path: '/SpareParts',
-    element: <SpareParts/>
+    element: <SpareParts />
   },
   {
     path: '/OrderStatus',
-    element: <OrderStatus/>
+    element: <OrderStatus />
   },
   {
     path: '/Orders',
-    element: <Orders/>
+    element: <Orders />
   },
   {
     path: '/Employees',
-    element: <Employees/>
+    element: <Employees />
   },
   {
     path: '/ChangeOrder',
-    element: <ChangeOrder/>
+    element: <ChangeOrder />
   },
   {
     path: '/Calls',
-    element: <Calls/>
+    element: <Calls />
   },
   {
     path: '/Contractors',
-    element: <Contractors/>
+    element: <Contractors />
   },
   {
     path: '/SearcOrder',
-    element: <SearcOrder/>
+    element: <SearcOrder />
   },
   {
     path: '/',
-    element: <Login/>
+    element: <Login />
+  },
+  {
+    path: '/PersonalAccount',
+    element: <PersonalAccount/>
   },
 
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <RouterProvider router={routes} />
+  <RouterProvider router={routes} />
 )

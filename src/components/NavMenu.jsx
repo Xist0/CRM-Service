@@ -58,6 +58,7 @@ function NavMenu() {
         <li><NavLink to="/Works">Работы</NavLink></li>
         <li><NavLink to="/Employees">Сотрудники</NavLink></li>
         <li><NavLink to="/Calls">Записи звонков</NavLink></li>
+        <li><NavLink to="/PersonalAccount">Личный кабинет</NavLink></li>
       </ul>
     </div>
   );
