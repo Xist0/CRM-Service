@@ -159,8 +159,8 @@ li a:hover {
 }
 
 .loading-animation img {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 101px;
 }
 /* AppMedia */
 @media (max-width: 800px) {
