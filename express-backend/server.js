@@ -14,7 +14,6 @@ const options = {
   cert: fs.readFileSync('./CRMServe.crt')
 };
 
-// Массив пользователей с ролями
 let users = [
   {
     id_staff: '1',
@@ -77,6 +76,27 @@ app.post('/authorize', (req, res) => {
   }
 });
 
+// API доступа к 1C
+app.get('/api/:resource', async (req, res) => {
+  const { resource } = req.params;
+
+  try {
+    const { default: fetch } = await import('node-fetch');
+
+    const response = await fetch(`http://192.168.1.10/api/${resource}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+
+    res.json(responseData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 // API доступа к 1C
 

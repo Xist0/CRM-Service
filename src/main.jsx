@@ -13,7 +13,9 @@ import Contractors from './components/pages/Contractors.jsx';
 import SearcOrder from './components/pages/SearcOrder.jsx';
 import Login from './components/pages/UserAutorizechions/Login.jsx';
 import PersonalAccount from './components/pages/PersonalAccount.jsx';
-import App from './App.jsx'; // Импорт компонента App
+import App from './App.jsx'; 
+import './index.css';
+
 
 const Main = () => {
   const [userRole, setUserRole] = useState(null);

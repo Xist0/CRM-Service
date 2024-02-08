@@ -117,9 +117,8 @@ function Orders() {
             </tbody>
           </table>
           {loading && (
-            <div className="loading-animation">
-              <img src="/pic/4.gif" alt="" />
-            </div>
+               <div className="loading-animation"> <img src="/public/LogoAnims.svg" alt="" /></div>
+
           )}
         </div>
       </div>

@@ -74,9 +74,8 @@ function Contractors() {
             <div className="box">
                 <div className="box-main">
                     {loading ? (
-                        <div className="loading-animation">
-                            <img src="/pic/4.gif" alt="" />
-                        </div>
+               <div className="loading-animation"> <img src="/public/LogoAnims.svg" alt="" /></div>
+
                     ) : (
                         <table>
                             <thead>

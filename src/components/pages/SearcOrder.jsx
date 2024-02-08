@@ -50,22 +50,18 @@ function SearcOrder() {
         setNumber(qrCode); // Обновляем состояние номера заказа
         fetchData(qrCode); // Выполняем поиск
     };
-    
+
     const renderData = () => {
         if (isLoading) {
             return (
-                <div className="loading-animation">
-                    <img src="/pic/4.gif" alt="" />
-                </div>
+                <div className="loading-animation"> <img src="/public/LogoAnims.svg" alt="" /></div>
+
             );
         }
         if (!records) {
-            // Если нет данных, выводим текст с ошибкой
             return <p>Ничего не найдено</p>;
         }
-        // Проверяем, что есть данные о работах и запчастях
         if (!records.parts || !records.work) {
-            // Если отсутствуют данные о работах или запчастях, выводим текст с ошибкой
             return <p>Ничего не найдено</p>;
         }
         return (
@@ -131,7 +127,7 @@ function SearcOrder() {
         <div>
             <Header />
             <div className="container-search">
-                <input type="number"   pattern="\d*" value={number} onChange={handleChange} onKeyPress={handleKeyPress} placeholder='Введите номер заказа' />
+                <input type="number" pattern="\d*" value={number} onChange={handleChange} onKeyPress={handleKeyPress} placeholder='Введите номер заказа' />
                 <CiSearch onClick={() => fetchData(number)} />
             </div>
             <QRcodeScaner updateSearchWithQRCode={updateSearchWithQRCode} />
