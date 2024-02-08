@@ -16,43 +16,29 @@ import PersonalAccount from './components/pages/PersonalAccount.jsx';
 import App from './App.jsx'; 
 import './index.css';
 
-
 const Main = () => {
-  const [userRole, setUserRole] = useState(null);
+  const [userRole] = useState(null);
 
-  useEffect(() => {
-    // Здесь можно добавить логику для получения роли пользователя из localStorage или другого источника
-    const role = localStorage.getItem('userRole');
-    setUserRole(role);
-  }, []);
 
-  const renderRoute = (Component, allowedRoles) => {
-    if (!userRole) {
-      return <Navigate to="/" replace />;
-    }
-    if (allowedRoles.includes(userRole)) {
-      return <Component />;
-    } else {
-      return <Navigate to="/" replace />;
-    }
-  };
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/app" element={<App />} /> {/* Обновленный путь */}
-        <Route path="/Works" element={renderRoute(Works, ['Admin', 'Engineer'])} />
-        <Route path="/WarrantyRepair" element={renderRoute(WarrantyRepair, ['Admin', 'Engineer'])} />
-        <Route path="/SpareParts" element={renderRoute(SpareParts, ['Admin', 'Engineer'])} />
-        <Route path="/OrderStatus" element={renderRoute(OrderStatus, ['Admin', 'Engineer'])} />
-        <Route path="/Orders" element={renderRoute(Orders, ['Admin', 'Engineer'])} />
-        <Route path="/Employees" element={renderRoute(Employees, ['Admin', 'Engineer'])} />
-        <Route path="/ChangeOrder" element={renderRoute(ChangeOrder, ['Admin'])} />
-        <Route path="/Calls" element={renderRoute(Calls, ['Admin'])} />
-        <Route path="/Contractors" element={renderRoute(Contractors, ['Admin'])} />
-        <Route path="/SearcOrder" element={renderRoute(SearcOrder, ['Admin', 'Engineer'])} />
-        <Route path="/PersonalAccount" element={renderRoute(PersonalAccount, ['Admin', 'Engineer'])} />
+          <>
+            <Route path="/app" element={<App />} /> 
+            <Route path="/Works" element={<Works />} />
+            <Route path="/WarrantyRepair" element={<WarrantyRepair />} />
+            <Route path="/SpareParts" element={<SpareParts />} />
+            <Route path="/OrderStatus" element={<OrderStatus />} />
+            <Route path="/Orders" element={<Orders />} />
+            <Route path="/Employees" element={<Employees />} />
+            <Route path="/ChangeOrder" element={<ChangeOrder />} />
+            <Route path="/Calls" element={<Calls />} />
+            <Route path="/Contractors" element={<Contractors />} />
+            <Route path="/SearcOrder" element={<SearcOrder />} />
+            <Route path="/PersonalAccount" element={<PersonalAccount />} />
+          </>
       </Routes>
     </Router>
   );

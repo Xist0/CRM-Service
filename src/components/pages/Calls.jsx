@@ -146,7 +146,7 @@ const Calls = () => {
   return (
     <div>
       <Header />
-      <Messenger/>
+      <Messenger />
       <div className="calls-container">
         <div className="row row-cols-auto">
           <div className="p-3 mb-2">
@@ -170,7 +170,7 @@ const Calls = () => {
           <div className="row row-cols-auto">
             <div className="col">
               {isLoading ? (
-               <div className="loading-animation"> <img src="/public/LogoAnims.svg" alt="" /></div>
+                <div className="loading-animation"> <img src="/public/LogoAnims.svg" alt="" /></div>
               ) : (
                 <table className="table">
                   {isTableHeaderVisible && (

@@ -1,41 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../Header';
 
 function PersonalAccount() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    const { staff_name, staff_role } = user;
+    const [userData, setUserData] = useState(null);
+    const [greeting, setGreeting] = useState('');
 
-    function handleLogout() {
-        // Полная очистка токена и данных пользователя
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('user');
-        window.location.href = '/';
-    }
+    useEffect(() => {
+        async function fetchUserData() {
+            try {
+                const response = await fetch('/api/user');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user data');
+                }
+                const userData = await response.json();
+                setUserData(userData);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        }
 
-    function getGreeting() {
+        fetchUserData();
         const currentTime = new Date();
         const currentHour = currentTime.getHours();
-
+        let greetingText = '';
         if (currentHour >= 6 && currentHour < 12) {
-            return "Доброе утро";
+            greetingText = "Доброе утро";
         } else if (currentHour >= 12 && currentHour < 18) {
-            return "Добрый день";
+            greetingText = "Добрый день";
         } else if (currentHour >= 18 && currentHour < 22) {
-            return "Добрый вечер";
+            greetingText = "Добрый вечер";
         } else {
-            return "Доброй ночи";
+            greetingText = "Доброй ночи";
         }
-    }
-
-    const greeting = getGreeting();
-    const finalGreeting = `${greeting}, ${staff_name}!`;
+        setGreeting(greetingText);
+    }, []);
 
     return (
         <div>
             <Header />
             <div className="Personal-container">
-                <h1>{finalGreeting}</h1>
-                <p>Роль: {staff_role}</p>
+                <h1>{`${greeting}, ${userData.staff_name}!`}</h1>
+                <p>Роль: {userData.staff_role}</p>
                 <button onClick={handleLogout}>Выйти</button>
             </div>
         </div>

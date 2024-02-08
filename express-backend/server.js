@@ -8,11 +8,11 @@ const accessTokenSecret = '4362734262347';
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
 
-
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.json()); // Добавляем middleware для обработки JSON
-app.use(cors()); // Добавляем middleware для обработки CORS
+app.use(express.json()); 
+app.use(cors()); 
 
 // Сертификат безопасности
 const options = {
@@ -37,6 +37,8 @@ let users = [
   }
 ];
 
+let activeSessions = {}; // Объект для хранения активных сессий пользователей
+
 // Middleware для проверки токена доступа
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
@@ -52,15 +54,17 @@ const authenticateToken = (req, res, next) => {
 
 // Middleware для установки времени сессии и обновления токена
 const setSessionTime = (req, res, next) => {
-  // Реализация middleware setSessionTime
-  // Это может включать в себя обновление времени сессии и токена
   next();
 };
 
-// Пример маршрута, требующего аутентификации и установки времени сессии
-app.get('/api/order/:limit/:offset', authenticateToken, setSessionTime, async (req, res) => {
-  // Обработка запроса к ресурсу
-});
+// Middleware для проверки активности сессии пользователя
+const checkSessionActivity = (req, res, next) => {
+  const userId = req.user && req.user.username;
+  if (!userId || !activeSessions[userId]) {
+    return res.sendStatus(401); // Пользователь не авторизован или сессия не активна
+  }
+  next();
+};
 
 // Маршрут для входа пользователя
 app.post('/api/login', (req, res) => {
@@ -72,11 +76,29 @@ app.post('/api/login', (req, res) => {
   if (user) {
     // Вход успешен, возвращаем имя пользователя вместе с токеном
     const accessToken = jwt.sign({ username: user.staff_name, role: user.staff_role }, accessTokenSecret);
+    activeSessions[user.staff_name] = true;
     res.status(200).json({ accessToken, username: user.staff_name });
 
   } else {
-    // Вход не удался
     res.status(401).json({ message: 'Login failed' });
+  }
+});
+
+// Маршрут для выхода пользователя из аккаунта
+app.post('/api/logout', authenticateToken, (req, res) => {
+  const { username } = req.user;
+  delete activeSessions[username]; // Удаление активной сессии пользователя
+  res.status(200).json({ message: 'Logout successful' });
+});
+
+
+app.get('/api/user', authenticateToken, (req, res) => {
+  const { username } = req.user;
+  const user = users.find(u => u.staff_name === username);
+  if (user) {
+    res.status(200).json(user);
+  } else {
+    res.status(404).json({ message: 'User not found' });
   }
 });
 

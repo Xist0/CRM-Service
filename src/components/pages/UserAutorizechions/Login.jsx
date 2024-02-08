@@ -35,13 +35,24 @@ const Login = () => {
         }
     };
 
-    const handleLogout = () => {
-        setAccessToken('');
-        setIsLoggedIn(false);
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('user');
-        window.location.href = '/';
+    const handleLogout = async () => {
+        try {
+            await axios.post('/api/logout', null, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            });
+            setAccessToken('');
+            setIsLoggedIn(false);
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('user');
+            window.location.href = '/';
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
     };
+    
+
     const handleLog = () => {
         window.location.href = '/app';
     }
