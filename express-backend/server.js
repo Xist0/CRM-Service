@@ -6,13 +6,7 @@ const app = express();
 const port = 3000;
 
 app.use(express.json()); // Добавляем middleware для обработки JSON
-
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+app.use(cors()); // Добавляем middleware для обработки CORS
 
 // Сертификат безопасности
 const options = {
@@ -20,20 +14,50 @@ const options = {
   cert: fs.readFileSync('./CRMServe.crt')
 };
 
-app.use(express.json()); // Добавляем middleware для обработки JSON
-
-
-
-
+// Массив пользователей с ролями
 let users = [
   {
     id_staff: '1',
     staff_name: 'Сабитов Рустам Ирэкович',
-    staff_role: 'Инженер',
+    staff_role: 'Ingenieur',
     staff_phone: '1',
     staff_password: '1',
+  },
+  {
+    id_staff: '2',
+    staff_name: 'Рустам Ирэкович',
+    staff_role: 'Admin',
+    staff_phone: '2',
+    staff_password: '2',
   }
 ];
+
+// Middleware для проверки роли пользователя
+function checkUserRole(allowedRoles) {
+  return (req, res, next) => {
+    const userId = req.userId;
+
+    // Находим пользователя по userId
+    const user = users.find(u => u.id_staff === userId);
+
+    if (!user) {
+      return res.status(401).send('Unauthorized');
+    }
+
+    // Проверяем, есть ли у пользователя доступ к данному ресурсу
+    if (!allowedRoles.includes(user.staff_role)) {
+      return res.status(403).send('Forbidden');
+    }
+
+    // Если пользователь имеет доступ к ресурсу, продолжаем выполнение следующих middleware или обработчика маршрута
+    next();
+  };
+}
+
+// Пример маршрута с ограничением доступа
+app.get('/api/order/:limit/:offset', checkUserRole(['Admin', 'Ingenieur']), async (req, res) => {
+  // Обработка запроса к ресурсу
+});
 
 app.post('/authorize', (req, res) => {
   const { authorizationLogin, authorizationPassword } = req.body;
@@ -41,6 +65,8 @@ app.post('/authorize', (req, res) => {
   const user = users.find(
     (u) => (u.staff_name === authorizationLogin || u.staff_phone === authorizationLogin) && u.staff_password === authorizationPassword);
   if (user) {
+    // Сохраняем роль пользователя в localStorage
+    // В серверной части нет доступа к localStorage, поэтому необходимо передавать роль в ответе на запрос
     res.status(200).json({
       id_staff: user.id_staff,
       staff_role: user.staff_role,
@@ -50,6 +76,8 @@ app.post('/authorize', (req, res) => {
     res.status(401).send('Unauthorized');
   }
 });
+
+
 // API доступа к 1C
 
 app.get('/api/:resource', async (req, res) => {

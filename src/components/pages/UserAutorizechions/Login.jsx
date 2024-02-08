@@ -10,7 +10,7 @@ function Login() {
     const [showQuestion, setShowQuestion] = useState(false);
 
     const isBrowser = typeof window !== 'undefined';
-    const serverAddress = isBrowser ? 'https://192.168.1.163:3000' : 'https://localhost:5173/';
+    const serverAddress = isBrowser ? 'https://192.168.102.35:3000' : 'https://localhost:5173/';
 
     const authorize = async () => {
         try {
@@ -20,13 +20,14 @@ function Login() {
                 { headers: { 'Content-Type': 'application/json' } }
             );
             if (response.status === 200) {
-                localStorage.setItem('user', JSON.stringify(response.data)); // Исправлено response.data
+                localStorage.setItem('userRole', response.data.staff_role);
+                localStorage.setItem('userId', response.data.id_staff);
                 window.location.href = '/app';
             } else {
-                setError('Undefined'); // Исправлено значение ошибки
+                setError('Неверные учетные данные');
             }
         } catch (error) {
-            setError('Error'); // Обработка ошибки
+            setError('Ошибка авторизации');
         }
     };
 
@@ -55,7 +56,7 @@ function Login() {
                 <div className="container-login-footer">
                     <button onClick={authorize}>Войти</button>
                 </div>
-                {error && <p>Не верный логин или пароль</p>}
+                {error && <p>{error}</p>}
             </div>
         </div>
     );
