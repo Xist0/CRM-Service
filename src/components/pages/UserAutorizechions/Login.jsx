@@ -1,65 +1,59 @@
-import React, { useState } from 'react';
-import './Login.css';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaRegCircleQuestion } from "react-icons/fa6";
 
-function Login() {
-    const [userLogin, setUserLogin] = useState('');
-    const [userPassword, setUserPassword] = useState('');
-    const [error, setError] = useState('');
-    const [showQuestion, setShowQuestion] = useState(false);
+const Login = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [accessToken, setAccessToken] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [staffName, setStaffName] = useState('');
 
-    const isBrowser = typeof window !== 'undefined';
-    const serverAddress = isBrowser ? 'https://192.168.102.35:3000' : 'https://localhost:5173/';
+    useEffect(() => {
+        const storedToken = localStorage.getItem('accessToken');
+        if (storedToken) {
+            setAccessToken(storedToken);
+            setIsLoggedIn(true);
+        }
+    }, []);
 
-    const authorize = async () => {
+    const handleLogin = async () => {
         try {
-            const response = await axios.post(
-                `${serverAddress}/authorize`,
-                { authorizationLogin: userLogin, authorizationPassword: userPassword },
-                { headers: { 'Content-Type': 'application/json' } }
-            );
-            if (response.status === 200) {
-                localStorage.setItem('userRole', response.data.staff_role);
-                localStorage.setItem('userId', response.data.id_staff);
-                window.location.href = '/app';
-            } else {
-                setError('Неверные учетные данные');
-            }
+            const response = await axios.post('/api/login', { username, password });
+            const { accessToken, username: staffName } = response.data;
+            setAccessToken(accessToken);
+            setIsLoggedIn(true);
+            localStorage.setItem('accessToken', accessToken);
+            setStaffName(staffName);
+
+            // Переадресация на страницу /app
+            window.location.href = '/app';
         } catch (error) {
-            setError('Ошибка авторизации');
+            console.error('Login failed:', error);
         }
     };
 
-    const toggleQuestion = () => {
-        setShowQuestion(!showQuestion); 
+    const handleLogout = () => {
+        setAccessToken('');
+        setIsLoggedIn(false);
+        localStorage.removeItem('accessToken');
     };
 
     return (
         <div>
-            <div className="container-login">
-                <div className="container-login-title">
-                    <h1>Авторизация</h1>
+            {!isLoggedIn ? (
+                <div>
+                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+                    <button onClick={handleLogin}>Login</button>
                 </div>
-                <div className="container-login-main">
-                    <div className="container-login-main-qweru">
-                        <input type="number" pattern="\d*" value={userLogin} onChange={(e) => setUserLogin(e.target.value)} placeholder="Номер телефона +7" />
-                        <FaRegCircleQuestion onClick={toggleQuestion} />
-                    </div>
-                    {showQuestion && (
-                        <div className="additional-block">
-                            Можно использовать сокращённый номер, например: 101
-                        </div>
-                    )}
-                    <input type="password" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} placeholder="Пароль" />
+            ) : (
+                <div>
+                    <p>Welcome, {staffName}!</p>
+                    <button onClick={handleLogout}>Logout</button>
                 </div>
-                <div className="container-login-footer">
-                    <button onClick={authorize}>Войти</button>
-                </div>
-                {error && <p>{error}</p>}
-            </div>
+            )}
         </div>
     );
-}
+};
 
 export default Login;

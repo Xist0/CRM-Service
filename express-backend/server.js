@@ -4,7 +4,13 @@ const fs = require('fs');
 const cors = require('cors');
 const app = express();
 const port = 3000;
+const accessTokenSecret = '4362734262347';
+const jwt = require('jsonwebtoken');
+const bodyParser = require('body-parser');
 
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(express.json()); // Добавляем middleware для обработки JSON
 app.use(cors()); // Добавляем middleware для обработки CORS
 
@@ -58,24 +64,19 @@ app.get('/api/order/:limit/:offset', checkUserRole(['Admin', 'Ingenieur']), asyn
   // Обработка запроса к ресурсу
 });
 
-app.post('/authorize', (req, res) => {
-  const { authorizationLogin, authorizationPassword } = req.body;
+// app.post('/authorize', (req, res) => {
+//   const { authorizationLogin, authorizationPassword } = req.body;
 
-  const user = users.find(
-    (u) => (u.staff_name === authorizationLogin || u.staff_phone === authorizationLogin) && u.staff_password === authorizationPassword);
-  if (user) {
-    // Сохраняем роль пользователя в localStorage
-    // В серверной части нет доступа к localStorage, поэтому необходимо передавать роль в ответе на запрос
-    res.status(200).json({
-      id_staff: user.id_staff,
-      staff_role: user.staff_role,
-      staff_password: user.staff_password,
-    });
-  } else {
-    res.status(401).send('Unauthorized');
-  }
-});
+//   const user = users.find(
+//     (u) => (u.staff_name === authorizationLogin || u.staff_phone === authorizationLogin) && u.staff_password === authorizationPassword);
 
+//   if (user) {
+//     const token = jwt.sign({ id_staff: user.id_staff, staff_name: user.staff_name, staff_role: user.staff_role }, secretKey);
+//     res.status(200).json({ token });
+//   } else {
+//     res.status(401).send('Unauthorized');
+//   }
+// });
 // API доступа к 1C
 app.get('/api/:resource', async (req, res) => {
   const { resource } = req.params;
@@ -97,6 +98,23 @@ app.get('/api/:resource', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+
+  // Поиск пользователя в массиве по имени пользователя (телефону) и паролю
+  const user = users.find(u => u.staff_phone === username && u.staff_password === password);
+
+  if (user) {
+    // Вход успешен, возвращаем имя пользователя вместе с токеном
+    const accessToken = jwt.sign({ username: user.staff_name, role: user.staff_role }, accessTokenSecret);
+    res.status(200).json({ accessToken, username: user.staff_name });
+  } else {
+    // Вход не удался
+    res.status(401).json({ message: 'Login failed' });
+  }
+});
+
 
 // API доступа к 1C
 
