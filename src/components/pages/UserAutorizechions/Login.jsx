@@ -19,11 +19,11 @@ const Login = () => {
     const handleLogin = async () => {
         try {
             const response = await axios.post('/api/login', { username, password });
-            const { accessToken, username: staffName } = response.data;
+            const { accessToken, username: loggedInUserName } = response.data;
             setAccessToken(accessToken);
             setIsLoggedIn(true);
             localStorage.setItem('accessToken', accessToken);
-            setStaffName(staffName);
+            setStaffName(loggedInUserName);
 
             // Переадресация на страницу /app
             window.location.href = '/app';

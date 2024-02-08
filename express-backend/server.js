@@ -64,19 +64,6 @@ app.get('/api/order/:limit/:offset', checkUserRole(['Admin', 'Ingenieur']), asyn
   // Обработка запроса к ресурсу
 });
 
-// app.post('/authorize', (req, res) => {
-//   const { authorizationLogin, authorizationPassword } = req.body;
-
-//   const user = users.find(
-//     (u) => (u.staff_name === authorizationLogin || u.staff_phone === authorizationLogin) && u.staff_password === authorizationPassword);
-
-//   if (user) {
-//     const token = jwt.sign({ id_staff: user.id_staff, staff_name: user.staff_name, staff_role: user.staff_role }, secretKey);
-//     res.status(200).json({ token });
-//   } else {
-//     res.status(401).send('Unauthorized');
-//   }
-// });
 // API доступа к 1C
 app.get('/api/:resource', async (req, res) => {
   const { resource } = req.params;
