@@ -13,19 +13,22 @@ const Login = () => {
         if (storedToken) {
             setAccessToken(storedToken);
             setIsLoggedIn(true);
+            // Если пользователь уже вошел в систему, загрузите его данные из localStorage
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (userData) {
+                setStaffName(userData.staff_name);
+            }
         }
     }, []);
 
     const handleLogin = async () => {
         try {
             const response = await axios.post('/api/login', { username, password });
-            const { accessToken, username: loggedInUserName } = response.data;
+            const { accessToken, username: staff_name, staff_role } = response.data;
             setAccessToken(accessToken);
             setIsLoggedIn(true);
             localStorage.setItem('accessToken', accessToken);
-            setStaffName(loggedInUserName);
-
-            // Переадресация на страницу /app
+            localStorage.setItem('user', JSON.stringify({ staff_name, staff_role }));
             window.location.href = '/app';
         } catch (error) {
             console.error('Login failed:', error);
@@ -36,7 +39,12 @@ const Login = () => {
         setAccessToken('');
         setIsLoggedIn(false);
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('user');
+        window.location.href = '/';
     };
+    const handleLog = () => {
+        window.location.href = '/app';
+    }
 
     return (
         <div>
@@ -49,7 +57,8 @@ const Login = () => {
             ) : (
                 <div>
                     <p>Welcome, {staffName}!</p>
-                    <button onClick={handleLogout}>Logout</button>
+                    <button onClick={handleLogout}>Выйти</button>
+                    <button onClick={handleLog}>Перейти на сайт</button>
                 </div>
             )}
         </div>

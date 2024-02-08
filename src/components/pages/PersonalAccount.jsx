@@ -2,8 +2,16 @@ import React from 'react';
 import Header from '../Header';
 
 function PersonalAccount() {
-  const user = JSON.parse(localStorage.getItem('user'));
-  
+    const user = JSON.parse(localStorage.getItem('user'));
+    const { staff_name, staff_role } = user;
+
+    function handleLogout() {
+        // Полная очистка токена и данных пользователя
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('user');
+        window.location.href = '/';
+    }
+
     function getGreeting() {
         const currentTime = new Date();
         const currentHour = currentTime.getHours();
@@ -19,15 +27,16 @@ function PersonalAccount() {
         }
     }
 
-    const fullName = "Иван Иванов";
     const greeting = getGreeting();
-    const finalGreeting = `${greeting}, ${fullName}!`;
+    const finalGreeting = `${greeting}, ${staff_name}!`;
 
     return (
         <div>
             <Header />
             <div className="Personal-container">
                 <h1>{finalGreeting}</h1>
+                <p>Роль: {staff_role}</p>
+                <button onClick={handleLogout}>Выйти</button>
             </div>
         </div>
     );

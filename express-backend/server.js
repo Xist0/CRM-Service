@@ -37,55 +37,32 @@ let users = [
   }
 ];
 
-// Middleware для проверки роли пользователя
-function checkUserRole(allowedRoles) {
-  return (req, res, next) => {
-    const userId = req.userId;
+// Middleware для проверки токена доступа
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (token == null) return res.sendStatus(401);
 
-    // Находим пользователя по userId
-    const user = users.find(u => u.id_staff === userId);
-
-    if (!user) {
-      return res.status(401).send('Unauthorized');
-    }
-
-    // Проверяем, есть ли у пользователя доступ к данному ресурсу
-    if (!allowedRoles.includes(user.staff_role)) {
-      return res.status(403).send('Forbidden');
-    }
-
-    // Если пользователь имеет доступ к ресурсу, продолжаем выполнение следующих middleware или обработчика маршрута
+  jwt.verify(token, accessTokenSecret, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
     next();
-  };
-}
+  });
+};
 
-// Пример маршрута с ограничением доступа
-app.get('/api/order/:limit/:offset', checkUserRole(['Admin', 'Ingenieur']), async (req, res) => {
+// Middleware для установки времени сессии и обновления токена
+const setSessionTime = (req, res, next) => {
+  // Реализация middleware setSessionTime
+  // Это может включать в себя обновление времени сессии и токена
+  next();
+};
+
+// Пример маршрута, требующего аутентификации и установки времени сессии
+app.get('/api/order/:limit/:offset', authenticateToken, setSessionTime, async (req, res) => {
   // Обработка запроса к ресурсу
 });
 
-// API доступа к 1C
-app.get('/api/:resource', async (req, res) => {
-  const { resource } = req.params;
-
-  try {
-    const { default: fetch } = await import('node-fetch');
-
-    const response = await fetch(`http://192.168.1.10/api/${resource}`);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const responseData = await response.json();
-
-    res.json(responseData);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
+// Маршрут для входа пользователя
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
 
@@ -96,12 +73,12 @@ app.post('/api/login', (req, res) => {
     // Вход успешен, возвращаем имя пользователя вместе с токеном
     const accessToken = jwt.sign({ username: user.staff_name, role: user.staff_role }, accessTokenSecret);
     res.status(200).json({ accessToken, username: user.staff_name });
+
   } else {
     // Вход не удался
     res.status(401).json({ message: 'Login failed' });
   }
 });
-
 
 // API доступа к 1C
 
