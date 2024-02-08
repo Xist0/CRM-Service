@@ -61,13 +61,13 @@ const Login = () => {
         <div>
             {!isLoggedIn ? (
                 <div>
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-                    <button onClick={handleLogin}>Login</button>
+                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Логин" />
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Пароль" />
+                    <button onClick={handleLogin}>Войти</button>
                 </div>
             ) : (
                 <div>
-                    <p>Welcome, {staffName}!</p>
+                    <p>С возвращением, {staffName}!</p>
                     <button onClick={handleLogout}>Выйти</button>
                     <button onClick={handleLog}>Перейти на сайт</button>
                 </div>
