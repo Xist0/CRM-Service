@@ -251,6 +251,28 @@ app.get('/api/order/record/:date/:name', async (req, res) => {
   }
 });
 
+app.get('/api/users/search/:l_name', async (req, res) => {
+  const { l_name } = req.params;
+
+  try {
+    const { default: fetch } = await import('node-fetch');
+
+    const response = await fetch(`http://192.168.1.10/api/users/search/${encodeURIComponent(l_name)}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+
+    res.json(responseData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
 // Исправленная строка создания HTTPS-сервера
 const server = https.createServer(options, app);
 

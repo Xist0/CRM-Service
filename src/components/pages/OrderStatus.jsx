@@ -41,6 +41,7 @@ const OrderStatus = () => {
   });
 
   const [types, setTypes] = useState([]);
+  const [matchedUsers, setMatchedUsers] = useState([]);
 
   useEffect(() => {
     fetchTypes();
@@ -69,21 +70,37 @@ const OrderStatus = () => {
       ...prevValidation,
       [name]: trimmedValue !== '',
     }));
+  };
 
-    // Если меняется значение option, обновляем соответствующую валидацию
-    if (name === 'option') {
-      setValidation((prevValidation) => ({
-        ...prevValidation,
-        [name]: trimmedValue !== '',
-      }));
+  const searchUsers = async (fullName) => {
+    try {
+      const response = await fetch(`/api/users/search/${encodeURIComponent(fullName)}`);
+      const data = await response.json();
+      setMatchedUsers(data.users);
+    } catch (error) {
+      console.error('Error searching users:', error);
+      setMatchedUsers([]);
     }
+  };
+
+  const handleUserClick = (user) => {
+    // Заполняем данные выбранного пользователя в форме
+    setFormData({
+      ...formData,
+      fullName: user.name_user,
+      phoneNumber: user.phone_user,
+      address: user.address_user,
+      source_user: user.source_user,
+    });
+
+    // Очищаем список совпадающих пользователей
+    setMatchedUsers([]);
   };
 
   const isFormValid = Object.values(validation).every((isValid) => isValid);
 
   const handleNextStep = () => {
     setStep((prevStep) => prevStep + 1);
-
   };
 
   const handlePrevStep = () => {
@@ -129,10 +146,22 @@ const OrderStatus = () => {
                 type="text"
                 name="fullName"
                 value={formData.fullName}
-                onChange={handleChange}
+                onChange={(e) => {
+                  handleChange(e);
+                  searchUsers(e.target.value);
+                }}
                 className={`input-style ${validation.fullName ? 'input-valid' : 'input-error'}`}
                 placeholder="Ф.И.О. клиента"
               />
+              {matchedUsers.length > 0 && (
+                <div className="matched-users">
+                  {matchedUsers.map((user, index) => (
+                    <div key={index} className="matched-user" onClick={() => handleUserClick(user)}>
+                      {user.name_user}
+                    </div>
+                  ))}
+                </div>
+              )}
             </label>
             <label>
               <input

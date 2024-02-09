@@ -3,8 +3,6 @@ import { NavLink } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { IoClose } from "react-icons/io5";
 import { IoChevronDownOutline } from 'react-icons/io5';
-
-
 import './components.css';
 
 function NavMenu() {
@@ -42,7 +40,7 @@ function NavMenu() {
           <div className="dropdown">
             <span onClick={toggleExpanded} >
 
-              Заказы<IoChevronDownOutline className={expanded ? 'rotate' : '' } />
+              Заказы<IoChevronDownOutline className={expanded ? 'rotate' : ''} />
             </span>
             <div className={`dropdown-content ${expanded ? 'show' : ''}`}>
               <NavLink to="/Orders">Список заказов</NavLink>
@@ -61,7 +59,9 @@ function NavMenu() {
         <li><NavLink to="/PersonalAccount">Личный кабинет</NavLink></li>
       </ul>
     </div>
+    
   );
+  
 }
 
 export default NavMenu;
