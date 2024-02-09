@@ -35,7 +35,7 @@ function NavMenu() {
         </svg>
       </div>
       <ul className={nav ? 'navi navi-active' : 'navi'}>
-        <li><NavLink exact to="/">Главная</NavLink></li>
+        <li><NavLink exact to="/app">Главная</NavLink></li>
         <li>
           <div className="dropdown">
             <span onClick={toggleExpanded} >

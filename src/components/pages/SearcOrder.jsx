@@ -127,11 +127,15 @@ function SearcOrder() {
         <div>
             <Header />
             <div className="container-search">
-                <input type="number" pattern="\d*" value={number} onChange={handleChange} onKeyPress={handleKeyPress} placeholder='Введите номер заказа' />
-                <CiSearch onClick={() => fetchData(number)} />
+                <div className="container-search-sear">
+                    <input type="number" pattern="\d*" value={number} onChange={handleChange} onKeyPress={handleKeyPress} placeholder='Введите номер заказа' />
+                    <CiSearch onClick={() => fetchData(number)} />
+                </div>
+                <QRcodeScaner updateSearchWithQRCode={updateSearchWithQRCode} />
+
+                <div className="container-results">{renderData()}</div>
             </div>
-            <QRcodeScaner updateSearchWithQRCode={updateSearchWithQRCode} />
-            <div className="container-results">{renderData()}</div>
+
         </div>
     );
 }

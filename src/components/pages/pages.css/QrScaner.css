@@ -10,6 +10,7 @@
     align-items: center;
     gap: 20px;
     padding-top: 20px;
+    width: 100%;
 }
 
 .scaner.visible {
@@ -68,11 +69,17 @@ video {
 }
 
 .start-button {
-    background-color: #1776CD;
-    display: flex;
-    border: 0;
-    border-radius: 7px;
-    font-size: 20px;
-    padding: 5px 16px;
-    width: auto
+    display: none;
+}
+
+@media (max-width: 800px) {
+    .start-button {
+        background-color: #1776CD;
+        display: flex;
+        border: 0;
+        border-radius: 7px;
+        padding: 5px 16px;
+        width: auto
+    }
+
 }

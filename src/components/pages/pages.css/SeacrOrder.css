@@ -1,11 +1,24 @@
 .container-search {
     display: flex;
     width: 100%;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 0;
     padding: 0;
+    gap: 5px;
+}
+.container-results{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container-search-sear{
+    width: 100%;
     gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .container-search svg:hover {
@@ -207,6 +220,5 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: 40px;
     }
 }

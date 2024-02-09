@@ -46,6 +46,12 @@ function PersonalAccount() {
                 <h1>{greeting}, {staffName}!</h1>
                 <p>Роль: {staffRole} </p>
                 <button onClick={handleLogout}>Выйти</button>
+                <div className="personal-container-orders">
+                    <h1>Список активных заказов</h1>
+                    <div className="personal-container-orders-main">
+                        
+                    </div>
+                </div>
             </div>
         </div>
     );
