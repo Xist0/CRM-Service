@@ -4,6 +4,7 @@
     margin: 10% auto;
     width: calc(100% - 70%);
     justify-content: center;
+    gap: 20px;
     align-items: center;
     height: fit-content;
     padding: 20px 15px;
@@ -12,8 +13,16 @@
     box-shadow: 0px 0px 65px 5px rgba(56, 115, 159, 0.3);
 }
 
-.container-login-title {
+.invalid {
+    border: 1px solid red;
+}
+
+.container-login-title>.error-message {
     margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .container-login-main {
@@ -40,14 +49,15 @@
     right: calc(100% - 58%);
 }
 
-.container-login-main input {
+.container-login input {
     width: calc(100% - 50%);
 }
 
 .container-login-footer {
     margin: 20px 0;
 }
-.additional-block{
+
+.additional-block {
     display: flex;
     width: calc(100% - 50%);
     justify-content: center;
@@ -72,7 +82,7 @@
         box-shadow: 0px 0px 65px 5px rgba(56, 115, 159, 0.3);
     }
 
-    .container-login-main input {
+    .container-login input {
         width: calc(100% - 15%);
     }
 
@@ -82,12 +92,12 @@
         padding: 5px;
         width: 20px;
     }
-    .additional-block{
+
+    .additional-block {
         display: flex;
         width: calc(100% - 10%);
         justify-content: center;
         align-items: center;
     }
-    
 
 }

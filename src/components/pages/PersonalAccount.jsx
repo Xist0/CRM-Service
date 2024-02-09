@@ -1,25 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Header from '../Header';
 
 function PersonalAccount() {
-    const [userData, setUserData] = useState(null);
     const [greeting, setGreeting] = useState('');
+    const [staffName, setStaffName] = useState('');
+    const [staffRole, setStaffRole] = useState('');
 
     useEffect(() => {
-        async function fetchUserData() {
-            try {
-                const response = await fetch('/api/user');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch user data');
-                }
-                const userData = await response.json();
-                setUserData(userData);
-            } catch (error) {
-                console.error('Error fetching user data:', error);
+        const storedToken = localStorage.getItem('accessToken');
+        if (storedToken) {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            if (userData) {
+                setStaffName(userData.staff_name);
+                setStaffRole(userData.staff_role);
             }
         }
-
-        fetchUserData();
         const currentTime = new Date();
         const currentHour = currentTime.getHours();
         let greetingText = '';
@@ -34,13 +30,21 @@ function PersonalAccount() {
         }
         setGreeting(greetingText);
     }, []);
+    const handleLogout = async () => {
+        try {
+            await axios.post('/api/logout');
+            window.location.href = '/';
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
+    };
 
     return (
         <div>
             <Header />
             <div className="Personal-container">
-                <h1>{`${greeting}, ${userData.staff_name}!`}</h1>
-                <p>Роль: {userData.staff_role}</p>
+                <h1>{greeting}, {staffName}!</h1>
+                <p>Роль: {staffRole} </p>
                 <button onClick={handleLogout}>Выйти</button>
             </div>
         </div>

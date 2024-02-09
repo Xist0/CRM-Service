@@ -77,7 +77,7 @@ app.post('/api/login', (req, res) => {
     // Вход успешен, возвращаем имя пользователя вместе с токеном
     const accessToken = jwt.sign({ username: user.staff_name, role: user.staff_role }, accessTokenSecret);
     activeSessions[user.staff_name] = true;
-    res.status(200).json({ accessToken, username: user.staff_name });
+    res.status(200).json({ accessToken, username: user.staff_name, role: user.staff_role });
 
   } else {
     res.status(401).json({ message: 'Login failed' });
