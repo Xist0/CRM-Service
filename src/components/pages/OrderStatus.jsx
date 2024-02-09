@@ -66,7 +66,7 @@ const OrderStatus = () => {
       [name]: trimmedValue,
     }));
 
-    setValidation((prevValidation) => ({
+    setValidation((prevValidation) => ({ 
       ...prevValidation,
       [name]: trimmedValue !== '',
     }));
@@ -190,8 +190,8 @@ const OrderStatus = () => {
               </option>
             </select>
             <div className="divButton">
-              <button onClick={handleNextStep} >Далее</button>
               <button onClick={handlePrevStep}>Назад</button>
+              <button onClick={handleNextStep} >Далее</button>
             </div>
           </div>
         )}
@@ -266,8 +266,8 @@ const OrderStatus = () => {
               />
             </label>
             <div className="divButton">
+            <button onClick={handlePrevStep}>Назад</button>
               <button onClick={handleNextStep} >Далее</button>
-              <button onClick={handlePrevStep}>Назад</button>
             </div>
           </div>
         )}
@@ -296,8 +296,8 @@ const OrderStatus = () => {
               />
             </label>
             <div className="divButton">
-              <button onClick={handleSubmit} >Отправить</button>
               <button onClick={handlePrevStep}>Назад</button>
+              <button onClick={handleSubmit} >Отправить</button>
             </div>
           </div>
         )}

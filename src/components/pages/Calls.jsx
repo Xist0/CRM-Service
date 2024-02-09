@@ -72,7 +72,6 @@ const Calls = () => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id={`exampleModalLabel-${cal.id_record}`}>{cal.name}</h5>
-                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
               </div>
               <div className="modal-body">
                 <audio controls>
@@ -137,7 +136,7 @@ const Calls = () => {
           <td>{cal.date_record}</td>
           <td>{cal.time_record}</td>
           <td>{logoCall}</td>
-          <td >{playButton}</td>
+          <td id='type-butn' >{playButton}</td>
         </tr>
       );
     });
