@@ -5,10 +5,13 @@ import Messenger from './messenger/Messenger'
 function WarrantyRepair() {
   return (
     <div>
-      <Header/>
-      Гарантийный ремонт
-      <Messenger/>
+      <Header />
+      <div className="container-box">
+        Гарантийный ремонт
+
       </div>
+      <Messenger />
+    </div>
   )
 }
 

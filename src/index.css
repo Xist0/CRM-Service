@@ -154,7 +154,7 @@ legend {
 }
 
 
-body {
+.container-box {
 	width: calc(100% - 10%);
 	margin: auto;
 }

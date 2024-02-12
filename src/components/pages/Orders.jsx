@@ -64,68 +64,70 @@ function Orders() {
   return (
     <div>
       <Header />
-      <div className="box">
-        <div className="box-title">
-          <h1>Заказы</h1>
-        </div>
-        <div className="box-line"></div>
-        <div className="box-serah">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearchTermChange}
-          />
-          <CiSearch onClick={handleSearch} />
-        </div>
-        <div className="box-main">
-          <table>
-            <thead>
-              <tr>
-                <th># Акта</th>
-                <th>ФИО</th>
-                <th>Аппарат</th>
-                <th>Модель </th>
-                <th>Мастер</th>
-                <th>Состояние</th>
-              </tr>
-            </thead>
-            <tbody id="search-results">
-              {Array.isArray(displayData) && displayData.map((item, index) => (
-                <React.Fragment key={index}>
-                  <tr onClick={() => setExpandedRowIndex((prevIndex) => (prevIndex === index ? null : index))}>
-                    <td>
-                      <p>{item.id_order} </p>
-                    </td>
-                    <td id='FIO'>
-                      <p>{item.user.first_name} </p>
-                    </td>
-                    <td>
-                      <p>{item.device.type}</p>
-                    </td>
-                    <td>
-                      <p>{item.device.model}</p>
-                    </td>
-                    <td id='FIO'>
-                      <p>{item.staff.first_name}</p>
-                    </td>
-                    <td>
-                      <p>{item.status.status_order}</p>
-                    </td>
-                  </tr>
-                </React.Fragment>
-              ))}
-            </tbody>
-          </table>
-          {loading && (
-               <div className="loading-animation"> <img src="/public/LogoAnims.svg" alt="" /></div>
+      <div className="container-box">
+        <div className="box">
+          <div className="box-title">
+            <h1>Заказы</h1>
+          </div>
+          <div className="box-line"></div>
+          <div className="box-serah">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearchTermChange}
+            />
+            <CiSearch onClick={handleSearch} />
+          </div>
+          <div className="box-main">
+            <table>
+              <thead>
+                <tr>
+                  <th># Акта</th>
+                  <th>ФИО</th>
+                  <th>Аппарат</th>
+                  <th>Модель </th>
+                  <th>Мастер</th>
+                  <th>Состояние</th>
+                </tr>
+              </thead>
+              <tbody id="search-results">
+                {Array.isArray(displayData) && displayData.map((item, index) => (
+                  <React.Fragment key={index}>
+                    <tr onClick={() => setExpandedRowIndex((prevIndex) => (prevIndex === index ? null : index))}>
+                      <td>
+                        <p>{item.id_order} </p>
+                      </td>
+                      <td id='FIO'>
+                        <p>{item.user.first_name} </p>
+                      </td>
+                      <td>
+                        <p>{item.device.type}</p>
+                      </td>
+                      <td>
+                        <p>{item.device.model}</p>
+                      </td>
+                      <td id='FIO'>
+                        <p>{item.staff.first_name}</p>
+                      </td>
+                      <td>
+                        <p>{item.status.status_order}</p>
+                      </td>
+                    </tr>
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </table>
+            {loading && (
+              <div className="loading-animation"> <img src="/public/LogoAnims.svg" alt="" /></div>
 
-          )}
+            )}
+          </div>
         </div>
-      </div>
-      <div className="pagination-custom">
-        <SlArrowLeft onClick={handlePrevPage} disabled={currentPage === 1} />
-        <span>{currentPage}</span>
-        <SlArrowRight onClick={handleNextPage} disabled={currentPage === Math.ceil(originalData.length / itemsPerPage)} />
+        <div className="pagination-custom">
+          <SlArrowLeft onClick={handlePrevPage} disabled={currentPage === 1} />
+          <span>{currentPage}</span>
+          <SlArrowRight onClick={handleNextPage} disabled={currentPage === Math.ceil(originalData.length / itemsPerPage)} />
+        </div>
       </div>
       <Messenger />
     </div>

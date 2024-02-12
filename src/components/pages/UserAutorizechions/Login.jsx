@@ -77,25 +77,27 @@ const Login = () => {
 
     return (
         <div>
-            {!isLoggedIn ? (
-                <div className='container-login'>
-                    <div className="container-login-title">
-                        <h1>Авторизация</h1>
+            <div className="container-box">
+                {!isLoggedIn ? (
+                    <div className='container-login'>
+                        <div className="container-login-title">
+                            <h1>Авторизация</h1>
+                        </div>
+                        <input type="text" className={!usernameValid ? 'invalid' : ''} value={username} onChange={(e) => setUsername(e.target.value)} onBlur={handleUsernameBlur} placeholder="Логин" />
+                        <input type="password" className={!passwordValid ? 'invalid' : ''} value={password} onChange={(e) => setPassword(e.target.value)} onBlur={handlePasswordBlur} placeholder="Пароль" />
+                        {error && <p className="error-message">{error}</p>}
+                        <button onClick={handleLogin}>Войти</button>
                     </div>
-                    <input type="text" className={!usernameValid ? 'invalid' : ''} value={username} onChange={(e) => setUsername(e.target.value)} onBlur={handleUsernameBlur} placeholder="Логин" />
-                    <input type="password" className={!passwordValid ? 'invalid' : ''} value={password} onChange={(e) => setPassword(e.target.value)} onBlur={handlePasswordBlur} placeholder="Пароль" />
-                    {error && <p className="error-message">{error}</p>}
-                    <button onClick={handleLogin}>Войти</button>
-                </div>
-            ) : (
-                <div className='container-login'>
-                    <div className="container-login-title">
-                        <h1>С возвращением, {staffName}!</h1>
+                ) : (
+                    <div className='container-login'>
+                        <div className="container-login-title">
+                            <h1>С возвращением, {staffName}!</h1>
+                        </div>
+                        <button onClick={handleLogout}>Выйти</button>
+                        <button onClick={handleLog}>Перейти на сайт</button>
                     </div>
-                    <button onClick={handleLogout}>Выйти</button>
-                    <button onClick={handleLog}>Перейти на сайт</button>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 };

@@ -27,29 +27,32 @@ const SearchUsers = () => {
 
   return (
     <div>
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Введите ФИО или номер телефона"
-      />
-      <button onClick={handleSearch}>Поиск</button>
-      {loading ? (
-        <p>Загрузка...</p>
-      ) : (
-        <ul>
-          {displayData.map(user => (
-            <li key={user.id_user}>
-              <p>{`ID: ${user.id_user}`}</p>
-              <p>{`Имя: ${user.name_user}`}</p>
-              <p>{`Телефон: ${user.phone_user}`}</p>
-              <p>{`Тип: ${user.type}`}</p>
-              <p>{`Адрес: ${user.address_user}`}</p>
-              <p>{`Дата создания: ${user.date_create}`}</p>
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className="container-box">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Введите ФИО или номер телефона"
+        />
+        <button onClick={handleSearch}>Поиск</button>
+        {loading ? (
+          <p>Загрузка...</p>
+        ) : (
+          <ul>
+            {displayData.map(user => (
+              <li key={user.id_user}>
+                <p>{`ID: ${user.id_user}`}</p>
+                <p>{`Имя: ${user.name_user}`}</p>
+                <p>{`Телефон: ${user.phone_user}`}</p>
+                <p>{`Тип: ${user.type}`}</p>
+                <p>{`Адрес: ${user.address_user}`}</p>
+                <p>{`Дата создания: ${user.date_create}`}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+
+      </div>
     </div>
   );
 };

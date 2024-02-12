@@ -7,7 +7,10 @@ function Works() {
 
     <div>
       <Header />
-      Работа
+      <div className="container-box">
+        Работа
+
+      </div>
       <Messenger />
     </div>
   )

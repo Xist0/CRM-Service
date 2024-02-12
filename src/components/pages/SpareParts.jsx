@@ -7,7 +7,9 @@ function SpareParts() {
     return (
         <div>
             <Header />
-            
+            <div className="container-box">
+                
+            </div>
             <Messenger />
         </div>
     )

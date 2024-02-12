@@ -175,7 +175,17 @@ form {
 .icon {
   width: 45px;
 }
+tbody{
+  text-align: center;
+}
+.table-success{
+  text-align: center;
+  background-color: rgba(82, 246, 82, 0.34);
+  width: 100%;
+  display: flex;
+  padding: 5px;
 
+}
 .tdRed {
   display: flex;
   justify-content: center;
@@ -184,7 +194,7 @@ form {
   cursor: default;
   pointer-events: none;
   padding: 5px 4px;
-  width: 64%;
+
 }
 
 .input-search {
@@ -465,7 +475,7 @@ form {
   }
   .forma-input > label{ 
     display: flex;
-    flex-direction: column;
+
     gap: 10px;
   }
 

@@ -5,10 +5,13 @@ import Messenger from './messenger/Messenger'
 function Employees() {
   return (
     <div>
-      <Header/>
-      Работники
-      <Messenger/>
+      <Header />
+      <div className="container-box">
+
+        Работники
       </div>
+      <Messenger />
+    </div>
   )
 }
 

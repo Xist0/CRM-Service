@@ -146,56 +146,58 @@ const Calls = () => {
     <div>
       <Header />
       <Messenger />
-      <div className="calls-container">
-        <div className="row row-cols-auto">
-          <div className="p-3 mb-2">
-            <form onSubmit={handleSubmit}>
-              <div className="row-cols">
-                <label>Введите дату поиска записей</label>
-                <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="form-control" />
-              </div>
-              <input
-                type="text"
-                value={searchTerm}
-                className='input-search'
-                onChange={handleSearchTermChange}
-                placeholder="Поиск по номеру телефона"
-              />
-              <button type="submit" className="btn btn-primary">поиск</button>
-            </form>
-          </div>
-        </div>
+      <div className="container-box">
         <div className="calls-container">
           <div className="row row-cols-auto">
-            <div className="col">
-              {isLoading ? (
-                <div className="loading-animation"> <img src="/public/LogoAnims.svg" alt="" /></div>
-              ) : (
-                <table className="table">
-                  {isTableHeaderVisible && (
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">тип звонка</th>
-                        <th scope="col">набранный номер</th>
-                        <th scope="col">номер звонящий</th>
-                        <th scope="col">Ф.И.О</th>
-                        <th scope="col">заказ наряд</th>
-                        <th scope="col">дата звонка</th>
-                        <th scope="col">время звонка</th>
-                        <th className="icon"></th>
-                        <th scope="col">воспроизвести</th>
-                      </tr>
-                    </thead>
-                  )}
-                  <tbody>{renderRecords()}</tbody>
-                </table>
-              )}
+            <div className="p-3 mb-2">
+              <form onSubmit={handleSubmit}>
+                <div className="row-cols">
+                  <label>Введите дату поиска записей</label>
+                  <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="form-control" />
+                </div>
+                <input
+                  type="text"
+                  value={searchTerm}
+                  className='input-search'
+                  onChange={handleSearchTermChange}
+                  placeholder="Поиск по номеру телефона"
+                />
+                <button type="submit" className="btn btn-primary">поиск</button>
+              </form>
+            </div>
+          </div>
+          <div className="calls-container">
+            <div className="row row-cols-auto">
+              <div className="col">
+                {isLoading ? (
+                  <div className="loading-animation"> <img src="/public/LogoAnims.svg" alt="" /></div>
+                ) : (
+                  <table className="table">
+                    {isTableHeaderVisible && (
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">тип звонка</th>
+                          <th scope="col">набранный номер</th>
+                          <th scope="col">номер звонящий</th>
+                          <th scope="col">Ф.И.О</th>
+                          <th scope="col">заказ наряд</th>
+                          <th scope="col">дата звонка</th>
+                          <th scope="col">время звонка</th>
+                          <th className="icon"></th>
+                          <th scope="col">воспроизвести</th>
+                        </tr>
+                      </thead>
+                    )}
+                    <tbody>{renderRecords()}</tbody>
+                  </table>
+                )}
+              </div>
             </div>
           </div>
         </div>
+        {selectedRecord && renderModal(selectedRecord)}
       </div>
-      {selectedRecord && renderModal(selectedRecord)}
     </div>
   );
 };
