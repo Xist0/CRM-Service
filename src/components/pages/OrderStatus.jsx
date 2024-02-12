@@ -134,7 +134,7 @@ const OrderStatus = () => {
                   <option key={index} value={type}>{type}</option>
                 ))}
               </select>
-              <button onClick={handleNextStep} >Далее</button>
+              <button className='divButton' onClick={handleNextStep} >Далее</button>
             </label>
           </div>
         )}

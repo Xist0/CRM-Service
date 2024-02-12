@@ -20,9 +20,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   width: 100%;
-  max-width: 450px;
+  max-width: 580px;
   box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
   background-color: #fff;
   border-radius: 10px;
@@ -59,9 +59,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   width: 100%;
-
   max-width: 800px;
   box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
   background-color: #fff;
@@ -70,27 +69,9 @@
   text-align: center;
 }
 
-.input-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  gap: 20px;
-}
-
-.input-column label {
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-}
-
 .input-style {
   width: 100%;
-  padding: 15px 32px;
-  margin: 5px;
+  padding: 10px 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
   transition: border-color 0.3s ease-in-out;
@@ -109,6 +90,11 @@
   border: 1px solid red;
 }
 
+.input-column{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 .input-column select {
   width: 100%;
   border-radius: 5px;
@@ -123,85 +109,10 @@
 .divButton {
   display: flex;
   align-items: center;
-  gap: 20px;
-}
+  justify-content: space-between;
+  width: 100%;
 
-/* Отдельные стили для неактивной и активной кнопок */
-.input-error button,
-.input-column button[disabled] {
-  background-color: #ccc;
-  cursor: not-allowed;
-  border: none;
-  color: white;
-  padding: 15px 80px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  text-transform: uppercase;
-  font-size: 13px;
-  box-shadow: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease-in-out;
-  width: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
-
-.input-column button {
-  background-color: #1776cd;
-  cursor: pointer;
-  border: none;
-  color: white;
-  padding: 15px 80px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  text-transform: uppercase;
-  font-size: 13px;
-  box-shadow: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease-in-out;
-  width: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-button {
-  background-color: #1776cd;
-  cursor: pointer;
-  border: none;
-  color: rgb(224, 224, 224);
-  padding: 15px 80px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  text-transform: uppercase;
-  font-size: 13px;
-  box-shadow: none;
-  border-radius: 5px;
-  transition: 0.2s ease-in-out;
-  width: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-button:hover {
-  box-shadow: 0px 0px 15px 5px rgba(56, 115, 159, 0.3);
-  background-color: #145da1;
-  color: rgb(255, 255, 255);
-}
-
-.input-column button:hover .input-column button[disabled] {
-  background-color: #156699;
-}
-
-.input-column button:active {
-  transform: scale(0.95);
-}
-
 
 .pagination-custom {
   display: flex;
@@ -213,12 +124,11 @@ button:hover {
 }
 
 .pagination-custom svg {
-  width: 100%;
-  height: 100%;
   cursor: pointer;
   background: #1776CD;
   color: #FFFFFF;
   border-radius: 6px;
+  width: 20px;
 }
 
 .pagination-custom button {
@@ -379,6 +289,29 @@ form {
   box-shadow: 0px 0px 1px 1px #1776CD;
 }
 
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.box-serah {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.box-main {
+  display: flex;
+  width: 100%;
+
+}
+
 @media (max-width: 1280px) {
   .table-media-container {
     display: flex;
@@ -498,14 +431,6 @@ form {
     flex-direction: column;
     align-items: center;
   }
-
-  .divButton {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-direction: column;
-  }
-
   .forma-input-end {
     display: flex;
     flex-direction: column;
@@ -538,6 +463,11 @@ form {
     margin-bottom: 5px;
     border-bottom: 1px solid;
   }
+  .forma-input > label{ 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
   .input-style {
     width: 100%;
@@ -561,5 +491,37 @@ form {
     pointer-events: none;
     padding: 5px 4px;
     width: 100%;
+  }
+
+  .pagination-custom svg {
+    cursor: pointer;
+    background: #1776CD;
+    color: #FFFFFF;
+    border-radius: 6px;
+    width: 20px;
+  }
+
+}
+
+@media (max-width: 800px) {
+  .container-block-main {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .forma-input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 580px;
+    box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 13px;
+    text-align: center;
   }
 }

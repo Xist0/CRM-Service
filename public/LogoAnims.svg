@@ -4,7 +4,7 @@
         fill="#transparent">
         <animate
             attributeName='fill'
-            begin="0.9s"
+            begin="0.7s"
             dur='1.5s'
             values='transparent;#F13737;transparent'
             repeatCount='indefinite'
@@ -15,7 +15,7 @@
     fill="#transparent">
     <animate
         attributeName='fill'
-        begin="1s"
+        begin="0.8s"
         dur='1.5s'
         values='transparent;transparent;#F13737;transparent'
         repeatCount='indefinite'
@@ -27,7 +27,7 @@
         fill="#transparent">
         <animate
             attributeName='fill'
-            begin="1s"
+            begin="0.9s"
             dur='1.5s'
             values='transparent;transparent;transparent;#F13737;transparent'
             repeatCount='indefinite'
