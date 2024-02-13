@@ -169,26 +169,6 @@ app.get('/api/typeofrepaire', async (req, res) => {
   }
 });
 
-app.get('/api/1c/users/search', async (req, res) => {
-  const { query } = req.query;
-  try {
-    const { default: fetch } = await import('node-fetch');
-    const response = await fetch(`http://192.168.1.10/api/1c/users`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const users = await response.json();
-    // Фильтрация пользователей по ФИО и номеру телефона
-    const filteredUsers = users.filter(user => {
-      return user.name_user.toLowerCase().includes(query.toLowerCase()) ||
-        user.phone_user.includes(query);
-    });
-    res.json(filteredUsers);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  }
-});
 
 
 app.get('/api/byt/order/:number', async (req, res) => {
@@ -251,6 +231,7 @@ app.get('/api/order/record/:date/:name', async (req, res) => {
   }
 });
 
+
 app.get('/api/users/search/:l_name', async (req, res) => {
   const { l_name } = req.params;
 
@@ -271,7 +252,26 @@ app.get('/api/users/search/:l_name', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+app.get('/api/works1c/:Z_name', async (req, res) => {
+  const { Z_name } = req.params;
 
+  try {
+    const { default: fetch } = await import('node-fetch');
+
+    const response = await fetch(`http://192.168.1.10/api/works1c/${encodeURIComponent(Z_name)}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+
+    res.json(responseData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 // Исправленная строка создания HTTPS-сервера
 const server = https.createServer(options, app);

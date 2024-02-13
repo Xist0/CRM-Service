@@ -142,7 +142,7 @@ const OrderStatus = () => {
           {step === 2 && (
             <div className='forma-input input-column'>
               <h2>Шаг 2: Ввод данных</h2>
-              <label>
+              <label id='fullname'>
                 <input
                   type="text"
                   name="fullName"
