@@ -66,8 +66,9 @@ function ChangeOrder() {
   const renderData = () => {
     if (isLoading) {
       return (
-        <div className="loading-animation"> <img src="/public/LogoAnims.svg" alt="" /></div>
-
+        <div className="loading-animation">
+          <img src="/public/LogoAnims.svg" alt="" />
+        </div>
       );
     }
     if (!records) {
@@ -84,31 +85,45 @@ function ChangeOrder() {
             <div className="container-search-result-title">
               <h1>Заказ: {records.id_order}</h1>
             </div>
-            <div className="">
-              <h2>Пользователь:</h2> <p>{records.user.name_user}</p>
-              <h2>Номер телефона:</h2> <p>{records.user.phone_user}</p>
-              <h2>Адресс:</h2> <p>{records.user.address_user}</p>
-              <h2>Тип устройства:</h2> <p>{records.device.type}</p>
-              <h2>Бренд:</h2> <p>{records.device.brand}</p>
-              <h2>Номер модели:</h2> <p>{records.device.model}</p>
-              <h2>Стутус:</h2> <p>{records.status.status_order}</p>
-              <h2>Серийный номер модели:</h2> <p>{records.device.sn}</p>
-              <h2>Дефект:</h2> <p>{records.device.defect}</p>
+            <div className="container-block-orders">
+              <label >
+                <h4>Пользователь:</h4> <p>{records.user.name_user}</p>
+
+              </label>
+              <label >
+                <h4>Номер телефона:</h4> <p>{records.user.phone_user}</p>
+
+              </label>
+              <label >
+                <h4>Адресс:</h4> <p>{records.user.address_user}</p>
+
+              </label>
+              <label >
+                <h4>Тип устройства:</h4> <p>{records.device.type}</p>
+
+              </label>
+              <label >
+                <h4>Бренд:</h4> <p>{records.device.brand}</p>
+
+              </label>
+              <label >
+                <h4>Номер модели:</h4> <p>{records.device.model}</p>
+
+              </label>
+              <label >
+                <h4>Стутус:</h4> <p>{records.status.status_order}</p>
+
+              </label>
+              <label >
+                <h4>Серийный номер модели:</h4> <p>{records.device.sn}</p>
+
+              </label>
+              <label >
+                <h4>Дефект:</h4> <p>{records.device.defect}</p>
+
+              </label>
             </div>
-            <div className="container-search-result-staff">
-              {records.staff[0] && (
-                <div className='container-search-result-staff-main'>
-                  <h1>Принял:</h1> <p>{records.staff[0].staff_name}</p>
-                  <p>{records.staff[0].staff_job}</p>
-                </div>
-              )}
-              {records.staff[1] && (
-                <div className='container-search-result-staff-main'>
-                  <h1>Мастер:</h1> <p>{records.staff[1].staff_name}</p>
-                  <p>{records.staff[1].staff_job}</p>
-                </div>
-              )}
-            </div>
+
             <select
               name="option"
             >
@@ -122,10 +137,10 @@ function ChangeOrder() {
                 <h1>Запчасти</h1>
               </div>
 
-              {records.parts.map((partItem, index) => (
+              {records.parts.map((workItem, index) => (
                 <div key={index} className='container-search-result-parts-main'>
-                  <p>{partItem.parts_name}</p>
-                  <h4>Цена:{partItem.parts_price}</h4>
+                  <p>{workItem.parts_name}</p>
+                  <h4>Цена:{workItem.parts_price}</h4>
                 </div>
               ))}
             </div>
@@ -140,32 +155,39 @@ function ChangeOrder() {
               <div className="container-search-result-parts-title">
                 <h1>Работы</h1>
               </div>
-              {records.work.map((workItem, index) => (
+              {records.parts.map((partItem, index) => (
                 <div key={index} className='container-search-result-parts-main'>
-                  <p>{workItem.parts_name}</p>
-                  <h4>Цена:{workItem.parts_price}</h4>
+                  <p>{partItem.parts_name}</p>
+                  <h4>Цена:{partItem.parts_price}</h4>
                 </div>
               ))}
             </div>
             <div className="container-block-search">
-              <input type="text" placeholder='Название' className='input-style input-valid'
+              <input
+                type="text"
+                placeholder="Название"
+                className="input-style input-valid"
                 onChange={(e) => {
                   handleChange(e);
                   searchUsers(e.target.value);
                 }}
               />
-              <button>Добавить</button>
+              <button >Добавить</button>
             </div>
             {matchedOrder && matchedOrder.length > 0 && (
               <div className="matched-users">
                 {matchedOrder.map((part, index) => (
-                  <div key={index} className="matched-user">
+                  <div
+                    key={index}
+                    className={`matched-user ${selectedPart === part ? 'selected' : ''
+                      }`}
+                    onClick={() => handlePartClick(part)}
+                  >
                     {part.name_parts}
                   </div>
                 ))}
               </div>
             )}
-
           </div>
         </div>
       </div>

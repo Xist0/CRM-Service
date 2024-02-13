@@ -127,10 +127,26 @@ li a:hover {
     display: block;
     text-align: start;
 }
-
-.container-block {
-    gap: 40px;
+.container-block-orders>label{
     display: flex;
+    width: 100%;
+    align-items: center;
+}
+.container-block-orders>label>h4{
+    width: calc(100% - 50%);
+    display: block;
+    text-align: start;
+}
+.container-block-orders>label>p{
+    width: calc(100% - 40%);
+    display: block;
+    text-align: start;
+}
+
+.container-block-orders {
+    gap: 20px;
+    display: flex;
+    width: 100%;
     flex-direction: column;
 }
 .loading-animation {
