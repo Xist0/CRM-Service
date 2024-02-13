@@ -293,9 +293,8 @@ tbody{
   padding: 5px 10px;
 }
 .matched-user-acktive {
-  cursor: pointer;
-  border: 1px solid #1776CD;
-  padding: 5px 10px;
+  border: 1px solid #1776CD !important;
+  box-shadow: 0px 0px 1px 1px #1776CD;
 }
 .matched-user {
   cursor: pointer;

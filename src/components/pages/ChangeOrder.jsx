@@ -2,15 +2,19 @@ import React, { useState, useEffect } from 'react';
 import Header from '../Header';
 import './pages.css/SeacrOrder.css';
 import { useLocation } from 'react-router-dom';
-import Messenger from './messenger/Messenger'
+import Messenger from './messenger/Messenger';
 
 function ChangeOrder() {
   const [number, setNumber] = useState('');
   const [records, setRecords] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
-  const [matchedOrder, setMmatchedOrder] = useState([]);
+  const [matchedParts, setMatchedParts] = useState([]);
   const [selectedPart, setSelectedPart] = useState(null);
+  const [formData, setFormData] = useState({
+    nameParts: '',
+    selectedParts: [],
+  });
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -36,28 +40,42 @@ function ChangeOrder() {
       setIsLoading(false);
     }
   };
+
   const handleChange = (e) => {
     setNumber(e.target.value);
-    searchUsers(e.target.value);
   };
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       fetchData(number);
     }
   };
-  const searchUsers = async (nameParts) => {
+
+  const searchParts = async (nameParts) => {
     try {
       const response = await fetch(`/api/works1c/${encodeURIComponent(nameParts)}`);
       const data = await response.json();
-      setMmatchedOrder(data);
+      setMatchedParts(data);
     } catch (error) {
-      console.error('Error searching users:', error);
-      setMmatchedOrder([]);
+      console.error('Error searching parts:', error);
+      setMatchedParts([]);
     }
   };
+
   const handlePartClick = (part) => {
     setSelectedPart(part);
   };
+
+  const handleAddButtonClick = () => {
+    if (selectedPart) {
+      setFormData({
+        ...formData,
+        selectedParts: [...formData.selectedParts, selectedPart],
+      });
+      setSelectedPart(null);
+    }
+  };
+
   const renderData = () => {
     if (isLoading) {
       return (
@@ -74,7 +92,6 @@ function ChangeOrder() {
     }
     return (
       <div >
-
         <div className="container-block-main">
           <div className='forma-input input-column'>
             <div className="container-search-result-title">
@@ -118,7 +135,6 @@ function ChangeOrder() {
               <div className="container-search-result-parts-title">
                 <h1>Запчасти</h1>
               </div>
-
               {records.parts.map((workItem, index) => (
                 <div key={index} className='container-search-result-parts-main'>
                   <p>{workItem.parts_name}</p>
@@ -126,55 +142,50 @@ function ChangeOrder() {
                 </div>
               ))}
             </div>
-            <div className="container-block-search">
-              <input type="text" placeholder='Название' className='input-style input-valid'
-              />
-              <button>Добавить</button>
-            </div>
           </div>
           <div className="forma-input input-column">
             <div className="container-block-orders">
               <div className="container-search-result-parts-title">
                 <h1>Работы</h1>
               </div>
-              {records.parts.map((partItem, index) => (
+              {formData.selectedParts.concat(records.parts).map((partItem, index) => (
                 <div key={index} className='container-search-result-parts-main'>
-                  <p>{partItem.parts_name}</p>
-                  <h4>Цена:{partItem.parts_price}</h4>
+                  <p>{partItem.name_parts || partItem.parts_name}</p>
+                  <h4>Цена: {partItem.parts_price}</h4>
                 </div>
               ))}
-            </div>
-            <div className="container-block-search">
-              <input
-                type="text"
-                placeholder="Название"
-                className="input-style input-valid"
-                onChange={(e) => {
-                  handleChange(e);
-                  searchUsers(e.target.value);
-                }}
-              />
-              <button >Добавить</button>
-            </div>
-            {matchedOrder && matchedOrder.length > 0 && (
-              <div className="matched-users">
-                {matchedOrder.map((part, index) => (
-                  <div
-                    key={index}
-                    className={`matched-user ${selectedPart === part ? 'selected' : 'matched-user-acktive'
-                      }`}
-                    onClick={() => handlePartClick(part)}
-                  >
-                    {part.name_parts}
-                  </div>
-                ))}
+              <div className="container-block-search">
+                <input
+                  type="text"
+                  placeholder="Название"
+                  className="input-style input-valid"
+                  onChange={(e) => {
+                    handleChange(e);
+                    searchParts(e.target.value);
+                  }}
+                />
+                <button onClick={handleAddButtonClick} >Добавить</button>
               </div>
-            )}
+              {matchedParts && matchedParts.length > 0 && (
+                <div className="matched-users">
+                  {matchedParts.map((part, index) => (
+                    <div
+                      key={index}
+                      className={`matched-user ${selectedPart === part ? 'matched-user-acktive' : ''}`}
+                      onClick={() => handlePartClick(part)}
+                    >
+                      {part.name_parts}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
     );
   };
+
   return (
     <div>
       <Header />
@@ -182,7 +193,14 @@ function ChangeOrder() {
         <div className="container-boxs">
           <div className="container-block">
             <div className="container-block-search">
-              <input type="number" pattern="\d*" value={number} onChange={handleChange} onKeyPress={handleKeyPress} placeholder='Введите номер заказа' />
+              <input
+                type="number"
+                pattern="\d*"
+                value={number}
+                onChange={handleChange}
+                onKeyPress={handleKeyPress}
+                placeholder='Введите номер заказа'
+              />
               <button onClick={() => fetchData(number)}>Найти</button>
             </div>
             <div className="container-results">{renderData()}</div>
@@ -194,7 +212,7 @@ function ChangeOrder() {
       </div>
       <Messenger />
     </div>
-  )
+  );
 }
 
-export default ChangeOrder
+export default ChangeOrder;
