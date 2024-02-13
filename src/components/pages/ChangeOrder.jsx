@@ -16,8 +16,8 @@ function ChangeOrder() {
     const queryParams = new URLSearchParams(location.search);
     const orderNumber = queryParams.get('orderNumber');
     if (orderNumber) {
-      setNumber(orderNumber); // Устанавливаем номер заказа
-      fetchData(orderNumber); // Выполняем поиск
+      setNumber(orderNumber);
+      fetchData(orderNumber);
     }
   }, [location.search]);
 
@@ -36,12 +36,10 @@ function ChangeOrder() {
       setIsLoading(false);
     }
   };
-
   const handleChange = (e) => {
     setNumber(e.target.value);
-    searchUsers(e.target.value); // Вызываем поиск пользователей при изменении ввода
+    searchUsers(e.target.value);
   };
-
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       fetchData(number);
@@ -58,11 +56,8 @@ function ChangeOrder() {
     }
   };
   const handlePartClick = (part) => {
-    setSelectedPart(part); // Устанавливаем выбранный вариант совпадения
+    setSelectedPart(part);
   };
-
-
-
   const renderData = () => {
     if (isLoading) {
       return (
@@ -88,51 +83,38 @@ function ChangeOrder() {
             <div className="container-block-orders">
               <label >
                 <h4>Пользователь:</h4> <p>{records.user.name_user}</p>
-
               </label>
               <label >
                 <h4>Номер телефона:</h4> <p>{records.user.phone_user}</p>
-
               </label>
               <label >
                 <h4>Адресс:</h4> <p>{records.user.address_user}</p>
-
               </label>
               <label >
                 <h4>Тип устройства:</h4> <p>{records.device.type}</p>
-
               </label>
               <label >
                 <h4>Бренд:</h4> <p>{records.device.brand}</p>
-
               </label>
               <label >
                 <h4>Номер модели:</h4> <p>{records.device.model}</p>
-
               </label>
               <label >
                 <h4>Стутус:</h4> <p>{records.status.status_order}</p>
-
               </label>
               <label >
                 <h4>Серийный номер модели:</h4> <p>{records.device.sn}</p>
-
               </label>
               <label >
                 <h4>Дефект:</h4> <p>{records.device.defect}</p>
-
               </label>
             </div>
-
-            <select
-              name="option"
-            >
+            <select name="option">
               <option value="" disabled selected hidden>Выберите статус</option>
             </select>
-
           </div>
           <div className="forma-input input-column">
-            <div className="container-search-result-parts">
+            <div className="container-block-orders">
               <div className="container-search-result-parts-title">
                 <h1>Запчасти</h1>
               </div>
@@ -151,7 +133,7 @@ function ChangeOrder() {
             </div>
           </div>
           <div className="forma-input input-column">
-            <div className="container-search-result-work">
+            <div className="container-block-orders">
               <div className="container-search-result-parts-title">
                 <h1>Работы</h1>
               </div>
@@ -179,7 +161,7 @@ function ChangeOrder() {
                 {matchedOrder.map((part, index) => (
                   <div
                     key={index}
-                    className={`matched-user ${selectedPart === part ? 'selected' : ''
+                    className={`matched-user ${selectedPart === part ? 'selected' : 'matched-user-acktive'
                       }`}
                     onClick={() => handlePartClick(part)}
                   >
@@ -203,15 +185,12 @@ function ChangeOrder() {
               <input type="number" pattern="\d*" value={number} onChange={handleChange} onKeyPress={handleKeyPress} placeholder='Введите номер заказа' />
               <button onClick={() => fetchData(number)}>Найти</button>
             </div>
-
             <div className="container-results">{renderData()}</div>
-
             <div className="container-block-search">
               <button>Сохранить</button>
             </div>
           </div>
         </div>
-
       </div>
       <Messenger />
     </div>

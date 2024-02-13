@@ -113,24 +113,24 @@
     align-items: center;
     flex-wrap: wrap;
     margin-top: 10px;
+    border-bottom: 1px solid;
+    gap: 10px;
 }
 
 .container-search-result-parts-main>h4 {
-    width: 20%;
-    height: 40px;
+    width: calc(100% -  70%);
     display: flex;
     align-items: center;
     margin-bottom: 10px;
-    border-bottom: 1px solid;
+  
 }
 
 .container-search-result-parts-main>p {
-    width: 75%;
-    height: 40px;
+    width: calc(100% -  33%);
     margin-bottom: 10px;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid;
+    text-align: left;
 }
 
 .container-search-result-staff {

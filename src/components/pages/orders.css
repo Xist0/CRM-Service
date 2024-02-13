@@ -292,6 +292,16 @@ tbody{
   border: 1px solid;
   padding: 5px 10px;
 }
+.matched-user-acktive {
+  cursor: pointer;
+  border: 1px solid #1776CD;
+  padding: 5px 10px;
+}
+.matched-user {
+  cursor: pointer;
+  border: 1px solid  ;
+  padding: 5px 10px;
+}
 
 .matched-user:hover {
   /* background: #c8c8c8; */
