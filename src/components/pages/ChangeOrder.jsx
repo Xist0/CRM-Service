@@ -3,6 +3,7 @@ import Header from '../Header';
 import './pages.css/SeacrOrder.css';
 import { useLocation } from 'react-router-dom';
 import Messenger from './messenger/Messenger';
+import { IoMdCloseCircleOutline } from "react-icons/io";
 
 function ChangeOrder() {
   const [number, setNumber] = useState('');
@@ -178,7 +179,7 @@ function ChangeOrder() {
                       value={editedPrices[index] || partItem.parts_price}
                       onChange={(event) => handlePriceChange(index, event)}
                     />
-                    <button onClick={() => handleRemoveButtonClick(index)}>Удалить</button>
+                    <IoMdCloseCircleOutline  onClick={() => handleRemoveButtonClick(index)}/>
                   </div>
                 )
               ))}
