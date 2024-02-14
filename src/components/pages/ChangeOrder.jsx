@@ -170,19 +170,17 @@ function ChangeOrder() {
                 <h1>Работы</h1>
               </div>
               {formData.selectedParts.concat(records.parts).map((partItem, index) => (
-                <div key={index} className='container-search-result-parts-main'>
-                  {deletedParts.includes(index) ? null : (
-                    <>
-                      <p>{partItem.name_parts || partItem.parts_name}</p>
-                      <input
-                        type="text"
-                        value={editedPrices[index] || partItem.parts_price}
-                        onChange={(event) => handlePriceChange(index, event)}
-                      />
-                      <button onClick={() => handleRemoveButtonClick(index)}>Удалить</button>
-                    </>
-                  )}
-                </div>
+                deletedParts.includes(index) ? null : (
+                  <div key={index} className='container-search-result-parts-main'>
+                    <p>{partItem.name_parts || partItem.parts_name}</p>
+                    <input
+                      type="text"
+                      value={editedPrices[index] || partItem.parts_price}
+                      onChange={(event) => handlePriceChange(index, event)}
+                    />
+                    <button onClick={() => handleRemoveButtonClick(index)}>Удалить</button>
+                  </div>
+                )
               ))}
               <div className="container-block-search">
                 <input
