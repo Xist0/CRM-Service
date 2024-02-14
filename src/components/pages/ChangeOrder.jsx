@@ -16,6 +16,7 @@ function ChangeOrder() {
     selectedParts: [],
   });
   const [editedPrices, setEditedPrices] = useState([]);
+  const [deletedParts, setDeletedParts] = useState([]);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -66,7 +67,9 @@ function ChangeOrder() {
   const handlePartClick = (part) => {
     setSelectedPart(part);
   };
-
+  const handleRemoveButtonClick = (index) => {
+    setDeletedParts([...deletedParts, index]);
+  };
   const handleAddButtonClick = () => {
     if (selectedPart) {
       setFormData({
@@ -168,12 +171,17 @@ function ChangeOrder() {
               </div>
               {formData.selectedParts.concat(records.parts).map((partItem, index) => (
                 <div key={index} className='container-search-result-parts-main'>
-                  <p>{partItem.name_parts || partItem.parts_name}</p>
-                  <input
-                    type="text"
-                    value={editedPrices[index] || partItem.parts_price}
-                    onChange={(event) => handlePriceChange(index, event)}
-                  />
+                  {deletedParts.includes(index) ? null : (
+                    <>
+                      <p>{partItem.name_parts || partItem.parts_name}</p>
+                      <input
+                        type="text"
+                        value={editedPrices[index] || partItem.parts_price}
+                        onChange={(event) => handlePriceChange(index, event)}
+                      />
+                      <button onClick={() => handleRemoveButtonClick(index)}>Удалить</button>
+                    </>
+                  )}
                 </div>
               ))}
               <div className="container-block-search">
