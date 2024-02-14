@@ -9,12 +9,14 @@ function ChangeOrder() {
   const [records, setRecords] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
+  const [editedParts, setEditedParts] = useState([]);
   const [matchedParts, setMatchedParts] = useState([]);
   const [selectedPart, setSelectedPart] = useState(null);
   const [formData, setFormData] = useState({
     nameParts: '',
     selectedParts: [],
   });
+  const [editedPrices, setEditedPrices] = useState([]);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -75,7 +77,48 @@ function ChangeOrder() {
       setSelectedPart(null);
     }
   };
+  const handlePriceChange = (index, event) => {
+    const updatedSelectedParts = [...formData.selectedParts];
+    if (index >= 0 && index < updatedSelectedParts.length) {
+      updatedSelectedParts[index].parts_price = event.target.value;
+      setFormData({ ...formData, selectedParts: updatedSelectedParts });
+      const updatedEditedParts = [...editedParts];
+      updatedEditedParts[index] = true;
+      setEditedParts(updatedEditedParts);
+      console.log("Updated selected parts:", updatedSelectedParts);
+    } else {
+      console.error(`Index out of bounds: ${index}`);
+    }
+  };
 
+  const handleSaveChanges = () => {
+    const updatedSelectedParts = formData.selectedParts.map((part, index) => {
+      if (editedPrices[index]) {
+        return { ...part, parts_price: editedPrices[index] };
+      }
+      return part;
+    });
+    setFormData({ ...formData, selectedParts: updatedSelectedParts });
+    setEditedPrices([]);
+  };
+  const handleRemoveButtonClick = (index) => {
+    console.log("Removing item at index:", index);
+    const updatedSelectedParts = [...formData.selectedParts];
+    updatedSelectedParts.splice(index, 1);
+    const updatedEditedParts = [...editedParts];
+    updatedEditedParts.splice(index, 1);
+    setFormData({ ...formData, selectedParts: updatedSelectedParts });
+    setEditedParts(updatedEditedParts);
+  };
+  const handleDeleteButtonClick = (index) => {
+    const updatedSelectedParts = [...formData.selectedParts];
+    if (index >= 0 && index < updatedSelectedParts.length) {
+      updatedSelectedParts.splice(index, 1);
+      setFormData({ ...formData, selectedParts: updatedSelectedParts });
+    } else {
+      console.error(`Index out of bounds: ${index}`);
+    }
+  };
   const renderData = () => {
     if (isLoading) {
       return (
@@ -151,7 +194,14 @@ function ChangeOrder() {
               {formData.selectedParts.concat(records.parts).map((partItem, index) => (
                 <div key={index} className='container-search-result-parts-main'>
                   <p>{partItem.name_parts || partItem.parts_name}</p>
-                  <h4>Цена: {partItem.parts_price}</h4>
+                  <h4>Цена:
+                    <input
+                      type="text"
+                      value={editedPrices[index] || partItem.parts_price}
+                      onChange={(event) => handlePriceChange(index, event)}
+                    />
+                  </h4>
+                  <button onClick={() => handleRemoveButtonClick(index)}>Удалить</button>
                 </div>
               ))}
               <div className="container-block-search">
@@ -205,7 +255,7 @@ function ChangeOrder() {
             </div>
             <div className="container-results">{renderData()}</div>
             <div className="container-block-search">
-              <button>Сохранить</button>
+              <button onClick={handleSaveChanges}>Сохранить</button>
             </div>
           </div>
         </div>
