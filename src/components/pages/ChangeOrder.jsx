@@ -174,12 +174,14 @@ function ChangeOrder() {
                 deletedParts.includes(index) ? null : (
                   <div key={index} className='container-search-result-parts-main'>
                     <p>{partItem.name_parts || partItem.parts_name}</p>
-                    <input
-                      type="text"
-                      value={editedPrices[index] || partItem.parts_price}
-                      onChange={(event) => handlePriceChange(index, event)}
-                    />
-                    <IoMdCloseCircleOutline  onClick={() => handleRemoveButtonClick(index)}/>
+                    <div className="container-search-result-parts-prise">
+                      <input
+                        type="text"
+                        value={editedPrices[index] || partItem.parts_price}
+                        onChange={(event) => handlePriceChange(index, event)}
+                      />
+                      <IoMdCloseCircleOutline onClick={() => handleRemoveButtonClick(index)} />
+                    </div>
                   </div>
                 )
               ))}
@@ -211,6 +213,9 @@ function ChangeOrder() {
             </div>
           </div>
         </div>
+        <div className="container-block-search">
+          <button onClick={handleSaveChanges}>Сохранить</button>
+        </div>
       </div>
     );
   };
@@ -219,25 +224,22 @@ function ChangeOrder() {
     <div>
       <Header />
       <div className="container-box">
-        <div className="container-boxs">
-          <div className="container-block">
-            <div className="container-block-search">
-              <input
-                type="number"
-                pattern="\d*"
-                value={number}
-                onChange={handleChange}
-                onKeyPress={handleKeyPress}
-                placeholder='Введите номер заказа'
-              />
-              <button onClick={() => fetchData(number)}>Найти</button>
-            </div>
-            <div className="container-results">{renderData()}</div>
-            <div className="container-block-search">
-              <button onClick={handleSaveChanges}>Сохранить</button>
-            </div>
+        <div className="container-block">
+          <div className="container-block-search">
+            <input
+              type="number"
+              pattern="\d*"
+              value={number}
+              onChange={handleChange}
+              onKeyPress={handleKeyPress}
+              placeholder='Введите номер заказа'
+            />
+            <button onClick={() => fetchData(number)}>Найти</button>
           </div>
+          <div className="container-results">{renderData()}</div>
+
         </div>
+
       </div>
       <Messenger />
     </div>

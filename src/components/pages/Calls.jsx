@@ -156,7 +156,8 @@ const Calls = () => {
                   <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="form-control" />
                 </div>
                 <input
-                  type="text"
+                  type="number"
+                  pattern="\d*"
                   value={searchTerm}
                   className='input-search'
                   onChange={handleSearchTermChange}

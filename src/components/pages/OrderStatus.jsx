@@ -118,7 +118,7 @@ const OrderStatus = () => {
   return (
     <div>
       <Header />
-      <div className="container-box">
+      <div className="">
         <div className='Multi-forma'>
           {step === 1 && (
             <div className='forma-input'>

@@ -162,6 +162,7 @@ form {
 
 .row-cols>.form-control {
   width: 50%;
+  min-height: 25px;
 }
 
 .btn-td {

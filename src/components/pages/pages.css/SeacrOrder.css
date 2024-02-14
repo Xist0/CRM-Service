@@ -8,12 +8,14 @@
     padding: 0;
     gap: 5px;
 }
-.container-results{
+
+.container-results {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.container-search-sear{
+
+.container-search-sear {
     width: 100%;
     gap: 10px;
     display: flex;
@@ -114,19 +116,42 @@
     flex-wrap: wrap;
     margin-top: 10px;
     border-bottom: 1px solid;
+    padding-bottom: 10px;
     gap: 10px;
 }
 
 .container-search-result-parts-main>h4 {
-    width: calc(100% -  70%);
+    width: calc(100% - 70%);
     display: flex;
     align-items: center;
     margin-bottom: 10px;
-  
+
+}
+
+.container-search-result-parts-main svg {
+    cursor: pointer;
+    width: calc(100% - 75%);
+    transition: transform 0.2s ease;
+}
+
+.container-search-result-parts-main svg:hover {
+    transform: scale(1.2);
+    color: #1776CD;
+}
+
+.container-search-result-parts-prise {
+    display: flex;
+    align-items: center;
+    width: calc(100% - 70%);
+    gap: 10px;
+}
+
+.container-search-result-parts-prise input {
+    width: 100%;
 }
 
 .container-search-result-parts-main>p {
-    width: calc(100% -  33%);
+    width: calc(100% - 33%);
     margin-bottom: 10px;
     display: flex;
     align-items: center;
@@ -159,6 +184,13 @@
 
 .container-search-result-staff-main>p {
     width: 30%;
+}
+
+.container-block-search {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    justify-content: center;
 }
 
 @media (max-width: 800px) {
@@ -213,12 +245,44 @@
         padding: 5px 10px;
         cursor: pointer;
     }
-    .container-search svg{
+
+    .container-search svg {
         width: 20px;
     }
-    .container-results{
+
+    .container-results {
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    .container-search-result-parts-prise {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .container-search-result-parts-main svg {
+        cursor: pointer;
+        width: calc(100% - 88%);
+        transition: transform 0.2s ease;
+    }
+
+    .container-search-result-parts-main>p {
+        width: 100%;
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        text-align: left;
+    }
+
+    .container-block-search {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 0;
     }
 }
