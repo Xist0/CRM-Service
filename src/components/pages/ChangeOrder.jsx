@@ -85,17 +85,23 @@ function ChangeOrder() {
   const handleRemoveButtonClick = (index) => {
     setDeletedParts([...deletedParts, index]);
   };
-
+  
   const handleAddButtonClick = () => {
     if (selectedPart) {
+      const newSelectedPart = { ...selectedPart, parts_price: selectedPart.parts_price };
       setFormData({
         ...formData,
-        selectedParts: [...formData.selectedParts, selectedPart],
+        selectedParts: [...formData.selectedParts, newSelectedPart],
       });
       setSelectedPart(null);
-      setChangedData([...changedData, { ...selectedPart, parts_price: selectedPart.parts_price }]);
+      setChangedData([...changedData, newSelectedPart]);
+      setInitialData(prevData => {
+        const updatedParts = [...prevData.parts, newSelectedPart];
+        return { ...prevData, parts: updatedParts };
+      });
     }
   };
+  
   
   const handlePriceChange = (index, event) => {
     const newPrices = [...editedPrices];
