@@ -157,10 +157,10 @@ function ChangeOrder() {
               <div className="container-search-result-parts-title">
                 <h1>Запчасти</h1>
               </div>
-              {records.parts.map((workItem, index) => (
-                <div key={index} className='container-search-result-parts-main'>
-                  <p>{workItem.parts_name}</p>
-                  <h4>Цена:{workItem.parts_price}</h4>
+              {records.work.map((workItem, key) => (
+                <div key={key} className='container-search-result-parts-main'>
+                  <p>{workItem.work_name}</p>
+                  <h4>Цена:{workItem.work_price}</h4>
                 </div>
               ))}
             </div>
