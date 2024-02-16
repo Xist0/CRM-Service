@@ -41,17 +41,21 @@ function NavMenu() {
               Заказы<IoChevronDownOutline className={expanded ? 'rotate' : ''} />
             </span>
             <div className={`dropdown-content ${expanded ? 'show' : ''}`}>
-              <NavLink to="/Orders">Новый Заказ</NavLink>
-              <NavLink to="/Orders/Courier">Курьеры</NavLink>
-              <NavLink to="/Orders/Tracking">Отслеживание</NavLink>
+              <NavLink to="/OrderStatus">Новый Заказ</NavLink>
+              <NavLink to="/Orders">Все заказы</NavLink>
+              <NavLink to="/SearcOrder">Состояние заказа</NavLink>
+              <NavLink to="/ChangeOrder">Изменить заказ</NavLink>
+              <NavLink to="/WarrantyRepair">Гарантия</NavLink>
             </div>
           </div>
         </li>
-        <li><NavLink to="/Products">Продукты</NavLink></li>
-        <li><NavLink to="/Customers">Покупатели</NavLink></li>
-        <li><NavLink to="/Categories">Категории</NavLink></li>
-        <li><NavLink to="/Reports">Отчеты</NavLink></li>
-        <li><NavLink to="/Settings">Настройки</NavLink></li>
+        <li><NavLink to="/Contractors">Контрагенты</NavLink></li>
+        <li><NavLink to="/SpareParts">Запчасти</NavLink></li>
+        <li><NavLink to="/Works">Работы</NavLink></li>
+        <li><NavLink to="/Employees">Сотрудники</NavLink></li>
+        <li><NavLink to="/">Терминал</NavLink></li>
+        <li><NavLink to="/Calls">Звонки</NavLink></li>
+        <li><NavLink to="/PersonalAccount">Личный кабинет</NavLink></li>
       </ul>
     </div>
   );
