@@ -83,8 +83,29 @@ function ChangeOrder() {
   };
   
   const handleRemoveButtonClick = (index) => {
-    setDeletedParts([...deletedParts, index]);
+    if (index < formData.selectedParts.length) {
+      // Если удаляем выбранный элемент, обновляем состояние formData
+      const updatedSelectedParts = formData.selectedParts.filter((_, i) => i !== index);
+      setFormData({
+        ...formData,
+        selectedParts: updatedSelectedParts,
+      });
+    } else {
+      // Если удаляем уже существующий элемент, удаляем его из массива changedData и обновляем initialData.parts
+      const partIndex = index - formData.selectedParts.length;
+      const updatedData = changedData.filter((_, i) => i !== partIndex);
+      setChangedData(updatedData);
+      const updatedDeletedParts = [...deletedParts, index];
+      setDeletedParts(updatedDeletedParts);
+  
+      // Обновляем initialData.parts, удаляя удаленный элемент
+      setInitialData(prevData => {
+        const updatedParts = prevData.parts.filter((_, i) => i !== partIndex);
+        return { ...prevData, parts: updatedParts };
+      });
+    }
   };
+  
   
   const handleAddButtonClick = () => {
     if (selectedPart) {
@@ -123,44 +144,24 @@ function ChangeOrder() {
   
 
   const handleSaveChanges = () => {
-    // Обновляем изначальные данные с учетом изменений
-    const updatedParts = initialData.parts.map(part => {
-      const changedPart = changedData.find(changed => changed.id_parts === part.id);
-      if (changedPart) {
-        return {
-          ...part,
-          parts_price: changedPart.parts_price
-        };
-      }
-      return part;
-    });
-  
-    const updatedWorks = initialData.work.map(work => {
-      const changedWork = changedData.find(changed => changed.id_work === work.id_work);
-      if (changedWork) {
-        return {
-          ...work,
-          work_price: changedWork.work_price
-        };
-      }
-      return work;
-    });
-  
-    // Обновляем все данные о заказе
-    const updatedRecords = {
-      ...initialData,
-      parts: updatedParts,
-      work: updatedWorks
+    // Формируем объект с измененными данными и id_order
+    const changedDataToSend = {
+      id_order: initialData.id_order,
+      parts: [],
+      work: [],
     };
   
-    console.log('Обновленные данные:', updatedRecords);
+    // Добавляем измененные части в массив
+    changedData.forEach(item => {
+      if (item.id_parts) {
+        changedDataToSend.parts.push({ id_parts: item.id_parts, parts_price: item.parts_price });
+      } else if (item.id_work) {
+        changedDataToSend.work.push({ id_work: item.id_work, work_price: item.work_price });
+      }
+    });
   
-    // Отправляем данные на сервер
-  
-    // Сбрасываем состояние
-    resetData();
+    console.log('Измененные данные для отправки:', changedDataToSend);
   };
-  
 
   const renderData = () => {
     if (isLoading) {
