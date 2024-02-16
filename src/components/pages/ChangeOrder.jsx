@@ -18,6 +18,7 @@ function ChangeOrder() {
   });
   const [editedPrices, setEditedPrices] = useState([]);
   const [deletedParts, setDeletedParts] = useState([]);
+  const [changedData, setChangedData] = useState([]);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -68,9 +69,11 @@ function ChangeOrder() {
   const handlePartClick = (part) => {
     setSelectedPart(part);
   };
+  
   const handleRemoveButtonClick = (index) => {
     setDeletedParts([...deletedParts, index]);
   };
+
   const handleAddButtonClick = () => {
     if (selectedPart) {
       setFormData({
@@ -78,6 +81,9 @@ function ChangeOrder() {
         selectedParts: [...formData.selectedParts, selectedPart],
       });
       setSelectedPart(null);
+
+      // Добавить новую запчасть в changedData
+      setChangedData([...changedData, selectedPart]);
     }
   };
 
@@ -85,17 +91,21 @@ function ChangeOrder() {
     const newPrices = [...editedPrices];
     newPrices[index] = event.target.value;
     setEditedPrices(newPrices);
+
+    // Обновить changedData с измененной ценой
+    const updatedData = [...changedData];
+    updatedData[index] = { ...updatedData[index], parts_price: event.target.value };
+    setChangedData(updatedData);
   };
 
   const handleSaveChanges = () => {
-    const updatedSelectedParts = formData.selectedParts.map((part, index) => {
-      if (editedPrices[index]) {
-        return { ...part, parts_price: editedPrices[index] };
-      }
-      return part;
-    });
-    setFormData({ ...formData, selectedParts: updatedSelectedParts });
-    setEditedPrices([]);
+    console.log('Измененные данные:', changedData);
+
+    // Отправить changedData на сервер
+    // Ваш код для отправки данных на сервер
+
+    // Сбросить состояние changedData
+    setChangedData([]);
   };
 
   const renderData = () => {
