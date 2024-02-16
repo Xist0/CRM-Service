@@ -8,6 +8,7 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 function ChangeOrder() {
   const [number, setNumber] = useState('');
   const [records, setRecords] = useState(null);
+  const [initialData, setInitialData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const [matchedParts, setMatchedParts] = useState([]);
@@ -38,11 +39,22 @@ function ChangeOrder() {
       const response = await fetch(`/api/byt/order/${searchNumber}`);
       const data = await response.json();
       setRecords(data);
+      setInitialData(data); // Сохраняем изначальные данные
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
       setIsLoading(false);
     }
+  };
+  // Функция для возвращения к изначальным данным
+  const resetData = () => {
+    setFormData({
+      nameParts: '',
+      selectedParts: [],
+    });
+    setEditedPrices([]);
+    setDeletedParts([]);
+    setChangedData([]);
   };
 
   const handleChange = (e) => {
@@ -81,32 +93,68 @@ function ChangeOrder() {
         selectedParts: [...formData.selectedParts, selectedPart],
       });
       setSelectedPart(null);
-
-      // Добавить новую запчасть в changedData
-      setChangedData([...changedData, selectedPart]);
+      setChangedData([...changedData, { ...selectedPart, parts_price: selectedPart.parts_price }]);
     }
   };
-
+  
   const handlePriceChange = (index, event) => {
     const newPrices = [...editedPrices];
     newPrices[index] = event.target.value;
     setEditedPrices(newPrices);
-
-    // Обновить changedData с измененной ценой
+  
     const updatedData = [...changedData];
-    updatedData[index] = { ...updatedData[index], parts_price: event.target.value };
+    if (index < formData.selectedParts.length) {
+      // Если измененная часть из выбранных, обновляем цену в formData
+      formData.selectedParts[index].parts_price = event.target.value;
+    } else {
+      // Если измененная часть из изначальных данных, обновляем цену в initialData
+      const partIndex = index - formData.selectedParts.length;
+      initialData.parts[partIndex].parts_price = event.target.value;
+      updatedData[partIndex] = { ...initialData.parts[partIndex], parts_price: event.target.value };
+    }
     setChangedData(updatedData);
   };
+  
 
   const handleSaveChanges = () => {
-    console.log('Измененные данные:', changedData);
-
-    // Отправить changedData на сервер
-    // Ваш код для отправки данных на сервер
-
-    // Сбросить состояние changedData
-    setChangedData([]);
+    // Обновляем изначальные данные с учетом изменений
+    const updatedParts = initialData.parts.map(part => {
+      const changedPart = changedData.find(changed => changed.id_parts === part.id);
+      if (changedPart) {
+        return {
+          ...part,
+          parts_price: changedPart.parts_price
+        };
+      }
+      return part;
+    });
+  
+    const updatedWorks = initialData.work.map(work => {
+      const changedWork = changedData.find(changed => changed.id_work === work.id_work);
+      if (changedWork) {
+        return {
+          ...work,
+          work_price: changedWork.work_price
+        };
+      }
+      return work;
+    });
+  
+    // Обновляем все данные о заказе
+    const updatedRecords = {
+      ...initialData,
+      parts: updatedParts,
+      work: updatedWorks
+    };
+  
+    console.log('Обновленные данные:', updatedRecords);
+  
+    // Отправляем данные на сервер
+  
+    // Сбрасываем состояние
+    resetData();
   };
+  
 
   const renderData = () => {
     if (isLoading) {
