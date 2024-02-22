@@ -152,7 +152,7 @@ function ChangeOrder() {
       initialData.work[workIndex].work_price = event.target.value;
       updatedData[workIndex] = { ...initialData.work[workIndex], work_price: event.target.value };
     }
-    setChangedData(updatedData);
+    setChangedData(updatedData); // Обновляем массив измененных данных
   };
 
   const handleAddButtonClick = () => {
@@ -163,7 +163,7 @@ function ChangeOrder() {
         selectedParts: [...formData.selectedParts, newSelectedPart],
       });
       setSelectedPart(null);
-      setChangedData([...changedData, newSelectedPart]);
+      setChangedData([...changedData, newSelectedPart]); // Добавляем новый элемент в массив измененных данных
       setInitialData(prevData => {
         const updatedParts = [...prevData.parts, newSelectedPart];
         return { ...prevData, parts: updatedParts };
@@ -179,7 +179,7 @@ function ChangeOrder() {
         selectedWork: [...formData.selectedWork, newSelectedPart],
       });
       setSelectedPart(null);
-      setChangedData([...changedData, newSelectedPart]);
+      setChangedData([...changedData, newSelectedPart]); // Добавляем новый элемент в массив измененных данных
       setInitialData(prevData => {
         const updatedWork = [...prevData.work, newSelectedPart];
         return { ...prevData, work: updatedWork };
@@ -199,7 +199,7 @@ function ChangeOrder() {
       initialData.parts[partIndex].parts_price = event.target.value;
       updatedData[partIndex] = { ...initialData.parts[partIndex], parts_price: event.target.value };
     }
-    setChangedData(updatedData);
+    setChangedData(updatedData); // Обновляем массив измененных данных
   };
 
   const handleSaveChanges = () => {
