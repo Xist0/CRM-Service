@@ -139,7 +139,6 @@ function ChangeOrder() {
       });
     }
   };
-
   const handleWorkPriceChange = (index, event) => {
     const newPrices = [...editedWorkPrices];
     newPrices[index] = event.target.value;
@@ -170,7 +169,7 @@ function ChangeOrder() {
       });
     }
   };
-  
+
   const handleAddWorkClick = () => {
     if (selectedPart) {
       const newSelectedPart = { ...selectedPart, work_price: selectedPart.work_price };
