@@ -56,10 +56,12 @@ function ChangeOrder() {
     setFormData({
       nameParts: '',
       selectedParts: [],
+      selectedWork: [], // Добавляем сброс выбранных работ
     });
     setEditedPrices([]);
     setDeletedParts([]);
     setChangedData([]);
+    setDeletedWork([]); // Добавляем сброс удаленных работ
   };
 
   const handleChange = (e) => {
@@ -74,7 +76,7 @@ function ChangeOrder() {
 
   const searchParts = async (nameParts) => {
     try {
-      const response = await fetch(`/api/works1c/${encodeURIComponent(nameParts)}`);
+      const response = await fetch(`/api/parts1c/${encodeURIComponent(nameParts)}`); // Изменяем поиск на соответствующий раздел
       const data = await response.json();
       setMatchedParts(data);
     } catch (error) {
@@ -85,28 +87,12 @@ function ChangeOrder() {
 
   const searchWork = async (nameWork) => {
     try {
-      const response = await fetch(`/api/parts1c/${encodeURIComponent(nameWork)}`);
+      const response = await fetch(`/api/works1c/${encodeURIComponent(nameWork)}`); // Изменяем поиск на соответствующий раздел
       const data = await response.json();
       setMatchedWork(data);
     } catch (error) {
       console.error('Error searching work:', error);
       setMatchedWork([]);
-    }
-  };
-
-  const handleAddWorkClick = () => {
-    if (selectedPart) {
-      const newSelectedPart = { ...selectedPart, work_price: selectedPart.work_price };
-      setFormData({
-        ...formData,
-        selectedWork: [...formData.selectedWork, newSelectedPart],
-      });
-      setSelectedPart(null);
-      setChangedData([...changedData, newSelectedPart]);
-      setInitialData(prevData => {
-        const updatedWork = [...prevData.work, newSelectedPart];
-        return { ...prevData, work: updatedWork };
-      });
     }
   };
 
@@ -184,6 +170,22 @@ function ChangeOrder() {
       });
     }
   };
+  
+  const handleAddWorkClick = () => {
+    if (selectedPart) {
+      const newSelectedPart = { ...selectedPart, work_price: selectedPart.work_price };
+      setFormData({
+        ...formData,
+        selectedWork: [...formData.selectedWork, newSelectedPart],
+      });
+      setSelectedPart(null);
+      setChangedData([...changedData, newSelectedPart]);
+      setInitialData(prevData => {
+        const updatedWork = [...prevData.work, newSelectedPart];
+        return { ...prevData, work: updatedWork };
+      });
+    }
+  };
 
   const handlePriceChange = (index, event) => {
     const newPrices = [...editedPrices];
@@ -203,16 +205,10 @@ function ChangeOrder() {
   const handleSaveChanges = () => {
     const changedDataToSend = {
       id_order: initialData.id_order,
-      parts: [],
-      work: [],
+      parts: formData.selectedParts, // Изменяем на отправку выбранных запчастей
+      work: formData.selectedWork, // Изменяем на отправку выбранных работ
     };
-    changedData.forEach(item => {
-      if (item.id_parts) {
-        changedDataToSend.parts.push({ id_parts: item.id_parts, parts_price: item.parts_price });
-      } else if (item.id_work) {
-        changedDataToSend.work.push({ id_work: item.id_work, work_price: item.work_price });
-      }
-    });
+
     console.log('Измененные данные для отправки:', changedDataToSend);
   };
 
@@ -228,169 +224,169 @@ function ChangeOrder() {
       return <p>Ничего не найдено</p>;
     }
     return (
-<div className="">
-<div className="container-block-main">
-        <div className='forma-input input-column'>
-          <div className="container-search-result-title">
-            <h1>Заказ: {records.id_order}</h1>
-          </div>
-          <div className="container-block-orders">
-            <label >
-              <h4>Пользователь:</h4> <p>{records.user.name_user}</p>
-            </label>
-            <label >
-              <h4>Номер телефона:</h4> <p>{records.user.phone_user}</p>
-            </label>
-            <label >
-              <h4>Адресс:</h4> <p>{records.user.address_user}</p>
-            </label>
-            <label >
-              <h4>Тип устройства:</h4> <p>{records.device.type}</p>
-            </label>
-            <label >
-              <h4>Бренд:</h4> <p>{records.device.brand}</p>
-            </label>
-            <label >
-              <h4>Номер модели:</h4> <p>{records.device.model}</p>
-            </label>
-            <label >
-              <h4>Стутус:</h4> <p>{records.status.status_order}</p>
-            </label>
-            <label >
-              <h4>Серийный номер модели:</h4> <p>{records.device.sn}</p>
-            </label>
-            <label >
-              <h4>Дефект:</h4> <p>{records.device.defect}</p>
-            </label>
-          </div>
-          <select name="option">
-            <option value="" disabled selected hidden>Выберите статус</option>
-          </select>
-        </div>
-        <div className="forma-input input-column">
-          <div className="container-block-orders">
-            <div className="container-search-result-parts-title">
-              <h1>Работа</h1>
+      <div className="">
+        <div className="container-block-main">
+          <div className='forma-input input-column'>
+            <div className="container-search-result-title">
+              <h1>Заказ: {records.id_order}</h1>
             </div>
-            {formData.selectedWork.concat(records.work).map((workItem, key) => (
-              deletedWork.includes(key) ? null : (
-                <div key={key} className='container-search-result-parts-main'>
-                  <p>{workItem.work_name || workItem.name_parts}</p>
-                  <div className="container-search-result-parts-prise">
-                    <input
-                      type="text"
-                      value={editedWorkPrices[key] || workItem.work_price}
-                      onChange={(event) => handleWorkPriceChange(key, event)}
-                    />
-                    <IoMdCloseCircleOutline onClick={() => handleRemoveWorkButtonClick(key)} />
-                  </div>
-                </div>
-              )
-            ))}
-            <div className="container-block-search">
-              <input
-                type="text"
-                placeholder="Название"
-                className="input-style input-valid"
-                onChange={(e) => {
-                  handleChange(e);
-                  searchWork(e.target.value)
-                }}
-              />
-              <button onClick={handleAddWorkClick}>Добавить</button>
+            <div className="container-block-orders">
+              <label >
+                <h4>Пользователь:</h4> <p>{records.user.name_user}</p>
+              </label>
+              <label >
+                <h4>Номер телефона:</h4> <p>{records.user.phone_user}</p>
+              </label>
+              <label >
+                <h4>Адресс:</h4> <p>{records.user.address_user}</p>
+              </label>
+              <label >
+                <h4>Тип устройства:</h4> <p>{records.device.type}</p>
+              </label>
+              <label >
+                <h4>Бренд:</h4> <p>{records.device.brand}</p>
+              </label>
+              <label >
+                <h4>Номер модели:</h4> <p>{records.device.model}</p>
+              </label>
+              <label >
+                <h4>Стутус:</h4> <p>{records.status.status_order}</p>
+              </label>
+              <label >
+                <h4>Серийный номер модели:</h4> <p>{records.device.sn}</p>
+              </label>
+              <label >
+                <h4>Дефект:</h4> <p>{records.device.defect}</p>
+              </label>
             </div>
-            {matchedWork && matchedWork.length > 0 && (
-              <div className="matched-users">
-                {matchedWork.map((work, index) => (
-                  <div
-                    key={index}
-                    className={`matched-user ${selectedPart === work ? 'matched-user-acktive' : ''}`}
-                    onClick={() => handlePartClick(work)}
-                  >
-                    {work.name_parts}
-                  </div>
-                ))}
+            <select name="option">
+              <option value="" disabled selected hidden>Выберите статус</option>
+            </select>
+          </div>
+          <div className="forma-input input-column">
+            <div className="container-block-orders">
+              <div className="container-search-result-parts-title">
+                <h1>Работа</h1>
               </div>
-            )}
-          </div>
-        </div>
-        <div className="forma-input input-column">
-          <div className="container-block-orders">
-            <div className="container-search-result-parts-title">
-              <h1>Запчасти</h1>
-            </div>
-            {formData.selectedParts.concat(records.parts).map((partItem, index) => (
-              deletedParts.includes(index) ? null : (
-                <div key={index} className='container-search-result-parts-main'>
-                  <p>{partItem.name_parts || partItem.parts_name}</p>
-                  <div className="container-search-result-parts-prise">
-                    <input
-                      type="text"
-                      value={editedPrices[index] || partItem.parts_price}
-                      onChange={(event) => handlePriceChange(index, event)}
-                    />
-                    <IoMdCloseCircleOutline onClick={() => handleRemoveButtonClick(index)} />
+              {formData.selectedWork.concat(records.work).map((workItem, key) => (
+                deletedWork.includes(key) ? null : (
+                  <div key={key} className='container-search-result-parts-main'>
+                    <p>{workItem.work_name || workItem.name_parts}</p>
+                    <div className="container-search-result-parts-prise">
+                      <input
+                        type="text"
+                        value={editedWorkPrices[key] || workItem.work_price}
+                        onChange={(event) => handleWorkPriceChange(key, event)}
+                      />
+                      <IoMdCloseCircleOutline onClick={() => handleRemoveWorkButtonClick(key)} />
+                    </div>
                   </div>
-                </div>
-              )
-            ))}
-            <div className="container-block-search">
-              <input
-                type="text"
-                placeholder="Название"
-                className="input-style input-valid"
-                onChange={(e) => {
-                  handleChange(e);
-                  searchParts(e.target.value);
-                }}
-              />
-              <button onClick={handleAddButtonClick}>Добавить</button>
-            </div>
-            {matchedParts && matchedParts.length > 0 && (
-              <div className="matched-users">
-                {matchedParts.map((part, index) => (
-                  <div
-                    key={index}
-                    className={`matched-user ${selectedPart === part ? 'matched-user-acktive' : ''}`}
-                    onClick={() => handlePartClick(part)}
-                  >
-                    {part.name_parts}
-                  </div>
-                ))}
+                )
+              ))}
+              <div className="container-block-search">
+                <input
+                  type="text"
+                  placeholder="Название"
+                  className="input-style input-valid"
+                  onChange={(e) => {
+                    handleChange(e);
+                    searchWork(e.target.value)
+                  }}
+                />
+                <button onClick={handleAddWorkClick}>Добавить</button>
               </div>
-            )}
+              {matchedWork && matchedWork.length > 0 && (
+                <div className="matched-users">
+                  {matchedWork.map((work, index) => (
+                    <div
+                      key={index}
+                      className={`matched-user ${selectedPart === work ? 'matched-user-acktive' : ''}`}
+                      onClick={() => handlePartClick(work)}
+                    >
+                      {work.name_parts}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="forma-input input-column">
+            <div className="container-block-orders">
+              <div className="container-search-result-parts-title">
+                <h1>Запчасти</h1>
+              </div>
+              {formData.selectedParts.concat(records.parts).map((partItem, index) => (
+                deletedParts.includes(index) ? null : (
+                  <div key={index} className='container-search-result-parts-main'>
+                    <p>{partItem.parts_name || partItem.name_parts}</p>
+                    <div className="container-search-result-parts-prise">
+                      <input
+                        type="text"
+                        value={editedPrices[index] || partItem.parts_price}
+                        onChange={(event) => handlePriceChange(index, event)}
+                      />
+                      <IoMdCloseCircleOutline onClick={() => handleRemoveButtonClick(index)} />
+                    </div>
+                  </div>
+                )
+              ))}
+              <div className="container-block-search">
+                <input
+                  type="text"
+                  placeholder="Название"
+                  className="input-style input-valid"
+                  onChange={(e) => {
+                    handleChange(e);
+                    searchParts(e.target.value);
+                  }}
+                />
+                <button onClick={handleAddButtonClick}>Добавить</button>
+              </div>
+              {matchedParts && matchedParts.length > 0 && (
+                <div className="matched-users">
+                  {matchedParts.map((part, index) => (
+                    <div
+                      key={index}
+                      className={`matched-user ${selectedPart === part ? 'matched-user-acktive' : ''}`}
+                      onClick={() => handlePartClick(part)}
+                    >
+                      {part.name_parts}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      <div className="container-block-search">
-        <button onClick={handleSaveChanges}>Сохранить</button>
-      </div>
-</div>
-  );
-};
-
-return (
-  <div>
-    <Header />
-    <div className="container-box">
-      <div className="container-block">
         <div className="container-block-search">
-          <input
-            type="number"
-            pattern="\d*"
-            value={number}
-            onChange={handleChange}
-            onKeyPress={handleKeyPress}
-            placeholder='Введите номер заказа'
-          />
-          <button onClick={() => fetchData(number)}>Найти</button>
+          <button onClick={handleSaveChanges}>Сохранить</button>
         </div>
-        <div className="container-results">{renderData()}</div>
       </div>
+    );
+  };
+
+  return (
+    <div>
+      <Header />
+      <div className="container-box">
+        <div className="container-block">
+          <div className="container-block-search">
+            <input
+              type="number"
+              pattern="\d*"
+              value={number}
+              onChange={handleChange}
+              onKeyPress={handleKeyPress}
+              placeholder='Введите номер заказа'
+            />
+            <button onClick={() => fetchData(number)}>Найти</button>
+          </div>
+          <div className="container-results">{renderData()}</div>
+        </div>
+      </div>
+      <Messenger />
     </div>
-    <Messenger />
-  </div>
-);
+  );
 }
 
 export default ChangeOrder;
