@@ -85,7 +85,7 @@ function ChangeOrder() {
 
   const searchWork = async (nameWork) => {
     try {
-      const response = await fetch(`/api/works1c/${encodeURIComponent(nameWork)}`);
+      const response = await fetch(`/api/parts1c/${encodeURIComponent(nameWork)}`);
       const data = await response.json();
       setMatchedWork(data);
     } catch (error) {

@@ -272,7 +272,7 @@ app.get('/api/works1c/:Z_name', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-app.get('/api/works1c/:X_name', async (req, res) => {
+app.get('/api/parts1c/:X_name', async (req, res) => {
   const { X_name } = req.params;
 
   try {
