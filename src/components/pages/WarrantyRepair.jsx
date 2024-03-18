@@ -44,9 +44,9 @@ function WarrantyRepair() {
 
   const toggleExpandedRow = (index) => {
     if (expandedRow === index) {
-      setExpandedRow(null); // Закрываем текущее открытое дополнительное поле
+      setExpandedRow(null);
     } else {
-      setExpandedRow(index); // Открываем новое дополнительное поле
+      setExpandedRow(index);
     }
   };
 
@@ -88,32 +88,28 @@ function WarrantyRepair() {
                       <td>{data.device.device_defect}</td>
                     </tr>
                     {expandedRow === index && (
-                      <tr className="expanded-row" key={`expanded-${index}`}>
-                        <td colSpan="6">
-                          <div className="expanded-content">
-                            <div>
-                              <h1>Покупатель</h1>
-                              <h4></h4>
-                            </div>
-                            <div>
-                              <h1>Внешний вид</h1>
-                              <h4></h4>
-                            </div>
-                            <div>
-                              <h1>Комплектация</h1>
-                              <h4></h4>
-                            </div>
-                            <div>
-                              <h1>Дата продажи</h1>
-                              <h4></h4>
-                            </div>
+                        <div className="expanded-content" key={`expanded-${index}`}>
+                          <div>
+                            <h1>Покупатель</h1>
+                            <h4></h4>
                           </div>
-                        </td>
-                      </tr>
+                          <div>
+                            <h1>Внешний вид</h1>
+                            <h4></h4>
+                          </div>
+                          <div>
+                            <h1>Комплектация</h1>
+                            <h4></h4>
+                          </div>
+                          <div>
+                            <h1>Дата продажи</h1>
+                            <h4></h4>
+                          </div>
+                        </div>
                     )}
-                  </React.Fragment>
-                ))}
-              </tbody>
+                      </React.Fragment>
+                    ))}
+                  </tbody>
             </table>
           ) : (
             <div>Нет данных для отображения</div>

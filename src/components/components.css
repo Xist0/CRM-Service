@@ -216,65 +216,71 @@ li a:hover {
 .Warranty-Conteiner-nav th,
 .Warranty-Conteiner-nav td {
     border: 1px solid #ccc;
-    /* Границы ячеек */
     padding: 10px;
-    /* Отступы внутри ячеек */
     text-align: center;
-    /* Выравнивание содержимого по центру */
 }
 
 .Warranty-Conteiner-nav th {
     background-color: #f0f0f0;
-    /* Цвет фона заголовков */
 }
 
 .Warranty-Conteiner-nav-clouse {
-    display: none; /* Скрыть дополнительное поле по умолчанию */
-  }
-  
-  .Warranty-Conteiner-nav-aktive{
-    display: flex; /* Отобразить дополнительное поле при раскрытии */
-    flex-direction: column; /* Отображение элементов в столбец */
-    padding: 10px; /* Отступ внутри дополнительного поля */
-    margin-top: 10px; /* Отступ сверху */
-    border: 1px solid #ccc; /* Линия вокруг дополнительного поля */
-    background-color: #f5f5f5; /* Цвет фона дополнительного поля */
-  }
-  
-  .Warranty-Conteiner-table-open-button {
-    margin-top: 10px; /* Отступ кнопки от дополнительного поля */
-  }
-  
-  .Warranty-Conteiner-info {
-    margin-bottom: 10px; /* Отступ между блоками информации внутри дополнительного поля */
-  }
-  
-  .Warranty-Conteiner-info-header {
-    font-weight: bold; /* Жирный шрифт для заголовка блока информации */
-  }
-  
-  .Warranty-Conteiner-info-content {
-    margin-top: 5px; /* Отступ сверху для контента внутри блока информации */
-  }
-  .Warranty-Conteiner-table-open-button {
-    margin-top: 10px; /* Отступ кнопки от дополнительного поля */
-  }
-  
-  .Warranty-Conteiner-info {
-    margin-bottom: 10px; /* Отступ между блоками информации внутри дополнительного поля */
-  }
-  
-  .Warranty-Conteiner-info-header {
-    font-weight: bold; /* Жирный шрифт для заголовка блока информации */
-  }
-  
-  .Warranty-Conteiner-info-content {
-    margin-top: 5px; /* Отступ сверху для контента внутри блока информации */
-  }
+    display: none;
+}
+
+.Warranty-Conteiner-nav-aktive {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+}
+
+.Warranty-Conteiner-table-open-button {
+    margin-top: 10px;
+}
+
+.Warranty-Conteiner-info {
+    margin-bottom: 10px;
+}
+
+.Warranty-Conteiner-info-header {
+    font-weight: bold;
+}
+
+.Warranty-Conteiner-info-content {
+    margin-top: 5px;
+}
+
+.Warranty-Conteiner-table-open-button {
+    margin-top: 10px;
+}
+
+.Warranty-Conteiner-info {
+    margin-bottom: 10px;
+}
+
+.Warranty-Conteiner-info-header {
+    font-weight: bold;
+}
+
+.Warranty-Conteiner-info-content {
+    margin-top: 5px;
+}
+
 .Warranty-Conteiner-nav>tbody>tr {
     cursor: pointer;
 }
-
+.Warranty-Conteiner-nav > tbody > tr:hover {
+    border: 2px solid #1776CD;
+    box-shadow: 0px 0px 15px 5px rgba(56, 115, 159, 0.3);
+}
+.expanded-content{
+    width: 100%;
+    display: flex;
+    background: #a3a3a339;
+}
 .Warranty-Conteiner-info {
     display: flex;
     justify-content: space-between;
