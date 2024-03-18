@@ -200,40 +200,79 @@ li a:hover {
     flex-direction: column;
 }
 
-.Warranty-Conteiner-nav {
-    display: table;
-    width: 100%;
-    cursor: pointer;
-}
 
-.Warranty-Conteiner-nav>tbody {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    border-bottom: 1px solid #656565;
-}
-
-.Warranty-Conteiner-nav>tbody>tr {
-    display: flex;
-   justify-content: space-between;
-   width: 100%;
-}
-
-.Warranty-Conteiner-nav>tbody>tr>label {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 30px;
-    margin-bottom: 10px;
-}
-
-.Warranty-Conteiner-nav-open {
-    background: #eeeeee7b;
-    padding: 10px 0;
-    gap: 20px;
-    
+.Warranty-Conteiner {
     display: flex;
     flex-direction: column;
+    align-items: center;
+}
+
+.Warranty-Conteiner-nav {
+    width: 100%;
+    border-collapse: collapse;
+    display: block;
+}
+
+.Warranty-Conteiner-nav th,
+.Warranty-Conteiner-nav td {
+    border: 1px solid #ccc;
+    /* Границы ячеек */
+    padding: 10px;
+    /* Отступы внутри ячеек */
+    text-align: center;
+    /* Выравнивание содержимого по центру */
+}
+
+.Warranty-Conteiner-nav th {
+    background-color: #f0f0f0;
+    /* Цвет фона заголовков */
+}
+
+.Warranty-Conteiner-nav-clouse {
+    display: none; /* Скрыть дополнительное поле по умолчанию */
+  }
+  
+  .Warranty-Conteiner-nav-aktive{
+    display: flex; /* Отобразить дополнительное поле при раскрытии */
+    flex-direction: column; /* Отображение элементов в столбец */
+    padding: 10px; /* Отступ внутри дополнительного поля */
+    margin-top: 10px; /* Отступ сверху */
+    border: 1px solid #ccc; /* Линия вокруг дополнительного поля */
+    background-color: #f5f5f5; /* Цвет фона дополнительного поля */
+  }
+  
+  .Warranty-Conteiner-table-open-button {
+    margin-top: 10px; /* Отступ кнопки от дополнительного поля */
+  }
+  
+  .Warranty-Conteiner-info {
+    margin-bottom: 10px; /* Отступ между блоками информации внутри дополнительного поля */
+  }
+  
+  .Warranty-Conteiner-info-header {
+    font-weight: bold; /* Жирный шрифт для заголовка блока информации */
+  }
+  
+  .Warranty-Conteiner-info-content {
+    margin-top: 5px; /* Отступ сверху для контента внутри блока информации */
+  }
+  .Warranty-Conteiner-table-open-button {
+    margin-top: 10px; /* Отступ кнопки от дополнительного поля */
+  }
+  
+  .Warranty-Conteiner-info {
+    margin-bottom: 10px; /* Отступ между блоками информации внутри дополнительного поля */
+  }
+  
+  .Warranty-Conteiner-info-header {
+    font-weight: bold; /* Жирный шрифт для заголовка блока информации */
+  }
+  
+  .Warranty-Conteiner-info-content {
+    margin-top: 5px; /* Отступ сверху для контента внутри блока информации */
+  }
+.Warranty-Conteiner-nav>tbody>tr {
+    cursor: pointer;
 }
 
 .Warranty-Conteiner-info {

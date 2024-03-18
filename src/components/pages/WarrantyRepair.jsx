@@ -6,16 +6,8 @@ import axios from 'axios';
 function WarrantyRepair() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [navOpen, setNavOpen] = useState(false);
-  const [detailsOpen, setDetailsOpen] = useState(null);
-
-  const toggleDetails = (index) => {
-    if (detailsOpen === index) {
-      setDetailsOpen(null);
-    } else {
-      setDetailsOpen(index);
-    }
-  };
+  const [receivedData, setReceivedData] = useState(null);
+  const [expandedRow, setExpandedRow] = useState(null);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -35,11 +27,14 @@ function WarrantyRepair() {
 
       const response = await axios.post('/api/parser/warrantyorder', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data', // Устанавливаем правильный Content-Type для FormData
+          'Content-Type': 'multipart/form-data',
         },
       });
 
       console.log('File uploaded successfully:', response.data);
+      const { data } = response;
+
+      setReceivedData(data);
     } catch (error) {
       console.error('Error uploading file:', error);
     } finally {
@@ -47,10 +42,14 @@ function WarrantyRepair() {
     }
   };
 
-  const toggleNav = () => {
-    setNavOpen(!navOpen);
+  const toggleExpandedRow = (index) => {
+    if (expandedRow === index) {
+      setExpandedRow(null); // Закрываем текущее открытое дополнительное поле
+    } else {
+      setExpandedRow(index); // Открываем новое дополнительное поле
+    }
   };
-  
+
   const WarrantyOrder = () => {
     if (isLoading) {
       return (
@@ -60,116 +59,65 @@ function WarrantyRepair() {
       );
     }
 
-    const orders = [
-      {
-        number: 312312,
-        seller: 'ИП Ленинг',
-        repairType: 'Проверка качества',
-        company: 'geozon',
-        serialNumber: '4603765754179',
-        defect: 'Не верно показывает давление (ПК)',
-        buyer: 'Аблаева Алина Валерерьевна',
-        phone: '+79872042250',
-        deviceType: 'Часы',
-        fullModel: 'Умные часы GEOZON RUNNER G-SM12 Black',
-        exelModel: 'Умные часы GEOZON RUNNER G-SM12 Black',
-        IMEI: '4603765754179',
-        appearance: '',
-        equipment: 'Полная',
-        saleDate: '23.02.2024',
-      },
-    ];
-
     return (
       <div className="Warranty-Conteiner">
         <h1>Заказы</h1>
         <div className="Warranty-Conteiner-line"></div>
         <div className="Warranty-Conteiner-box">
-          <table
-            className={
-              navOpen
-                ? 'Warranty-Conteiner-nav Warranty-Conteiner-nav-open'
-                : 'Warranty-Conteiner-nav'
-            }
-          >
-            <tbody>
-              {orders.map((order, index) => (
-                <tr key={index} onClick={() => toggleDetails(order.number)}>
-                  <td>
-                    <h1>№ заказа</h1>
-                    <h4>{order.number}</h4>
-                  </td>
-                  <td>
-                    <h1>Продавец</h1>
-                    <h4>{order.seller}</h4>
-                  </td>
-                  <td>
-                    <h1>Тип ремонта</h1>
-                    <h4>{order.repairType}</h4>
-                  </td>
-                  <td>
-                    <h1>Фирма</h1>
-                    <h4>{order.company}</h4>
-                  </td>
-                  <td>
-                    <h1>Серийный номер</h1>
-                    <h4>{order.serialNumber}</h4>
-                  </td>
-                  <td>
-                    <h1>Деффект</h1>
-                    <h4>{order.defect}</h4>
-                  </td>
+          {receivedData && receivedData.length > 0 ? (
+            <table className="Warranty-Conteiner-nav">
+              <thead>
+                <tr>
+                  <th>№ заказа</th>
+                  <th>Продавец</th>
+                  <th>Тип ремонта</th>
+                  <th>Фирма</th>
+                  <th>Серийный номер</th>
+                  <th>Деффект</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-
-          {detailsOpen && (
-            <div className="Warranty-Conteiner-nav-open">
-              {orders.map((order) => (
-                detailsOpen === order.number && (
-                  <React.Fragment key={order.number}>
-                    <div className="Warranty-Conteiner-info">
-                      <div className="Warranty-Conteiner-info-header">
-                        <h1>Покупатель</h1>
-                      </div>
-                      <div className="Warranty-Conteiner-info-content">
-                        <h4>{order.buyer}</h4>
-                      </div>
-                    </div>
-                    <div className="Warranty-Conteiner-info">
-                      <div className="Warranty-Conteiner-info-header">
-                        <h1>Внешний вид</h1>
-                      </div>
-                      <div className="Warranty-Conteiner-info-content">
-                        <h4>{order.appearance}</h4>
-                      </div>
-                    </div>
-                    <div className="Warranty-Conteiner-info">
-                      <div className="Warranty-Conteiner-info-header">
-                        <h1>Комплектация</h1>
-                      </div>
-                      <div className="Warranty-Conteiner-info-content">
-                        <h4>{order.equipment}</h4>
-                      </div>
-                    </div>
-                    <div className="Warranty-Conteiner-info">
-                      <div className="Warranty-Conteiner-info-header">
-                        <h1>Дата продажи</h1>
-                      </div>
-                      <div className="Warranty-Conteiner-info-content">
-                        <h4>{order.saleDate}</h4>
-                      </div>
-                    </div>
+              </thead>
+              <tbody>
+                {receivedData.map((data, index) => (
+                  <React.Fragment key={index}>
+                    <tr onClick={() => toggleExpandedRow(index)}>
+                      <td>{data.order_id}</td>
+                      <td>{data.seller}</td>
+                      <td>{data.order_type}</td>
+                      <td>{data.company}</td>
+                      <td>{data.device.device_sn}</td>
+                      <td>{data.device.device_defect}</td>
+                    </tr>
+                    {expandedRow === index && (
+                      <tr className="expanded-row" key={`expanded-${index}`}>
+                        <td colSpan="6">
+                          <div className="expanded-content">
+                            <div>
+                              <h1>Покупатель</h1>
+                              <h4></h4>
+                            </div>
+                            <div>
+                              <h1>Внешний вид</h1>
+                              <h4></h4>
+                            </div>
+                            <div>
+                              <h1>Комплектация</h1>
+                              <h4></h4>
+                            </div>
+                            <div>
+                              <h1>Дата продажи</h1>
+                              <h4></h4>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
                   </React.Fragment>
-                )
-              ))}
-              <div className="Warranty-Conteiner-table-open-button">
-                <button>Сохранить</button>
-              </div>
-            </div>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div>Нет данных для отображения</div>
           )}
-
         </div>
       </div>
     );
@@ -181,10 +129,9 @@ function WarrantyRepair() {
       <div className="container-box">
         <div className="WarrantySearch">
           <form encType="multipart/form-data">
-            <input type="file" name="file"  onChange={handleFileChange}/>
+            <input type="file" name="file" onChange={handleFileChange} />
             <button type="button" onClick={handleSubmit}>Отправить</button>
           </form>
-
         </div>
         {WarrantyOrder()}
       </div>
