@@ -84,18 +84,20 @@ li a:hover {
 .dropdown-content a:hover {
     background-color: #ddd;
 }
-.container-block{
+
+.container-block {
     display: flex;
     flex-direction: column;
     width: 100%;
     margin: auto;
     gap: 15px;
 }
+
 .container-block-main {
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    margin: 20px 0 ;
+    margin: 20px 0;
 }
 
 .input-column>table {
@@ -108,7 +110,8 @@ li a:hover {
     width: 100%;
     align-items: center;
 }
-#fullname{
+
+#fullname {
     display: flex;
     width: 100%;
     align-items: center;
@@ -134,17 +137,20 @@ li a:hover {
     display: block;
     text-align: start;
 }
-.container-block-orders>label{
+
+.container-block-orders>label {
     display: flex;
     width: 100%;
     align-items: center;
 }
-.container-block-orders>label>h4{
+
+.container-block-orders>label>h4 {
     width: calc(100% - 50%);
     display: block;
     text-align: start;
 }
-.container-block-orders>label>p{
+
+.container-block-orders>label>p {
     width: calc(100% - 40%);
     display: block;
     text-align: start;
@@ -156,6 +162,7 @@ li a:hover {
     width: 100%;
     flex-direction: column;
 }
+
 .loading-animation {
     position: relative;
     width: 100%;
@@ -170,6 +177,84 @@ li a:hover {
     height: 101px;
 }
 
+.WarrantySearch {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    align-items: center;
+}
+
+.Warranty-Conteiner {
+    display: flex;
+    flex-direction: column;
+}
+
+.Warranty-Conteiner-line {
+    height: 2px;
+    width: 100%;
+    border: 1px solid #656565;
+}
+
+.Warranty-Conteiner-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.Warranty-Conteiner-nav {
+    display: table;
+    width: 100%;
+    cursor: pointer;
+}
+
+.Warranty-Conteiner-nav>tbody {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    border-bottom: 1px solid #656565;
+}
+
+.Warranty-Conteiner-nav>tbody>tr {
+    display: flex;
+   justify-content: space-between;
+   width: 100%;
+}
+
+.Warranty-Conteiner-nav>tbody>tr>label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    margin-bottom: 10px;
+}
+
+.Warranty-Conteiner-nav-open {
+    background: #eeeeee7b;
+    padding: 10px 0;
+    gap: 20px;
+    
+    display: flex;
+    flex-direction: column;
+}
+
+.Warranty-Conteiner-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.Warranty-Conteiner-info-header {
+    width: 35%;
+}
+
+.Warranty-Conteiner-info-content {
+    width: 100%;
+}
+
+.Warranty-Conteiner-table-open-button {
+    display: flex;
+    justify-content: center;
+}
 
 @media (max-width: 1280px) {
     .burger-menu-mav {

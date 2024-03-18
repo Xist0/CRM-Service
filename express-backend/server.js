@@ -7,6 +7,12 @@ const port = 3000;
 const accessTokenSecret = '4362734262347';
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
+const axios = require('axios');
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -272,26 +278,31 @@ app.get('/api/works1c/:Z_name', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-app.get('/api/parts1c/:X_name', async (req, res) => {
-  const { X_name } = req.params;
 
+
+
+
+app.post('/api/parser/warrantyorder', upload.single('file'), async (req, res) => {
   try {
-    const { default: fetch } = await import('node-fetch');
-
-    const response = await fetch(`http://192.168.1.10/api/parts1c/${encodeURIComponent(X_name)}`);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+    // Проверяем, был ли файл загружен успешно
+    if (!req.file || !req.file.buffer) {
+      return res.status(400).send('No file uploaded or file format is invalid');
     }
 
-    const responseData = await response.json();
+    // Получаем байты файла
+    const fileBytes = req.file.buffer;
 
-    res.json(responseData);
+    // Отправляем файл на внешний бэк
+    const response = await axios.post('http://192.168.1.10/api/parser/warrantyorder', fileBytes);
+
+    res.send(response.data);
   } catch (error) {
-    console.error(error);
+    console.error('Error processing file:', error);
     res.status(500).send('Internal Server Error');
   }
 });
+
+
 
 // Исправленная строка создания HTTPS-сервера
 const server = https.createServer(options, app);
