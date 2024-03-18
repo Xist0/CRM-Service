@@ -272,15 +272,39 @@ li a:hover {
 .Warranty-Conteiner-nav>tbody>tr {
     cursor: pointer;
 }
-.Warranty-Conteiner-nav > tbody > tr:hover {
+
+.Warranty-Conteiner-nav>tbody>tr:hover {
     border: 2px solid #1776CD;
     box-shadow: 0px 0px 15px 5px rgba(56, 115, 159, 0.3);
 }
-.expanded-content{
+
+.expanded-content {
     width: 100%;
     display: flex;
+    flex-direction: column;
+    gap: 10px;
     background: #a3a3a339;
 }
+.expanded-content-main{
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid;
+    justify-content: space-between;
+    
+}
+.expanded-content-main > h4{
+    display: flex;
+    width: 75%;
+    align-items: center;
+    text-align: center;
+}
+.expanded-row>td {
+    padding: 0;
+    border: 1px solid #656565;
+    box-shadow: none;
+    text-align: start;
+}
+
 .Warranty-Conteiner-info {
     display: flex;
     justify-content: space-between;

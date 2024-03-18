@@ -44,7 +44,7 @@ function WarrantyRepair() {
 
   const toggleExpandedRow = (index) => {
     if (expandedRow === index) {
-      setExpandedRow(null);
+      setExpandedRow(null); 
     } else {
       setExpandedRow(index);
     }
@@ -65,52 +65,63 @@ function WarrantyRepair() {
         <div className="Warranty-Conteiner-line"></div>
         <div className="Warranty-Conteiner-box">
           {receivedData && receivedData.length > 0 ? (
-            <table className="Warranty-Conteiner-nav">
-              <thead>
-                <tr>
-                  <th>№ заказа</th>
-                  <th>Продавец</th>
-                  <th>Тип ремонта</th>
-                  <th>Фирма</th>
-                  <th>Серийный номер</th>
-                  <th>Деффект</th>
-                </tr>
-              </thead>
-              <tbody>
-                {receivedData.map((data, index) => (
-                  <React.Fragment key={index}>
-                    <tr onClick={() => toggleExpandedRow(index)}>
-                      <td>{data.order_id}</td>
-                      <td>{data.seller}</td>
-                      <td>{data.order_type}</td>
-                      <td>{data.company}</td>
-                      <td>{data.device.device_sn}</td>
-                      <td>{data.device.device_defect}</td>
-                    </tr>
-                    {expandedRow === index && (
-                        <div className="expanded-content" key={`expanded-${index}`}>
-                          <div>
-                            <h1>Покупатель</h1>
-                            <h4></h4>
-                          </div>
-                          <div>
-                            <h1>Внешний вид</h1>
-                            <h4></h4>
-                          </div>
-                          <div>
-                            <h1>Комплектация</h1>
-                            <h4></h4>
-                          </div>
-                          <div>
-                            <h1>Дата продажи</h1>
-                            <h4></h4>
-                          </div>
-                        </div>
-                    )}
-                      </React.Fragment>
-                    ))}
-                  </tbody>
-            </table>
+            <div className="table-container">
+              <table className="Warranty-Conteiner-nav">
+                <thead>
+                  <tr>
+                    <th>№ заказа</th>
+                    <th>Продавец</th>
+                    <th>Тип ремонта</th>
+                    <th>Фирма</th>
+                    <th>Серийный номер</th>
+                    <th>Деффект</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {receivedData.map((data, index) => (
+                    <React.Fragment key={index}>
+                      <tr onClick={() => toggleExpandedRow(index)}>
+                        <td>{data.order_id}</td>
+                        <td>{data.seller}</td>
+                        <td>{data.order_type}</td>
+                        <td>{data.company}</td>
+                        <td>{data.device.device_sn}</td>
+                        <td>{data.device.device_defect}</td>
+                      </tr>
+                      {expandedRow === index && (
+                        <tr className="expanded-row" key={`expanded-${index}`}>
+                          <td colSpan="6">
+                            <div className="expanded-content">
+                              <div className='expanded-content-main'>
+                                <h1>Покупатель</h1>
+                                <h4></h4>
+                              </div>
+                              <div className='expanded-content-main'>
+                                <h1>Внешний вид</h1>
+                                <h4></h4>
+                              </div>
+                              <div className='expanded-content-main'>
+                                <h1>Комплектация</h1>
+                                <h4>{data.device.device_equipment}</h4>
+                              </div>
+                              <div className='expanded-content-main'>
+                                <h1>Дата продажи</h1>
+                                <h4>{data.device.device_sale_date}</h4>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </tbody>
+              </table>
+              {expandedRow !== null && (
+                <div className="expanded-content-wide">
+                  <h1>asdasda</h1>
+                </div>
+              )}
+            </div>
           ) : (
             <div>Нет данных для отображения</div>
           )}
