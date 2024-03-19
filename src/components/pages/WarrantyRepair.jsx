@@ -9,6 +9,7 @@ function WarrantyRepair() {
   const [receivedData, setReceivedData] = useState(null);
   const [expandedRow, setExpandedRow] = useState(null);
   const [editMode, setEditMode] = useState(false);
+  const [isEditing, setIsEditing] = useState(false); // New state for editing mode
   const [editedData, setEditedData] = useState(null);
   const [isValid, setIsValid] = useState(false);
   const [errors, setErrors] = useState({
@@ -18,7 +19,7 @@ function WarrantyRepair() {
     endUserAddress: '',
     endUserPhone: '',
   });
-  const minInputLength = 3; //Минимальное колличество символов 
+  const minInputLength = 3;
 
   useEffect(() => {
     if (editedData) {
@@ -77,6 +78,8 @@ function WarrantyRepair() {
   };
 
   const toggleExpandedRow = (index) => {
+    if (isEditing) return; // Prevent expanding rows if editing mode is active
+
     if (expandedRow === index) {
       setExpandedRow(null);
     } else {
@@ -87,6 +90,7 @@ function WarrantyRepair() {
   const handleEditClick = (data) => {
     setEditedData(data);
     setEditMode(true);
+    setIsEditing(true); // Set editing mode to true
   };
 
   const handleSaveClick = () => {
@@ -94,12 +98,15 @@ function WarrantyRepair() {
       console.log('Please fill in all required fields.');
       return;
     }
+
     console.log('Saving edited data:', editedData);
     setEditMode(false);
+    setIsEditing(false); // Set editing mode to false
   };
 
   const handleCancelClick = () => {
     setEditMode(false);
+    setIsEditing(false); // Set editing mode to false on cancel
   };
 
   const renderEditButtons = () => {
@@ -136,11 +143,6 @@ function WarrantyRepair() {
       setEditedData({ ...editedData, end_user: { ...editedData.end_user, user_phone: e.target.value } });
       setErrors({ ...errors, endUserPhone: e.target.value.trim().length >= minInputLength ? '' : `Поле должно содержать не менее ${minInputLength} символов` });
     };
-    const handleEndUserDefectDevice = (e) => {
-      setEditedData({ ...editedData, device: { ...editedData.device, device_defect: e.target.value } });
-      setErrors({ ...errors, defectdevice: e.target.value.trim().length >= minInputLength ? '' : `Поле должно содержать не менее ${minInputLength} символов` });
-    };
-    
 
     return (
       <div className="expanded-content">
@@ -202,15 +204,6 @@ function WarrantyRepair() {
             value={editedData.end_user.user_phone}
             onChange={handleEndUserPhoneChange}
             style={{ borderColor: errors.endUserPhone ? 'red' : '' }}
-          />
-        </div>
-        <div className='expanded-content-main'>
-          <h1>Деффект</h1>
-          <input
-            type="text"
-            value={editedData.device.device_defect}
-            onChange={handleEndUserDefectDevice}
-            style={{ borderColor: errors.defectdevice ? 'red' : '' }}
           />
         </div>
         {renderEditButtons()}
@@ -348,3 +341,4 @@ function WarrantyRepair() {
 }
 
 export default WarrantyRepair;
+
