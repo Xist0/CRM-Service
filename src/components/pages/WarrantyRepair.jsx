@@ -44,7 +44,7 @@ function WarrantyRepair() {
 
   const toggleExpandedRow = (index) => {
     if (expandedRow === index) {
-      setExpandedRow(null); 
+      setExpandedRow(null);
     } else {
       setExpandedRow(index);
     }
@@ -72,8 +72,11 @@ function WarrantyRepair() {
                     <th>№ заказа</th>
                     <th>Продавец</th>
                     <th>Тип ремонта</th>
+                    <th>Тип аппарата</th>
                     <th>Фирма</th>
+                    <th>Модель</th>
                     <th>Серийный номер</th>
+                    <th>IMEI</th>
                     <th>Деффект</th>
                   </tr>
                 </thead>
@@ -82,31 +85,53 @@ function WarrantyRepair() {
                     <React.Fragment key={index}>
                       <tr onClick={() => toggleExpandedRow(index)}>
                         <td>{data.order_id}</td>
-                        <td>{data.seller}</td>
-                        <td>{data.order_type}</td>
-                        <td>{data.company}</td>
-                        <td>{data.device.device_sn}</td>
-                        <td>{data.device.device_defect}</td>
+                        <td>{data.retail_user.user_name}</td>
+                        <td><label>{data.order_type}</label></td>
+                        <td><label>{data.device.device_type}</label></td>
+                        <td>{data.device.device_brand}</td>
+                        <td>{data.device.device_model}</td>
+                        <td><label>{data.device.device_sn} </label></td>
+                        <td><label>{data.device.device_imei} </label></td>
+                        <td><label>{data.device.device_defect}</label></td>
                       </tr>
                       {expandedRow === index && (
                         <tr className="expanded-row" key={`expanded-${index}`}>
-                          <td colSpan="6">
+                          <td colSpan="9">
                             <div className="expanded-content">
                               <div className='expanded-content-main'>
                                 <h1>Покупатель</h1>
-                                <h4></h4>
+                                <h4><label>{data.end_user.user_name}</label></h4>
                               </div>
                               <div className='expanded-content-main'>
                                 <h1>Внешний вид</h1>
-                                <h4></h4>
+                                <h4><label> </label> </h4>
                               </div>
                               <div className='expanded-content-main'>
                                 <h1>Комплектация</h1>
-                                <h4>{data.device.device_equipment}</h4>
+                                <h4><label>{data.device.device_equipment}</label> </h4>
                               </div>
                               <div className='expanded-content-main'>
                                 <h1>Дата продажи</h1>
-                                <h4>{data.device.device_sale_date}</h4>
+                                <h4><label>{data.device.device_sale_date}</label></h4>
+                              </div>
+                              <div className='expanded-content-main'>
+                                <h1>Полная модель</h1>
+                                <h4>{data.device.device_type} {data.device.device_brand} {data.device.device_model}</h4>
+                              </div>
+                              <div className='expanded-content-main'>
+                                <h1>Модель EXEL</h1>
+                                <h4><label>{data.device.device_sale_date}</label></h4>
+                              </div>
+                              <div className='expanded-content-main'>
+                                <h1>Адрес</h1>
+                                <h4><label>{data.end_user.user_address}</label></h4>
+                              </div>
+                              <div className='expanded-content-main'>
+                                <h1>Телефон</h1>
+                                <h4><label>{data.end_user.user_phone}</label></h4>
+                              </div>
+                              <div className='expanded-content-main-button'>
+                                <button>Редактировать</button>
                               </div>
                             </div>
                           </td>
