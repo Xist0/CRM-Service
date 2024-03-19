@@ -18,7 +18,7 @@ function WarrantyRepair() {
     endUserAddress: '',
     endUserPhone: '',
   });
-  const minInputLength = 3; // Минимальная длина для проверки валидности
+  const minInputLength = 3; //Минимальное колличество символов 
 
   useEffect(() => {
     if (editedData) {
@@ -139,6 +139,11 @@ function WarrantyRepair() {
       setEditedData({ ...editedData, end_user: { ...editedData.end_user, user_phone: e.target.value } });
       setErrors({ ...errors, endUserPhone: e.target.value.trim().length >= minInputLength ? '' : `Поле должно содержать не менее ${minInputLength} символов` });
     };
+    const handleEndUserDefectDevice = (e) => {
+      setEditedData({ ...editedData, device: { ...editedData.device, device_defect: e.target.value } });
+      setErrors({ ...errors, defectdevice: e.target.value.trim().length >= minInputLength ? '' : `Поле должно содержать не менее ${minInputLength} символов` });
+    };
+    
 
     return (
       <div className="expanded-content">
@@ -150,7 +155,6 @@ function WarrantyRepair() {
             onChange={handleEndUserNameChange}
             style={{ borderColor: errors.endUserName ? 'red' : '' }}
           />
-          {errors.endUserName && <span className="error-message">{errors.endUserName}</span>}
         </div>
         <div className='expanded-content-main'>
           <h1>Внешний вид</h1>
@@ -164,7 +168,7 @@ function WarrantyRepair() {
             onChange={handleDeviceEquipmentChange}
             style={{ borderColor: errors.deviceEquipment ? 'red' : '' }}
           />
-          {errors.deviceEquipment && <span className="error-message">{errors.deviceEquipment}</span>}
+
         </div>
         <div className='expanded-content-main'>
           <h1>Дата продажи</h1>
@@ -174,7 +178,7 @@ function WarrantyRepair() {
             onChange={handleDeviceSaleDateChange}
             style={{ borderColor: errors.deviceSaleDate ? 'red' : '' }}
           />
-          {errors.deviceSaleDate && <span className="error-message">{errors.deviceSaleDate}</span>}
+
         </div>
         <div className='expanded-content-main'>
           <h1>Полная модель</h1>
@@ -192,7 +196,7 @@ function WarrantyRepair() {
             onChange={handleEndUserAddressChange}
             style={{ borderColor: errors.endUserAddress ? 'red' : '' }}
           />
-          {errors.endUserAddress && <span className="error-message">{errors.endUserAddress}</span>}
+
         </div>
         <div className='expanded-content-main'>
           <h1>Телефон</h1>
@@ -202,7 +206,15 @@ function WarrantyRepair() {
             onChange={handleEndUserPhoneChange}
             style={{ borderColor: errors.endUserPhone ? 'red' : '' }}
           />
-          {errors.endUserPhone && <span className="error-message">{errors.endUserPhone}</span>}
+        </div>
+        <div className='expanded-content-main'>
+          <h1>Деффект</h1>
+          <input
+            type="text"
+            value={editedData.device.device_defect}
+            onChange={handleEndUserDefectDevice}
+            style={{ borderColor: errors.defectdevice ? 'red' : '' }}
+          />
         </div>
         {renderEditButtons()}
       </div>
