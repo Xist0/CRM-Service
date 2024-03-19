@@ -90,13 +90,10 @@ function WarrantyRepair() {
   };
 
   const handleSaveClick = () => {
-    // Проверка валидности перед сохранением данных
     if (!isValid) {
       console.log('Please fill in all required fields.');
       return;
     }
-
-    // Handle saving edited data here (e.g., make API call)
     console.log('Saving edited data:', editedData);
     setEditMode(false);
   };
