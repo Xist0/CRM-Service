@@ -26,6 +26,7 @@ function WarrantyRepair() {
     if (editedData) {
       const { end_user, device } = editedData;
       const isValidEndUserName = end_user.user_name && end_user.user_name.trim().length >= minInputLength;
+      const isValiddeviceSn = device.device_sn && device.device_sn.trim().length >= minInputLength;
       const isValidDeviceAppearance = device.device_appearance && device.device_appearance.trim().length >= minInputLength;
       const isValidDeviceEquipment = device.device_equipment && device.device_equipment.trim().length >= minInputLength;
       const isValidDeviceSaleDate = device.device_sale_date && device.device_sale_date.trim().length >= minInputLength;
@@ -33,12 +34,13 @@ function WarrantyRepair() {
       const isValidEndUserPhone = end_user.user_phone && end_user.user_phone.trim().length >= minInputLength;
 
       setIsValid(
-        isValidEndUserName && isValidDeviceEquipment && isValidDeviceAppearance && isValidDeviceSaleDate && isValidEndUserAddress && isValidEndUserPhone
+        isValidEndUserName && isValidDeviceEquipment && isValiddeviceSn && isValidDeviceAppearance && isValidDeviceSaleDate && isValidEndUserAddress && isValidEndUserPhone
       );
 
       setErrors({
         endUserName: isValidEndUserName ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
         deviceAppearance: isValidDeviceAppearance ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
+        deviceSn: isValiddeviceSn ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
         deviceEquipment: isValidDeviceEquipment ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
         deviceSaleDate: isValidDeviceSaleDate ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
         endUserAddress: isValidEndUserAddress ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
@@ -69,12 +71,12 @@ function WarrantyRepair() {
         },
       });
 
-      console.log('File uploaded successfully:', response.data);
+      console.log('Данные с файла:', response.data);
       const { data } = response;
 
       setReceivedData(data);
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error('Ошибка загрузики:', error);
     } finally {
       setIsLoading(false);
     }
@@ -96,20 +98,31 @@ function WarrantyRepair() {
     setIsEditing(true); // Set editing mode to true
   };
 
-  const handleSaveClick = () => {
+  const handleSaveClick = async () => {
     if (!isValid) {
       console.log('Please fill in all required fields.');
       return;
     }
+  
+    try {
+      const response = await axios.post('/api/1c/WarrantyOrder', editedData); 
 
-    console.log('Saving edited data:', editedData);
-    setEditMode(false);
-    setIsEditing(false); // Set editing mode to false
+      const order_id = response.data.order_id || '';
+      const order_Error = response.data.order_Error || '';
+  
+      console.log('Данные успешно сохранены:', order_id);
+      alert(`Номер заказа: ${order_id}\nСтатус: ${order_Error}`);
+      setEditMode(false);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error saving data:', error);
+    }
   };
+  
 
   const handleCancelClick = () => {
     setEditMode(false);
-    setIsEditing(false); // Set editing mode to false on cancel
+    setIsEditing(false);
   };
 
   const renderEditButtons = () => {
@@ -125,6 +138,10 @@ function WarrantyRepair() {
     const handleDeviceAppearance = (e) => {
       setEditedData({ ...editedData, device: { ...editedData.device, device_appearance: e.target.value } });
       setErrors({ ...errors, deviceAppearance: e.target.value.trim().length >= minInputLength ? '' : `Поле должно содержать не менее ${minInputLength} символов` });
+    };
+    const handleDeviceSn = (e) => {
+      setEditedData({ ...editedData, device: { ...editedData.device, device_sn: e.target.value } });
+      setErrors({ ...errors, deviceSn: e.target.value.trim().length >= minInputLength ? '' : `Поле должно содержать не менее ${minInputLength} символов` });
     };
     const handleDeviceEquipmentChange = (e) => {
       setEditedData({ ...editedData, device: { ...editedData.device, device_equipment: e.target.value } });
@@ -147,7 +164,7 @@ function WarrantyRepair() {
     };
 
     return (
-      <div className="expanded-content">
+      <div className="expanded-content-active">
         <div className='expanded-content-main'>
           <h1>Покупатель</h1>
           <h4>{editedData.end_user.user_name} </h4>
@@ -165,6 +182,18 @@ function WarrantyRepair() {
           </div>
         </div>
         <div className='expanded-content-main'>
+          <h1>Серийный номер</h1>
+          <div className="expanded-content-main-inpit">
+            <input
+              type="text"
+              value={editedData.device.device_sn}
+              onChange={handleDeviceSn}
+              style={{ borderColor: errors.deviceSn ? 'red' : '' }}
+            />
+
+          </div>
+        </div>
+        <div className='expanded-content-main'>
           <h1>Комплектация</h1>
           <div className="expanded-content-main-inpit">
             <input
@@ -177,14 +206,7 @@ function WarrantyRepair() {
         </div>
         <div className='expanded-content-main'>
           <h1>Дата продажи</h1>
-          <div className="expanded-content-main-inpit">
-            <input
-              type="text"
-              value={editedData.device.device_sale_date}
-              onChange={handleDeviceSaleDateChange}
-              style={{ borderColor: errors.deviceSaleDate ? 'red' : '' }}
-            />
-          </div>
+          <h4>{editedData.device.device_sale_date}</h4>
         </div>
         <div className='expanded-content-main'>
           <h1>Полная модель</h1>
