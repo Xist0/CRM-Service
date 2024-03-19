@@ -79,7 +79,7 @@ function WarrantyRepair() {
   };
 
   const toggleExpandedRow = (index) => {
-    if (isEditing) return; // Prevent expanding rows if editing mode is active
+    if (isEditing) return; 
 
     if (expandedRow === index) {
       setExpandedRow(null);
@@ -91,7 +91,7 @@ function WarrantyRepair() {
   const handleEditClick = (data) => {
     setEditedData(data);
     setEditMode(true);
-    setIsEditing(true); // Set editing mode to true
+    setIsEditing(true); 
   };
 
   const handleSaveClick = async () => {
@@ -321,7 +321,7 @@ function WarrantyRepair() {
                         <td><label>{data.device.device_defect}</label></td>
                       </tr>
                       {expandedRow === index && (
-                        <tr className="expanded-row" key={`expanded-${index}`}>
+                        <tr className="expanded-row"  key={`expanded-${index}`} >
                           <td colSpan="9">
                             {editMode ? renderEditModeContent() : renderViewModeContent(data)}
                           </td>

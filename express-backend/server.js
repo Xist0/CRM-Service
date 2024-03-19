@@ -263,15 +263,11 @@ app.get('/api/works1c/:Z_name', async (req, res) => {
 
   try {
     const { default: fetch } = await import('node-fetch');
-
     const response = await fetch(`http://192.168.1.10/api/works1c/${encodeURIComponent(Z_name)}`);
-
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-
     const responseData = await response.json();
-
     res.json(responseData);
   } catch (error) {
     console.error(error);
@@ -282,21 +278,17 @@ app.get('/api/works1c/:Z_name', async (req, res) => {
 app.post('/api/1c/WarrantyOrder', async (req, res) => {
   try {
     const { default: fetch } = await import('node-fetch');
-
     const response = await fetch(`http://192.168.1.10/api/1c/WarrantyOrder`, {
       method: 'POST',
-      body: JSON.stringify(req.body), // Отправка данных из тела POST-запроса
+      body: JSON.stringify(req.body), 
       headers: {
         'Content-Type': 'application/json',
       },
     });
-
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-
     const responseData = await response.json();
-
     res.json(responseData);
   } catch (error) {
     console.error(error);
