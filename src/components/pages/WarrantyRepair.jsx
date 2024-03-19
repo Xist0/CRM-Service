@@ -9,7 +9,7 @@ function WarrantyRepair() {
   const [receivedData, setReceivedData] = useState(null);
   const [expandedRow, setExpandedRow] = useState(null);
   const [editMode, setEditMode] = useState(false);
-  const [isEditing, setIsEditing] = useState(false); // New state for editing mode
+  const [isEditing, setIsEditing] = useState(false); 
   const [editedData, setEditedData] = useState(null);
   const [isValid, setIsValid] = useState(false);
   const [errors, setErrors] = useState({
@@ -25,24 +25,20 @@ function WarrantyRepair() {
   useEffect(() => {
     if (editedData) {
       const { end_user, device } = editedData;
-      const isValidEndUserName = end_user.user_name && end_user.user_name.trim().length >= minInputLength;
       const isValiddeviceSn = device.device_sn && device.device_sn.trim().length >= minInputLength;
       const isValidDeviceAppearance = device.device_appearance && device.device_appearance.trim().length >= minInputLength;
       const isValidDeviceEquipment = device.device_equipment && device.device_equipment.trim().length >= minInputLength;
-      const isValidDeviceSaleDate = device.device_sale_date && device.device_sale_date.trim().length >= minInputLength;
       const isValidEndUserAddress = end_user.user_address && end_user.user_address.trim().length >= minInputLength;
       const isValidEndUserPhone = end_user.user_phone && end_user.user_phone.trim().length >= minInputLength;
 
       setIsValid(
-        isValidEndUserName && isValidDeviceEquipment && isValiddeviceSn && isValidDeviceAppearance && isValidDeviceSaleDate && isValidEndUserAddress && isValidEndUserPhone
+        isValidDeviceEquipment && isValiddeviceSn && isValidDeviceAppearance  && isValidEndUserAddress && isValidEndUserPhone
       );
 
       setErrors({
-        endUserName: isValidEndUserName ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
         deviceAppearance: isValidDeviceAppearance ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
         deviceSn: isValiddeviceSn ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
         deviceEquipment: isValidDeviceEquipment ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
-        deviceSaleDate: isValidDeviceSaleDate ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
         endUserAddress: isValidEndUserAddress ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
         endUserPhone: isValidEndUserPhone ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
       });
@@ -147,12 +143,6 @@ function WarrantyRepair() {
       setEditedData({ ...editedData, device: { ...editedData.device, device_equipment: e.target.value } });
       setErrors({ ...errors, deviceEquipment: e.target.value.trim().length >= minInputLength ? '' : `Поле должно содержать не менее ${minInputLength} символов` });
     };
-
-    const handleDeviceSaleDateChange = (e) => {
-      setEditedData({ ...editedData, device: { ...editedData.device, device_sale_date: e.target.value } });
-      setErrors({ ...errors, deviceSaleDate: e.target.value.trim().length >= minInputLength ? '' : `Поле должно содержать не менее ${minInputLength} символов` });
-    };
-
     const handleEndUserAddressChange = (e) => {
       setEditedData({ ...editedData, end_user: { ...editedData.end_user, user_address: e.target.value } });
       setErrors({ ...errors, endUserAddress: e.target.value.trim().length >= minInputLength ? '' : `Поле должно содержать не менее ${minInputLength} символов` });
