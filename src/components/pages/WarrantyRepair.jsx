@@ -11,17 +11,37 @@ function WarrantyRepair() {
   const [editMode, setEditMode] = useState(false);
   const [editedData, setEditedData] = useState(null);
   const [isValid, setIsValid] = useState(false);
+  const [errors, setErrors] = useState({
+    endUserName: '',
+    deviceEquipment: '',
+    deviceSaleDate: '',
+    endUserAddress: '',
+    endUserPhone: '',
+  });
+  const minInputLength = 3; // Минимальная длина для проверки валидности
 
   useEffect(() => {
     if (editedData) {
       const { end_user, device } = editedData;
-      if (end_user.user_name && device.device_equipment && device.device_sale_date && end_user.user_address && end_user.user_phone) {
-        setIsValid(true);
-      } else {
-        setIsValid(false);
-      }
+      const isValidEndUserName = end_user.user_name && end_user.user_name.trim().length >= minInputLength;
+      const isValidDeviceEquipment = device.device_equipment && device.device_equipment.trim().length >= minInputLength;
+      const isValidDeviceSaleDate = device.device_sale_date && device.device_sale_date.trim().length >= minInputLength;
+      const isValidEndUserAddress = end_user.user_address && end_user.user_address.trim().length >= minInputLength;
+      const isValidEndUserPhone = end_user.user_phone && end_user.user_phone.trim().length >= minInputLength;
+
+      setIsValid(
+        isValidEndUserName && isValidDeviceEquipment && isValidDeviceSaleDate && isValidEndUserAddress && isValidEndUserPhone
+      );
+
+      setErrors({
+        endUserName: isValidEndUserName ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
+        deviceEquipment: isValidDeviceEquipment ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
+        deviceSaleDate: isValidDeviceSaleDate ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
+        endUserAddress: isValidEndUserAddress ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
+        endUserPhone: isValidEndUserPhone ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
+      });
     }
-  }, [editedData]);
+  }, [editedData, minInputLength]);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -88,7 +108,7 @@ function WarrantyRepair() {
   const renderEditButtons = () => {
     return (
       <div className='expanded-content-main-button'>
-        <button disabled={!isValid} onClick={handleSaveClick}>Сохранить</button>
+        <button disabled={!isValid} onClick={handleSaveClick} style={{ backgroundColor: isValid ? '' : 'gray' }}>Сохранить</button>
         <button onClick={handleCancelClick}>Отмена</button>
       </div>
     );
@@ -97,31 +117,40 @@ function WarrantyRepair() {
   const renderEditModeContent = () => {
     const handleEndUserNameChange = (e) => {
       setEditedData({ ...editedData, end_user: { ...editedData.end_user, user_name: e.target.value } });
+      setErrors({ ...errors, endUserName: e.target.value.trim().length >= minInputLength ? '' : `Поле должно содержать не менее ${minInputLength} символов` });
     };
 
     const handleDeviceEquipmentChange = (e) => {
       setEditedData({ ...editedData, device: { ...editedData.device, device_equipment: e.target.value } });
+      setErrors({ ...errors, deviceEquipment: e.target.value.trim().length >= minInputLength ? '' : `Поле должно содержать не менее ${minInputLength} символов` });
     };
 
     const handleDeviceSaleDateChange = (e) => {
       setEditedData({ ...editedData, device: { ...editedData.device, device_sale_date: e.target.value } });
+      setErrors({ ...errors, deviceSaleDate: e.target.value.trim().length >= minInputLength ? '' : `Поле должно содержать не менее ${minInputLength} символов` });
     };
 
     const handleEndUserAddressChange = (e) => {
       setEditedData({ ...editedData, end_user: { ...editedData.end_user, user_address: e.target.value } });
+      setErrors({ ...errors, endUserAddress: e.target.value.trim().length >= minInputLength ? '' : `Поле должно содержать не менее ${minInputLength} символов` });
     };
 
     const handleEndUserPhoneChange = (e) => {
       setEditedData({ ...editedData, end_user: { ...editedData.end_user, user_phone: e.target.value } });
+      setErrors({ ...errors, endUserPhone: e.target.value.trim().length >= minInputLength ? '' : `Поле должно содержать не менее ${minInputLength} символов` });
     };
 
-
-    // Все кроме покеупателя и даты продажи и имэй 
     return (
       <div className="expanded-content">
         <div className='expanded-content-main'>
           <h1>Покупатель</h1>
-          <input type="text" value={editedData.end_user.user_name} onChange={(e) => setEditedData({ ...editedData, end_user: { ...editedData.end_user, user_name: e.target.value } })} />
+          <input
+            type="text"
+            value={editedData.end_user.user_name}
+            onChange={handleEndUserNameChange}
+            style={{ borderColor: errors.endUserName ? 'red' : '' }}
+          />
+          {errors.endUserName && <span className="error-message">{errors.endUserName}</span>}
         </div>
         <div className='expanded-content-main'>
           <h1>Внешний вид</h1>
@@ -129,11 +158,23 @@ function WarrantyRepair() {
         </div>
         <div className='expanded-content-main'>
           <h1>Комплектация</h1>
-          <input type="text" value={editedData.device.device_equipment} onChange={handleDeviceEquipmentChange} />
+          <input
+            type="text"
+            value={editedData.device.device_equipment}
+            onChange={handleDeviceEquipmentChange}
+            style={{ borderColor: errors.deviceEquipment ? 'red' : '' }}
+          />
+          {errors.deviceEquipment && <span className="error-message">{errors.deviceEquipment}</span>}
         </div>
         <div className='expanded-content-main'>
           <h1>Дата продажи</h1>
-          <input type="text" value={editedData.device.device_sale_date} onChange={handleDeviceSaleDateChange} />
+          <input
+            type="text"
+            value={editedData.device.device_sale_date}
+            onChange={handleDeviceSaleDateChange}
+            style={{ borderColor: errors.deviceSaleDate ? 'red' : '' }}
+          />
+          {errors.deviceSaleDate && <span className="error-message">{errors.deviceSaleDate}</span>}
         </div>
         <div className='expanded-content-main'>
           <h1>Полная модель</h1>
@@ -145,16 +186,29 @@ function WarrantyRepair() {
         </div>
         <div className='expanded-content-main'>
           <h1>Адрес</h1>
-          <input type="text" value={editedData.end_user.user_address} onChange={handleEndUserAddressChange} />
+          <input
+            type="text"
+            value={editedData.end_user.user_address}
+            onChange={handleEndUserAddressChange}
+            style={{ borderColor: errors.endUserAddress ? 'red' : '' }}
+          />
+          {errors.endUserAddress && <span className="error-message">{errors.endUserAddress}</span>}
         </div>
         <div className='expanded-content-main'>
           <h1>Телефон</h1>
-          <input type="text" value={editedData.end_user.user_phone} onChange={handleEndUserPhoneChange} />
+          <input
+            type="text"
+            value={editedData.end_user.user_phone}
+            onChange={handleEndUserPhoneChange}
+            style={{ borderColor: errors.endUserPhone ? 'red' : '' }}
+          />
+          {errors.endUserPhone && <span className="error-message">{errors.endUserPhone}</span>}
         </div>
         {renderEditButtons()}
       </div>
     );
   };
+
   const renderViewModeContent = (data) => {
     return (
       <div className="expanded-content">
