@@ -284,15 +284,10 @@ app.get('/api/works1c/:Z_name', async (req, res) => {
 
 app.post('/api/parser/warrantyorder', upload.single('file'), async (req, res) => {
   try {
-    // Проверяем, был ли файл загружен успешно
     if (!req.file || !req.file.buffer) {
       return res.status(400).send('No file uploaded or file format is invalid');
     }
-
-    // Получаем байты файла
     const fileBytes = req.file.buffer;
-
-    // Отправляем файл на внешний бэк
     const response = await axios.post('http://192.168.1.10/api/parser/warrantyorder', fileBytes);
 
     res.send(response.data);
