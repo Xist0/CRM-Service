@@ -285,18 +285,33 @@ li a:hover {
     gap: 10px;
     background: #a3a3a339;
 }
+.expanded-row:hover{
+    box-shadow: transparent;
+    border: transparent;
+}
 .expanded-content-main{
     display: flex;
     width: 100%;
     border-bottom: 1px solid;
     justify-content: space-between;
+    text-align: left;
     
 }
 .expanded-content-main > h4{
     display: flex;
     width: 75%;
     align-items: center;
+    text-align: left;
+}
+.expanded-content-main-inpit{
+    display: flex;
+    width: 75%;
+    justify-content: flex-start;
+    align-items: center;
     text-align: center;
+}
+.expanded-content-main-inpit input{
+    width: 25%;
 }
 .expanded-row>td {
     padding: 0;
@@ -323,6 +338,14 @@ li a:hover {
 .Warranty-Conteiner-table-open-button {
     display: flex;
     justify-content: center;
+}
+.expanded-content-main-button{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    gap: 10px;
 }
 
 @media (max-width: 1280px) {
