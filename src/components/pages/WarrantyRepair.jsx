@@ -238,19 +238,19 @@ function WarrantyRepair() {
       <div className="expanded-content">
         <div className='expanded-content-main'>
           <h1>Покупатель</h1>
-          <h4><label>{data.end_user.user_name}</label></h4>
+          <h4><>{data.end_user.user_name}</></h4>
         </div>
         <div className='expanded-content-main'>
           <h1>Внешний вид</h1>
-          <h4><label>{data.device.device_appearance}</label> </h4>
+          <h4><>{data.device.device_appearance}</> </h4>
         </div>
         <div className='expanded-content-main'>
           <h1>Комплектация</h1>
-          <h4><label>{data.device.device_equipment}</label> </h4>
+          <h4><>{data.device.device_equipment}</> </h4>
         </div>
         <div className='expanded-content-main'>
           <h1>Дата продажи</h1>
-          <h4><label>{data.device.device_sale_date}</label></h4>
+          <h4><>{data.device.device_sale_date}</></h4>
         </div>
         <div className='expanded-content-main'>
           <h1>Полная модель</h1>
@@ -258,15 +258,15 @@ function WarrantyRepair() {
         </div>
         <div className='expanded-content-main'>
           <h1>Модель EXEL</h1>
-          <h4><label>{data.device.device_sale_date}</label></h4>
+          <h4>{data.device.device_sale_date}</h4>
         </div>
         <div className='expanded-content-main'>
           <h1>Адрес</h1>
-          <h4><label>{data.end_user.user_address}</label></h4>
+          <h4>{data.end_user.user_address}</h4>
         </div>
         <div className='expanded-content-main'>
           <h1>Телефон</h1>
-          <h4><label>{data.end_user.user_phone}</label></h4>
+          <h4>{data.end_user.user_phone}</h4>
         </div>
 
         <div className='expanded-content-main-button'>
