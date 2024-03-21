@@ -60,6 +60,7 @@ const Calls = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTableHeaderVisible, setTableHeaderVisibility] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isSearchDisabled, setIsSearchDisabled] = useState(false);
 
   // Функция для парсинга номера заказа
   const parseOrderNumber = (text) => {
@@ -74,10 +75,11 @@ const Calls = () => {
   };
 
   const fetchData = async () => {
-    if (date.trim() === '') {
+    if (date.trim() === '' || isLoading) { // Добавлено условие для предотвращения отправки запросов при уже активной загрузке данных
       return;
     }
     setIsLoading(true);
+    setIsSearchDisabled(true); // Отключаем кнопку "Поиск" во время загрузки
     try {
       const response = await fetch(`/api/order/record/${date}`);
       const data = await response.json();
@@ -87,6 +89,7 @@ const Calls = () => {
       console.error('Error fetching data:', error);
     } finally {
       setIsLoading(false);
+      setIsSearchDisabled(false); // Включаем кнопку "Поиск" после завершения загрузки
     }
   };
 
@@ -208,8 +211,9 @@ const Calls = () => {
                   className='input-search'
                   onChange={(e) => handleSearchTermChange(e)} // Оберните вызов в функцию
                   placeholder="Поиск по номеру телефона"
+                  disabled={isLoading || isSearchDisabled} // Добавляем атрибут disabled в зависимости от isLoading и isSearchDisabled
                 />
-                <button type="submit" className="btn btn-primary">поиск</button>
+                <button type="submit" className="btn btn-primary" disabled={isLoading || isSearchDisabled}>поиск</button>
               </form>
             </div>
           </div>
