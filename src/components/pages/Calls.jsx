@@ -1,7 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from '../Header';
 import './orders.css';
 import Messenger from './messenger/Messenger';
+import { Link } from 'react-router-dom';
+
+// Компонент для отображения модального окна записи
+const Modal = ({ cal, isModalOpen, toggleModal, downloadAudio }) => {
+  const audioRef = useRef(null);
+
+  const stopAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+  };
+
+  const handleCloseModal = () => {
+    stopAudio();
+    toggleModal();
+  };
+
+  return (
+    <div className={`modal-door${isModalOpen ? 'modal-dialog' : ''}`}>
+      <div className="modal fade" id={`exampleModal-${cal.id_record}`} tabIndex="-1" aria-labelledby={`exampleModalLabel-${cal.name_record}`} aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id={`exampleModalLabel-${cal.id_record}`}>{cal.name}</h5>
+            </div>
+            <div className="modal-body">
+              <audio controls ref={audioRef}>
+                <source src={`http://192.168.1.10/static/song/${cal.name}`} type="audio/mpeg" />
+              </audio>
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-primary btn-sm" onClick={handleCloseModal}>
+                Закрыть
+              </button>
+              <button
+                className="btn btn-primary btn-sm"
+                type="button"
+                onClick={() => downloadAudio(cal.name)}
+              >
+                Скачать
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Calls = () => {
   const [date, setDate] = useState('');
@@ -11,6 +60,18 @@ const Calls = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTableHeaderVisible, setTableHeaderVisibility] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+
+  // Функция для парсинга номера заказа
+  const parseOrderNumber = (text) => {
+    const orderNumberRegex = /00НФ-(\d+)/;
+    const match = text.match(orderNumberRegex);
+
+    if (match) {
+      return match[1];
+    } else {
+      return null;
+    }
+  };
 
   const fetchData = async () => {
     if (date.trim() === '') {
@@ -64,37 +125,18 @@ const Calls = () => {
     link.click();
   };
 
-  const renderModal = (cal) => {
-    return (
-      <div key={cal.id_record} className={`modal-door${isModalOpen ? 'modal-dialog' : ''}`}>
-        <div className="modal fade" id={`exampleModal-${cal.id_record}`} tabIndex="-1" aria-labelledby={`exampleModalLabel-${cal.name_record}`} aria-hidden="true">
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id={`exampleModalLabel-${cal.id_record}`}>{cal.name}</h5>
-              </div>
-              <div className="modal-body">
-                <audio controls>
-                  <source src={`http://192.168.1.10/static/song/${cal.name}`} type="audio/mpeg" />
-                </audio>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-primary btn-sm" onClick={toggleModal}>
-                  Закрыть
-                </button>
-                <button
-                  className="btn btn-primary btn-sm"
-                  type="button"
-                  onClick={() => downloadAudio(cal.name)}
-                >
-                  Скачать
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  const handleClick = (event) => {
+    event.preventDefault();
+
+    const text = event.target.textContent;
+    const orderNumber = parseOrderNumber(text);
+
+    if (orderNumber) {
+      const searchUrl = `https://localhost:5173/SearcOrder?orderNumber=${orderNumber}`;
+      window.location.href = searchUrl;
+    } else {
+      console.error('Failed to parse order number from link:', text);
+    }
   };
 
   const renderRecords = () => {
@@ -131,12 +173,16 @@ const Calls = () => {
           <td id='type_call'>{cal.types_record}</td>
           <td>{cal.inNomberP_record}</td>
           <td>{cal.outNombr_record}</td>
-          <td></td>
-          <td></td>
+          <td>{cal.users[0].name_user}</td>
+          <td>{cal.orders[0].id_order.startsWith('00НФ') ? (
+            <Link to="#" onClick={handleClick}>{cal.orders[0].id_order}</Link>
+          ) : (
+            cal.orders[0].id_order
+          )}</td>
           <td>{cal.date_record}</td>
           <td>{cal.time_record}</td>
           <td>{logoCall}</td>
-          <td id='type-butn' >{playButton}</td>
+          <td id='type-butn'>{playButton}</td>
         </tr>
       );
     });
@@ -160,7 +206,7 @@ const Calls = () => {
                   pattern="\d*"
                   value={searchTerm}
                   className='input-search'
-                  onChange={handleSearchTermChange}
+                  onChange={(e) => handleSearchTermChange(e)} // Оберните вызов в функцию
                   placeholder="Поиск по номеру телефона"
                 />
                 <button type="submit" className="btn btn-primary">поиск</button>
@@ -197,10 +243,18 @@ const Calls = () => {
             </div>
           </div>
         </div>
-        {selectedRecord && renderModal(selectedRecord)}
+        {selectedRecord && (
+          <Modal
+            cal={selectedRecord}
+            isModalOpen={isModalOpen}
+            toggleModal={toggleModal}
+            downloadAudio={downloadAudio}
+          />
+        )}
       </div>
     </div>
   );
 };
 
 export default Calls;
+

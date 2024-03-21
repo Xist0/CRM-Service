@@ -30,11 +30,9 @@ function WarrantyRepair() {
       const isValidDeviceEquipment = device.device_equipment && device.device_equipment.trim().length >= minInputLength;
       const isValidEndUserAddress = end_user.user_address && end_user.user_address.trim().length >= minInputLength;
       const isValidEndUserPhone = end_user.user_phone && end_user.user_phone.trim().length >= minInputLength;
-
       setIsValid(
         isValidDeviceEquipment && isValiddeviceSn && isValidDeviceAppearance  && isValidEndUserAddress && isValidEndUserPhone
       );
-
       setErrors({
         deviceAppearance: isValidDeviceAppearance ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
         deviceSn: isValiddeviceSn ? '' : `Поле должно содержать не менее ${minInputLength} символов`,

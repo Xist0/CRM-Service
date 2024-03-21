@@ -20,6 +20,23 @@ function SearcOrder() {
         }
     }, [location.search]);
 
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const orderNumber = queryParams.get('orderNumber');
+        
+        if (orderNumber) {
+            // Если в запросе есть параметр "orderNumber", устанавливаем номер заказа и фокусируемся на поле ввода
+            setNumber(orderNumber);
+            const searchInput = document.getElementById("searchInput");
+            if (searchInput) {
+                searchInput.focus();
+            }
+            
+            // Выполняем поиск
+            fetchData(orderNumber);
+        }
+    }, [location.search]);
+
     const fetchData = async (searchNumber) => {
         if (searchNumber.trim() === '') {
             return;
