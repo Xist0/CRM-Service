@@ -16,7 +16,7 @@ export const register = async (req, res) => {
     console.log(req.body);
     const hashPassword = bcrypt.hashSync(password, 7)
     //вытаскиваем из базы роль для пользователя так как у нас связка таблиц
-    const userRole = await sql`select * from Roles where role = 'USER'`
+    const userRole = await sql`select * from Roles where role = 'Стажёр'`
     //создаем нового пользователя
     await sql`insert into Users(name, role, password) values(${username}, ${userRole[0].role}, ${hashPassword})`
     //отправляем пользователю 200 статус код (это значит что всё успешно)

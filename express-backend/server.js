@@ -242,7 +242,7 @@ app.post('/api/parser/warrantyorder', upload.single('file'), async (req, res) =>
 });
 
 const start = async () => {
-  // // Создаем таблицы, если они не существуют
+  // Создаем таблицы, если они не существуют
   // await sql`create table if not exists Roles(
   //       role varchar(100) unique primary key
   //   )`
@@ -254,16 +254,36 @@ const start = async () => {
   //       FOREIGN KEY (role) REFERENCES Roles(role)
   //   )`
 
-  // const existingUser = await sql`select * from Roles where role = 'USER'`;
+  // const existingMaster = await sql`select * from Roles where role = 'Мастер'`;
 
-  // if (!existingUser.length) {
-  //   await sql`insert into Roles(role) values('USER')`;
+  // if (!existingMaster.length) {
+  //   await sql`insert into Roles(role) values('Мастер')`;
   // }
 
-  // const existingAdmin = await sql`select * from Roles where role = 'ADMIN'`;
+  // const existingAdmin = await sql`select * from Roles where role = 'Администратор'`;
 
   // if (!existingAdmin.length) {
-  //   await sql`insert into Roles(role) values('ADMIN')`;
+  //   await sql`insert into Roles(role) values('Администратор')`;
+  // }
+  // const existingАttendant = await sql`select * from Roles where role = 'Заправщик'`;
+
+  // if (!existingАttendant.length) {
+  //   await sql`insert into Roles(role) values('Заправщик')`;
+  // }
+  // const existingIntern = await sql`select * from Roles where role = 'Стажёр'`;
+
+  // if (!existingIntern.length) {
+  //   await sql`insert into Roles(role) values('Стажёр')`;
+  // }
+  // const existingDirector= await sql`select * from Roles where role = 'Директор'`;
+
+  // if (!existingDirector.length) {
+  //   await sql`insert into Roles(role) values('Директор')`;
+  // }
+  // const existingAccountant= await sql`select * from Roles where role = 'Бухгалтер'`;
+
+  // if (!existingAccountant.length) {
+  //   await sql`insert into Roles(role) values('Бухгалтер')`;
   // }
 
   // Создаем сервер и запускаем его

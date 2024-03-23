@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logOut } from './components/redux/authSlice';
 import { useSelector } from 'react-redux';
@@ -17,6 +17,7 @@ import Calls from './components/pages/Calls.jsx';
 import Contractors from './components/pages/Contractors.jsx';
 import SearcOrder from './components/pages/SearcOrder.jsx';
 import PersonalAccount from './components/pages/PersonalAccount.jsx';
+import Reg from './components/pages/UserAutorizechions/Reg.jsx';
 
 const MainPage = () => {
     const dispatch = useDispatch();
@@ -29,17 +30,19 @@ const MainPage = () => {
             <AppMedia />
             <Messenger />
             <Routes>
-                <Route path="/Works" element={<Works />} />
-                <Route path="/WarrantyRepair" element={<WarrantyRepair />} />
-                <Route path="/SpareParts" element={<SpareParts />} />
-                <Route path="/OrderStatus" element={<OrderStatus />} />
-                <Route path="/Orders" element={<Orders />} />
-                <Route path="/Employees" element={<Employees />} />
-                <Route path="/ChangeOrder" element={<ChangeOrder />} />
-                <Route path="/Calls" element={<Calls />} />
-                <Route path="/Contractors" element={<Contractors />} />
-                <Route path="/SearcOrder" element={<SearcOrder />} />
-                <Route path="/PersonalAccount" element={<PersonalAccount />} />
+                {role === "Мастер" && <Route path="/Works" element={<Works />} />}
+                {role === "Мастер" && <Route path="/WarrantyRepair" element={<WarrantyRepair />} />}
+                {role === "Мастер" && <Route path="/SpareParts" element={<SpareParts />} />}
+                {role === "Мастер" && <Route path="/OrderStatus" element={<OrderStatus />} />}
+                {role === "Мастер" && <Route path="/Orders" element={<Orders />} />}
+                {role === "Мастер" && <Route path="/Employees" element={<Employees />} />}
+                {role === "Мастер" && <Route path="/ChangeOrder" element={<ChangeOrder />} />}
+                {role === "Мастер" && <Route path="/ChangeOrder" element={<ChangeOrder />} />}
+                {role === "Мастер" && <Route path="/Calls" element={<Calls />} />}
+                {role === "Мастер" && <Route path="/Calls" element={<Calls />} />}
+                {role === "Мастер" && <Route path="/SearcOrder" element={<SearcOrder />} />}
+                {role === "Мастер" && <Route path="/PersonalAccount" element={<PersonalAccount />} />}
+                {role === "Мастер" && <Route path="/Reg" element={<Reg />} />}
             </Routes>
             {/* {
                 role === "ADMIN" ? <p>УДАЛИТЬ ТОВАР</p> : <p>КУПИТЬ</p>

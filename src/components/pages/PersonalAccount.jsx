@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 import Header from '../Header';
-import { logOut } from '../redux/authSlice'
+import { logOut } from '../redux/authSlice';
+import { jwtDecode } from "jwt-decode";
 
 function PersonalAccount() {
     const [greeting, setGreeting] = useState('');
-    const [staffName, setStaffName] = useState('');
     const [staffRole, setStaffRole] = useState('');
-    const dispatch = useDispatch()
-    const token = useSelector((state) => state.auth.token)
-    const role = useSelector((state) => state.auth.role)
+    const dispatch = useDispatch();
+    const token = useSelector((state) => state.auth.token);
+    const username = useSelector((state) => state.auth.name); // Получаем имя пользователя из состояния Redux
 
     useEffect(() => {
-        const storedToken = localStorage.getItem('accessToken');
-        if (storedToken) {
-            const userData = JSON.parse(localStorage.getItem('user'));
-            if (userData) {
-                setStaffName(userData.staff_name);
-                setStaffRole(userData.staff_role);
-            }
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            setStaffRole(decodedToken.role);
         }
+
+        // Генерируем приветствие в зависимости от времени суток
         const currentTime = new Date();
         const currentHour = currentTime.getHours();
         let greetingText = '';
@@ -34,26 +31,23 @@ function PersonalAccount() {
             greetingText = "Доброй ночи";
         }
         setGreeting(greetingText);
-    }, []);
+    }, [token]);
+
     return (
         <div>
             <Header />
             <div className="container-box">
                 <div className="Personal-container">
-                    <h1>{greeting}, {staffName}!</h1>
-                    <p>Роль: {staffRole} </p>
-                    msrifluherui
-                    <button onClick={() => {
-                        dispatch(logOut())
-                    }}>log out</button>
+                    <h1>{greeting}, {username}!</h1>
+                    <p>Роль: {staffRole}</p>
+                    <button onClick={() => dispatch(logOut())}>Выйти</button>
                     <div className="personal-container-orders">
                         <h1>Список активных заказов</h1>
                         <div className="personal-container-orders-main">
-
+                            {/* Вывод списка заказов */}
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     );

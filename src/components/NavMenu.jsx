@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
+import { useSelector } from 'react-redux';
 import { IoClose, IoChevronDownOutline } from "react-icons/io5";
 import './components.css';
 
 function NavMenu() {
   const [nav, setNav] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const role = useSelector((state) => state.auth.role);
 
   const toggleExpanded = () => {
     setExpanded(!expanded);
@@ -33,7 +35,7 @@ function NavMenu() {
         </svg>
       </div>
       <ul className={nav ? 'navi navi-active' : 'navi'}>
-        <li><NavLink exact="true" to="/app">Главная</NavLink></li>
+        <li><NavLink exact="true" to="/">Главная</NavLink></li>
         <li>
           <div className="dropdown">
             <span onClick={toggleExpanded} >
@@ -42,20 +44,21 @@ function NavMenu() {
             </span>
             <div className={`dropdown-content ${expanded ? 'show' : ''}`}>
               <NavLink to="/OrderStatus">Новый Заказ</NavLink>
-              <NavLink to="/Orders">Все заказы</NavLink>
+              <NavLink to="/Orders " >Все заказы</NavLink>
               <NavLink to="/SearcOrder">Поиск заказа</NavLink>
-              <NavLink to="/ChangeOrder">Изменить заказ</NavLink>
-              <NavLink to="/WarrantyRepair">Гарантия</NavLink>
+              {role === "ADMIN" && (<NavLink to="/ChangeOrder">Изменить заказ</NavLink>)}
+              {role === "ADMIN" && (<NavLink to="/WarrantyRepair">Гарантия</NavLink> )}
             </div>
           </div>
         </li>
-        <li><NavLink to="/Contractors">Контрагенты</NavLink></li>
+        {role === "ADMIN" && (<li><NavLink to="/Contractors">Контрагенты</NavLink></li>)}
         <li><NavLink to="/SpareParts">Запчасти</NavLink></li>
-        <li><NavLink to="/Works">Работы</NavLink></li>
-        <li><NavLink to="/Employees">Сотрудники</NavLink></li>
-        <li><NavLink to="/">Терминал</NavLink></li>
-        <li><NavLink to="/Calls">Звонки</NavLink></li>
+        <li><NavLink to="/Works" >Работы</NavLink></li>
+        {role === "ADMIN" && (<li><NavLink to="/Employees">Сотрудники</NavLink></li>)}
+        {role === "ADMIN" && (<li><NavLink to="/">Терминал</NavLink></li>)}
+        <li ><NavLink to="/Calls">Звонки</NavLink></li>
         <li><NavLink to="/PersonalAccount">Личный кабинет</NavLink></li>
+        {(role === "ADMIN" || role === "Стажёр") && ( <li><NavLink to="/Reg">Добавление пользователей</NavLink></li>)}
       </ul>
     </div>
   );

@@ -143,7 +143,55 @@ const authRouterAdmin = createBrowserRouter([
   {
     path: '/admin',
     element: <>admin</>
-  }
+  },
+  {
+    path: '/Reg',
+    element: <Reg/>
+  },
+    {
+    path: '/Works',
+    element: <Works/>
+  },
+  {
+    path: '/WarrantyRepair',
+    element: <WarrantyRepair/>
+  },
+  {
+    path: '/SpareParts',
+    element: <SpareParts />
+  },
+  {
+    path: '/OrderStatus',
+    element: <OrderStatus/>
+  },
+  {
+    path: '/Orders',
+    element: <Orders />
+  },
+  {
+    path: '/Employees',
+    element: <Employees />
+  },
+  {
+    path: '/ChangeOrder',
+    element: <ChangeOrder />
+  },
+  {
+    path: '/Calls',
+    element: <Calls/>
+  },
+  {
+    path: '/Contractors',
+    element: <Contractors />
+  },
+  {
+    path: '/SearcOrder',
+    element: <SearcOrder/>
+  },
+  {
+    path: '/PersonalAccount',
+    element: <PersonalAccount/>
+  },
 ])
 
 function App() {
@@ -151,7 +199,7 @@ function App() {
   const role = useSelector((state) => state.auth.role)
 
   return (
-    <RouterProvider router={token ? (role === "ADMIN" ? authRouterAdmin : authRouter) : router} />
+    <RouterProvider router={token ? (role === "Мастер" ? authRouterAdmin : authRouter) : router} />
   )
 }
 

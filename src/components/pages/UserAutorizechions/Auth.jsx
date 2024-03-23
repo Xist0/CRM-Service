@@ -1,47 +1,68 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { loginThunk } from '../../redux/authSlice'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginThunk } from '../../redux/authSlice';
+import { useNavigate } from 'react-router-dom';
+import './login.css';
 
 const Log = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [invalidFields, setInvalidFields] = useState([]);
 
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-
-    const authState = useSelector((state) => state.auth)
-    const dispatch = useDispatch()
-
-    const nav = useNavigate()
+    const authState = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+    const nav = useNavigate();
 
     useEffect(() => {
+        setErrorMessage(authState.error || ''); 
+    }, [authState.error]);
 
-    }, [authState])
+    const handleLogin = () => {
+        if (!username.trim() || !password.trim()) {
+            setInvalidFields([username.trim() ? '' : 'username', password.trim() ? '' : 'password']);
+            return;
+        }
+
+        dispatch(loginThunk({ username: username, password: password }))
+            .then(() => {
+                nav('/');
+            });
+    };
+
+    const handleInputChange = (field, value) => {
+        if (invalidFields.includes(field)) {
+            setInvalidFields(invalidFields.filter(item => item !== field));
+        }
+
+        if (field === 'username') {
+            setUsername(value);
+        } else if (field === 'password') {
+            setPassword(value);
+        }
+    };
 
     return (
-        authState.error ? <p>{authState.error}</p> :
-            authState.loading ? <p>Loading...</p> :
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '100vh',
-                    gap: '8px'
-                }}>
-                    <input value={username} onChange={(e) => {
-                        setUsername(e.target.value)
-                    }} type="text" />
-                    <input value={password} onChange={(e) => {
-                        setPassword(e.target.value)
-                    }} type="text" />
-                    <button onClick={() => {
-                        dispatch(loginThunk({
-                            username: username,
-                            password: password
-                        }))
-                    }}>Логин</button>
-                </div>
-    )
-}
+        <div className="container-login">
+            <h1>Авторизация</h1>
+            <input
+                className={invalidFields.includes('username') ? 'invalid' : ''}
+                value={username}
+                onChange={(e) => handleInputChange('username', e.target.value)}
+                type="text"
+                placeholder="Логин"
+            />
+            <input
+                className={invalidFields.includes('password') ? 'invalid' : ''}
+                value={password}
+                onChange={(e) => handleInputChange('password', e.target.value)}
+                type="password"
+                placeholder="Пароль"
+            />
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+            <button onClick={handleLogin}>Войти</button>
+        </div>
+    );
+};
 
-export default Log
+export default Log;

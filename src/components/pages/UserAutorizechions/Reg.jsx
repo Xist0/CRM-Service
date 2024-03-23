@@ -1,39 +1,39 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { regThunk } from '../../redux/regSlice'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { regThunk } from '../../redux/regSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Reg = () => {
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    const regState = useSelector((state) => state.reg)
-    const dispatch = useDispatch()
-    const nav = useNavigate()
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const regState = useSelector((state) => state.reg);
+    const dispatch = useDispatch();
+    const nav = useNavigate();
 
-    useEffect(() => {
-        if (regState.message) {
-            nav('/')
-        }
-    }, [regState, nav])
+    const handleRegistration = () => {
+        dispatch(regThunk({
+            username: username,
+            password: password
+        }));
+    };
+
+    const handleUsernameChange = (e) => {
+        setUsername(e.target.value);
+    };
+
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
+    };
 
     return (
         regState.error ? <p>{regState.error}</p> :
             regState.loading ? <p>Loading...</p> :
                 <div>
-                    <input value={username} onChange={(e) => {
-                        setUsername(e.target.value)
-                    }} type="text" />
-                    <input value={password} onChange={(e) => {
-                        setPassword(e.target.value)
-                    }} type="text" />
-                    <button onClick={() => {
-                        dispatch(regThunk({
-                            username: username,
-                            password: password
-                        }))
-                    }}>Регистрация</button>
+                    <input value={username} onChange={handleUsernameChange} type="text" placeholder="Username" />
+                    <input value={password} onChange={handlePasswordChange} type="password" placeholder="Password" />
+                    <button onClick={handleRegistration}>Register</button>
                 </div>
-    )
-}
+    );
+};
 
-export default Reg
+export default Reg;
