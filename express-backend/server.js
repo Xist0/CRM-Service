@@ -1,24 +1,24 @@
-const express = require('express');
-const https = require('https');
-const fs = require('fs');
-const cors = require('cors');
+import express from "express";
+import https from "https";
+import fs from 'fs';
+import cors from 'cors';
 const app = express();
 const port = 3000;
-const accessTokenSecret = '4362734262347';
-const jwt = require('jsonwebtoken');
-const bodyParser = require('body-parser');
-const axios = require('axios');
-const multer = require('multer');
+import bodyParser from 'body-parser';
+import axios from 'axios';
+import multer from 'multer';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+import { sql } from "./db.js";
+import { roleMiddleware } from './autch-express/utils/roleMiddleware.js';
+import { register } from './autch-express/controllers/register.js';
+import { auth } from './autch-express/controllers/auth.js';
 
-
-
-app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
+
 
 // Сертификат безопасности
 const options = {
@@ -26,87 +26,16 @@ const options = {
   cert: fs.readFileSync('./CRMServe.crt')
 };
 
-let users = [
-  {
-    id_staff: '1',
-    staff_name: 'Сабитов Рустам Ирэкович',
-    staff_role: 'Ingenieur',
-    staff_phone: '1',
-    staff_password: '1',
-  },
-  {
-    id_staff: '2',
-    staff_name: 'Рустам Ирэкович',
-    staff_role: 'Admin',
-    staff_phone: '2',
-    staff_password: '2',
-  }
-];
-
-let activeSessions = {}; // Объект для хранения активных сессий пользователей
-
-// Middleware для проверки токена доступа
-const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  if (token == null) return res.sendStatus(401);
-
-  jwt.verify(token, accessTokenSecret, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-};
-
-// Middleware для установки времени сессии и обновления токена
-const setSessionTime = (req, res, next) => {
-  next();
-};
-
-// Middleware для проверки активности сессии пользователя
-const checkSessionActivity = (req, res, next) => {
-  const userId = req.user && req.user.username;
-  if (!userId || !activeSessions[userId]) {
-    return res.sendStatus(401); // Пользователь не авторизован или сессия не активна
-  }
-  next();
-};
-
-// Маршрут для входа пользователя
-app.post('/api/login', (req, res) => {
-  const { username, password } = req.body;
-
-  // Поиск пользователя в массиве по имени пользователя (телефону) и паролю
-  const user = users.find(u => u.staff_phone === username && u.staff_password === password);
-
-  if (user) {
-    // Вход успешен, возвращаем имя пользователя вместе с токеном
-    const accessToken = jwt.sign({ username: user.staff_name, role: user.staff_role }, accessTokenSecret);
-    activeSessions[user.staff_name] = true;
-    res.status(200).json({ accessToken, username: user.staff_name, role: user.staff_role });
-
-  } else {
-    res.status(401).json({ message: 'Login failed' });
-  }
-});
-
-// Маршрут для выхода пользователя из аккаунта
-app.post('/api/logout', authenticateToken, (req, res) => {
-  const { username } = req.user;
-  delete activeSessions[username]; // Удаление активной сессии пользователя
-  res.status(200).json({ message: 'Logout successful' });
-});
 
 
-app.get('/api/user', authenticateToken, (req, res) => {
-  const { username } = req.user;
-  const user = users.find(u => u.staff_name === username);
-  if (user) {
-    res.status(200).json(user);
-  } else {
-    res.status(404).json({ message: 'User not found' });
-  }
-});
+app.get('/', roleMiddleware(['ADMIN']), async (req, res) => {
+  const data = await sql`select * from Users`
+  res.send(data)
+})
+
+app.post('/reg', register)
+app.post('/auth', auth)
+
 
 // API доступа к 1C
 
@@ -280,7 +209,7 @@ app.post('/api/1c/WarrantyOrder', async (req, res) => {
     const { default: fetch } = await import('node-fetch');
     const response = await fetch(`http://192.168.1.10/api/1c/WarrantyOrder`, {
       method: 'POST',
-      body: JSON.stringify(req.body), 
+      body: JSON.stringify(req.body),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -312,11 +241,37 @@ app.post('/api/parser/warrantyorder', upload.single('file'), async (req, res) =>
   }
 });
 
+const start = async () => {
+  // // Создаем таблицы, если они не существуют
+  // await sql`create table if not exists Roles(
+  //       role varchar(100) unique primary key
+  //   )`
+  // await sql`create table if not exists Users(
+  //       id SERIAL PRIMARY KEY NOT NULL,
+  //       name varchar(100) NOT NULL,
+  //       role varchar(100),
+  //       password varchar(100),
+  //       FOREIGN KEY (role) REFERENCES Roles(role)
+  //   )`
 
+  // const existingUser = await sql`select * from Roles where role = 'USER'`;
 
-// Исправленная строка создания HTTPS-сервера
-const server = https.createServer(options, app);
+  // if (!existingUser.length) {
+  //   await sql`insert into Roles(role) values('USER')`;
+  // }
 
-server.listen(port, () => {
-  console.log(`Server is running on https://localhost:${port}`);
-});
+  // const existingAdmin = await sql`select * from Roles where role = 'ADMIN'`;
+
+  // if (!existingAdmin.length) {
+  //   await sql`insert into Roles(role) values('ADMIN')`;
+  // }
+
+  // Создаем сервер и запускаем его
+  const server = https.createServer(options, app);
+
+  server.listen(port, () => {
+    console.log(`СЕРВАК ФУРЫЧИТ ТУТ https://localhost:${port}`);
+  });
+};
+
+start();

@@ -43,7 +43,7 @@ function NavMenu() {
             <div className={`dropdown-content ${expanded ? 'show' : ''}`}>
               <NavLink to="/OrderStatus">Новый Заказ</NavLink>
               <NavLink to="/Orders">Все заказы</NavLink>
-              <NavLink to="/SearcOrder">Состояние заказа</NavLink>
+              <NavLink to="/SearcOrder">Поиск заказа</NavLink>
               <NavLink to="/ChangeOrder">Изменить заказ</NavLink>
               <NavLink to="/WarrantyRepair">Гарантия</NavLink>
             </div>

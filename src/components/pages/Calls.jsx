@@ -209,9 +209,9 @@ const Calls = () => {
                   pattern="\d*"
                   value={searchTerm}
                   className='input-search'
-                  onChange={(e) => handleSearchTermChange(e)} // Оберните вызов в функцию
+                  onChange={(e) => handleSearchTermChange(e)} 
                   placeholder="Поиск по номеру телефона"
-                  disabled={isLoading || isSearchDisabled} // Добавляем атрибут disabled в зависимости от isLoading и isSearchDisabled
+                  disabled={isLoading || isSearchDisabled}
                 />
                 <button type="submit" className="btn btn-primary" disabled={isLoading || isSearchDisabled}>поиск</button>
               </form>

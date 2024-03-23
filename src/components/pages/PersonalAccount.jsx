@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux'
 import Header from '../Header';
+import { logOut } from '../redux/authSlice'
 
 function PersonalAccount() {
     const [greeting, setGreeting] = useState('');
     const [staffName, setStaffName] = useState('');
     const [staffRole, setStaffRole] = useState('');
+    const dispatch = useDispatch()
+    const token = useSelector((state) => state.auth.token)
+    const role = useSelector((state) => state.auth.role)
 
     useEffect(() => {
         const storedToken = localStorage.getItem('accessToken');
@@ -30,15 +35,6 @@ function PersonalAccount() {
         }
         setGreeting(greetingText);
     }, []);
-    const handleLogout = async () => {
-        try {
-            await axios.post('/api/logout');
-            window.location.href = '/';
-        } catch (error) {
-            console.error('Logout failed:', error);
-        }
-    };
-
     return (
         <div>
             <Header />
@@ -46,7 +42,10 @@ function PersonalAccount() {
                 <div className="Personal-container">
                     <h1>{greeting}, {staffName}!</h1>
                     <p>Роль: {staffRole} </p>
-                    <button onClick={handleLogout}>Выйти</button>
+                    msrifluherui
+                    <button onClick={() => {
+                        dispatch(logOut())
+                    }}>log out</button>
                     <div className="personal-container-orders">
                         <h1>Список активных заказов</h1>
                         <div className="personal-container-orders-main">

@@ -1,6 +1,7 @@
-import { jwt } from "jsonwebtoken"
+import jwt from 'jsonwebtoken'
 
-export const genereteAccessToken = (id, role) => {
+//функция для создания токеа
+export const generateAccessToken = (id, role) => {
     const payload = {
         id,
         role

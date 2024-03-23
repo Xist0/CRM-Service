@@ -1,10 +1,9 @@
 import postgres from 'postgres'
 
-//подключение к базе данных
 export const sql = postgres({
     host: 'localhost',
-    port: 5432,
+    port: 5433,
     db: 'test',
     username: 'postgres',
-    password: '123'
+    password: '1234'
 })
