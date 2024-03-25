@@ -40,14 +40,11 @@ const Reg = () => {
                 password: password,
                 roleName: selectedRole
             }));
-            // Очищаем поля ввода после успешной регистрации
             setUsername('');
             setPassword('');
             setSelectedRole('');
-            // Сбрасываем сообщение об ошибке
             setErrorMessage('');
         } catch (error) {
-            // Если возникла ошибка, отображаем сообщение
             setErrorMessage(error.response.data);
         }
     };
