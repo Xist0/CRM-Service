@@ -7,8 +7,9 @@ const Reg = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [selectedRole, setSelectedRole] = useState('');
-    const [roles, setRoles] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
     const regState = useSelector((state) => state.reg);
+    const [roles, setRoles] = useState([]);
     const dispatch = useDispatch();
     const nav = useNavigate();
 
@@ -24,19 +25,31 @@ const Reg = () => {
         };
 
         fetchRoles();
-    }, []);
+    }, [dispatch]);
 
-    const handleRegistration = () => {
+    const handleRegistration = async () => {
         console.log('Отправляемые данные:', {
             username: username,
             password: password,
             roleName: selectedRole
         });
-        dispatch(regThunk({
-            username: username,
-            password: password,
-            roleName: selectedRole
-        }));
+
+        try {
+            await dispatch(regThunk({
+                username: username,
+                password: password,
+                roleName: selectedRole
+            }));
+            // Очищаем поля ввода после успешной регистрации
+            setUsername('');
+            setPassword('');
+            setSelectedRole('');
+            // Сбрасываем сообщение об ошибке
+            setErrorMessage('');
+        } catch (error) {
+            // Если возникла ошибка, отображаем сообщение
+            setErrorMessage(error.response.data);
+        }
     };
 
     const handleUsernameChange = (e) => {
@@ -46,29 +59,25 @@ const Reg = () => {
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
     };
+
     const handleRoleChange = (e) => {
         setSelectedRole(e.target.value);
         console.log('Выбранная роль:', e.target.value);
     };
 
     return (
-        regState.error ? <p>{regState.error}</p> :
-            regState.loading ? <p>Loading...</p> :
-                <div>
-                    <input value={username} onChange={handleUsernameChange} type="text" placeholder="Имя" />
-                    <input value={password} onChange={handlePasswordChange} type="password" placeholder="Пароль" />
-                    {Array.isArray(roles) ? (
-                        <select name="role" onChange={handleRoleChange} value={selectedRole}>
-                            <option value="" disabled hidden>Выберите роль</option>
-                            {roles.map(role => (
-                                <option key={role.role} value={role.role}>{role.role}</option>
-                            ))}
-                        </select>
-                    ) : (
-                        <p>Loading...</p>
-                    )}
-                    <button onClick={handleRegistration}>Register</button>
-                </div>
+        <div>
+            {errorMessage && <p>{errorMessage}</p>}
+            <input value={username} onChange={handleUsernameChange} type="text" placeholder="Имя" />
+            <input value={password} onChange={handlePasswordChange} type="password" placeholder="Пароль" />
+            <select name="role" onChange={handleRoleChange} value={selectedRole}>
+                <option value="" disabled hidden>Выберите роль</option>
+                {roles.map(role => (
+                    <option key={role.role} value={role.role}>{role.role}</option>
+                ))}
+            </select>
+            <button onClick={handleRegistration}>Register</button>
+        </div>
     );
 };
 
