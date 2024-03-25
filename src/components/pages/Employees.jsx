@@ -24,13 +24,9 @@ function Employees() {
     }
   };
 
-  const handleAddUser = async (newUser) => {
-    try {
-      await axios.post('https://localhost:3000/addUser', newUser);
-      fetchUsers();
-    } catch (error) {
-      console.error('Ошибка при добавлении пользователя:', error);
-    }
+  const handleAddUser = (userData) => {
+    // Добавляем нового пользователя в список
+    setUsers(prevUsers => [...prevUsers, userData]);
   };
 
   return (
@@ -56,3 +52,4 @@ function Employees() {
 }
 
 export default Employees
+

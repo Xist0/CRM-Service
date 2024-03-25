@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { IoIosArrowDropdown } from "react-icons/io";
 
 
-const Reg = () => {
+const Reg = ({ onAddUser }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [selectedRole, setSelectedRole] = useState('');
@@ -13,7 +13,7 @@ const Reg = () => {
     const [usernameError, setUsernameError] = useState(true);
     const [passwordError, setPasswordError] = useState(true);
     const [roleError, setRoleError] = useState(true);
-    const [isFormVisible, setIsFormVisible] = useState(false); // Новое состояние для отслеживания видимости блока формы
+    const [isFormVisible, setIsFormVisible] = useState(false);
     const regState = useSelector((state) => state.reg);
     const [roles, setRoles] = useState([]);
     const dispatch = useDispatch();
@@ -40,7 +40,7 @@ const Reg = () => {
             setRoleError(!selectedRole);
             return;
         }
-
+      
         try {
             const response = await dispatch(regThunk({
                 username: username,
@@ -51,10 +51,15 @@ const Reg = () => {
             setPassword('');
             setSelectedRole('');
             setErrorMessage(response.message || '');
+      
+            onAddUser({
+              name: username,
+              role: selectedRole
+            });
         } catch (error) {
             setErrorMessage(error.response.data);
         }
-    };
+      };
 
     const handleUsernameChange = (e) => {
         const value = e.target.value;
