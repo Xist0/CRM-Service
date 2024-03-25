@@ -137,6 +137,11 @@ li a:hover {
     display: block;
     text-align: start;
 }
+.input-column>button{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
 
 .container-block-orders>label {
     display: flex;
@@ -385,6 +390,29 @@ li a:hover {
     width: 100%;
 
 }
+.forma-input-clouse {
+    display: none !important; 
+  }
+  
+  .forma-input.visible {
+    display: flex; 
+  }
+  
+  .rotate {
+    transition: transform 0.3s ease-in-out; 
+    
+  }
+  .container-user-register-header{
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  .image-reg {
+    cursor: pointer;
+  }
+  .rotate.rotate180 {
+    transform: rotate(180deg);
+  }
 
 @media (max-width: 1280px) {
     .burger-menu-mav {

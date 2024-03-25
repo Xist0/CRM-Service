@@ -1,18 +1,54 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from '../Header'
 import Messenger from './messenger/Messenger'
 import { useSelector } from 'react-redux';
 import Reg from './UserAutorizechions/Reg'
+import axios from 'axios';
 
 function Employees() {
   const role = useSelector((state) => state.auth.role);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get('https://localhost:3000/users');
+      const usersData = response.data;
+      console.log('Список пользователей:', usersData);
+      setUsers(usersData);
+    } catch (error) {
+      console.error('Ошибка при получении списка пользователей:', error);
+    }
+  };
+
+  const handleAddUser = async (newUser) => {
+    try {
+      await axios.post('https://localhost:3000/addUser', newUser);
+      fetchUsers();
+    } catch (error) {
+      console.error('Ошибка при добавлении пользователя:', error);
+    }
+  };
 
   return (
     <div>
       <Header />
       <div className="container-box">
-
-        {(role === 'Директор' || role === 'Бухгалтер') && (<Reg />)}
+        <div>
+          <h2>Список пользователей:</h2>
+          <ul>
+            {users.map(user => (
+              <li key={user.id}>
+                <p>Имя: {user.name}</p>
+                <p>Роль: {user.role}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+        {(role === 'Директор' || role === 'Бухгалтер') && (<Reg onAddUser={handleAddUser} />)}
       </div>
       <Messenger />
     </div>

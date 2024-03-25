@@ -13,6 +13,7 @@ import { sql } from "./db.js";
 import { roleMiddleware } from './autch-express/utils/roleMiddleware.js';
 import { register, getRoles } from './autch-express/controllers/register.js';
 import { auth } from './autch-express/controllers/auth.js';
+import { getUsers } from "./autch-express/controllers/Users.js";
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -36,6 +37,7 @@ app.get('/', roleMiddleware(['ADMIN']), async (req, res) => {
 app.post('/reg', register)
 app.post('/auth', auth)
 app.get('/roles', getRoles);
+app.get('/users', getUsers);
 
 // API доступа к 1C
 
