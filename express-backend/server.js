@@ -11,7 +11,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 import { sql } from "./db.js";
 import { roleMiddleware } from './autch-express/utils/roleMiddleware.js';
-import { register } from './autch-express/controllers/register.js';
+import { register, getRoles } from './autch-express/controllers/register.js';
 import { auth } from './autch-express/controllers/auth.js';
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -35,7 +35,7 @@ app.get('/', roleMiddleware(['ADMIN']), async (req, res) => {
 
 app.post('/reg', register)
 app.post('/auth', auth)
-
+app.get('/roles', getRoles);
 
 // API доступа к 1C
 

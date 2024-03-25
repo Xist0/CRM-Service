@@ -43,22 +43,21 @@ function NavMenu() {
               Заказы<IoChevronDownOutline className={expanded ? 'rotate' : ''} />
             </span>
             <div className={`dropdown-content ${expanded ? 'show' : ''}`}>
-              <NavLink to="/OrderStatus">Новый Заказ</NavLink>
+            {(role === "Директор" || role === "Администратор") && (<NavLink to="/OrderStatus">Новый Заказ</NavLink>)}
               <NavLink to="/Orders " >Все заказы</NavLink>
               <NavLink to="/SearcOrder">Поиск заказа</NavLink>
-              {role === "ADMIN" && (<NavLink to="/ChangeOrder">Изменить заказ</NavLink>)}
-              {role === "ADMIN" && (<NavLink to="/WarrantyRepair">Гарантия</NavLink> )}
+              {(role === "Бухгалтер" || role === "Директор" || role === "Администратор" || role === "Мастер" || role === "Стажёр") && (<NavLink to="/ChangeOrder">Изменить заказ</NavLink>)}
+              {(role === "Бухгалтер" || role === "Директор" || role === "Администратор" || role === "Мастер") && (<NavLink to="/WarrantyRepair">Гарантия</NavLink> )}
             </div>
           </div>
         </li>
-        {role === "ADMIN" && (<li><NavLink to="/Contractors">Контрагенты</NavLink></li>)}
+        {(role === "Бухгалтер" || role === "Директор" || role === "Администратор" || role === "Мастер") && (<li><NavLink to="/Contractors">Контрагенты</NavLink></li>)}
         <li><NavLink to="/SpareParts">Запчасти</NavLink></li>
         <li><NavLink to="/Works" >Работы</NavLink></li>
-        {role === "ADMIN" && (<li><NavLink to="/Employees">Сотрудники</NavLink></li>)}
+        {(role === "Бухгалтер" || role === "Директор") && (<li><NavLink to="/Employees">Сотрудники</NavLink></li>)}
         {role === "ADMIN" && (<li><NavLink to="/">Терминал</NavLink></li>)}
-        <li ><NavLink to="/Calls">Звонки</NavLink></li>
+        {(role === "Бухгалтер" || role === "Директор" || role === "Администратор" || role === "Мастер" || role === "Стажёр") && (<li ><NavLink to="/Calls">Звонки</NavLink></li>)}
         <li><NavLink to="/PersonalAccount">Личный кабинет</NavLink></li>
-        {(role === "ADMIN" || role === "Стажёр") && ( <li><NavLink to="/Reg">Добавление пользователей</NavLink></li>)}
       </ul>
     </div>
   );
