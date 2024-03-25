@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { regThunk } from '../../redux/regSlice';
 import { useNavigate } from 'react-router-dom';
 import { IoIosArrowDropdown } from "react-icons/io";
@@ -14,7 +14,6 @@ const Reg = ({ onAddUser }) => {
     const [passwordError, setPasswordError] = useState(true);
     const [roleError, setRoleError] = useState(true);
     const [isFormVisible, setIsFormVisible] = useState(false);
-    const regState = useSelector((state) => state.reg);
     const [roles, setRoles] = useState([]);
     const dispatch = useDispatch();
     const nav = useNavigate();
