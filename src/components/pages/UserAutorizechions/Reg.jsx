@@ -8,6 +8,9 @@ const Reg = () => {
     const [password, setPassword] = useState('');
     const [selectedRole, setSelectedRole] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [usernameError, setUsernameError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+    const [roleError, setRoleError] = useState(false);
     const regState = useSelector((state) => state.reg);
     const [roles, setRoles] = useState([]);
     const dispatch = useDispatch();
@@ -28,14 +31,15 @@ const Reg = () => {
     }, [dispatch]);
 
     const handleRegistration = async () => {
-        console.log('Отправляемые данные:', {
-            username: username,
-            password: password,
-            roleName: selectedRole
-        });
+        if (!username || !password || !selectedRole) {
+            setUsernameError(!username);
+            setPasswordError(!password);
+            setRoleError(!selectedRole);
+            return;
+        }
 
         try {
-            await dispatch(regThunk({
+            const response = await dispatch(regThunk({
                 username: username,
                 password: password,
                 roleName: selectedRole
@@ -43,7 +47,7 @@ const Reg = () => {
             setUsername('');
             setPassword('');
             setSelectedRole('');
-            setErrorMessage('');
+            setErrorMessage(response.message || ''); // Устанавливаем сообщение из ответа
         } catch (error) {
             setErrorMessage(error.response.data);
         }
@@ -51,29 +55,54 @@ const Reg = () => {
 
     const handleUsernameChange = (e) => {
         setUsername(e.target.value);
+        setUsernameError(false);
     };
 
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
+        setPasswordError(false);
     };
 
     const handleRoleChange = (e) => {
         setSelectedRole(e.target.value);
-        console.log('Выбранная роль:', e.target.value);
+        setRoleError(false);
     };
 
     return (
         <div>
             {errorMessage && <p>{errorMessage}</p>}
-            <input value={username} onChange={handleUsernameChange} type="text" placeholder="Имя" />
-            <input value={password} onChange={handlePasswordChange} type="password" placeholder="Пароль" />
-            <select name="role" onChange={handleRoleChange} value={selectedRole}>
+            <input
+                value={username}
+                onChange={handleUsernameChange}
+                type="text"
+                placeholder="Имя"
+                style={{ borderColor: usernameError ? 'red' : '' }}
+            />
+            <input
+                value={password}
+                onChange={handlePasswordChange}
+                type="password"
+                placeholder="Пароль"
+                style={{ borderColor: passwordError ? 'red' : '' }}
+            />
+            <select
+                name="role"
+                onChange={handleRoleChange}
+                value={selectedRole}
+                style={{ borderColor: roleError ? 'red' : '' }}
+            >
                 <option value="" disabled hidden>Выберите роль</option>
                 {roles.map(role => (
                     <option key={role.role} value={role.role}>{role.role}</option>
                 ))}
             </select>
-            <button onClick={handleRegistration}>Register</button>
+            <button
+                onClick={handleRegistration}
+                disabled={!username || !password || !selectedRole}
+                style={{ backgroundColor: !username || !password || !selectedRole ? 'grey' : '' }}
+            >
+                Register
+            </button>
         </div>
     );
 };
