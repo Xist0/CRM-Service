@@ -8,9 +8,9 @@ const Reg = () => {
     const [password, setPassword] = useState('');
     const [selectedRole, setSelectedRole] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [usernameError, setUsernameError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
-    const [roleError, setRoleError] = useState(false);
+    const [usernameError, setUsernameError] = useState(true); // Установим начальное значение в true
+    const [passwordError, setPasswordError] = useState(true); // Установим начальное значение в true
+    const [roleError, setRoleError] = useState(true); // Установим начальное значение в true
     const regState = useSelector((state) => state.reg);
     const [roles, setRoles] = useState([]);
     const dispatch = useDispatch();
@@ -54,55 +54,64 @@ const Reg = () => {
     };
 
     const handleUsernameChange = (e) => {
-        setUsername(e.target.value);
-        setUsernameError(false);
+        const value = e.target.value;
+        setUsername(value);
+        setUsernameError(!value);
     };
 
     const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-        setPasswordError(false);
+        const value = e.target.value;
+        setPassword(value);
+        setPasswordError(!value);
     };
 
     const handleRoleChange = (e) => {
-        setSelectedRole(e.target.value);
-        setRoleError(false);
+        const value = e.target.value;
+        setSelectedRole(value);
+        setRoleError(!value);
     };
 
     return (
         <div>
-            {errorMessage && <p>{errorMessage}</p>}
-            <input
-                value={username}
-                onChange={handleUsernameChange}
-                type="text"
-                placeholder="Имя"
-                style={{ borderColor: usernameError ? 'red' : '' }}
-            />
-            <input
-                value={password}
-                onChange={handlePasswordChange}
-                type="password"
-                placeholder="Пароль"
-                style={{ borderColor: passwordError ? 'red' : '' }}
-            />
-            <select
-                name="role"
-                onChange={handleRoleChange}
-                value={selectedRole}
-                style={{ borderColor: roleError ? 'red' : '' }}
-            >
-                <option value="" disabled hidden>Выберите роль</option>
-                {roles.map(role => (
-                    <option key={role.role} value={role.role}>{role.role}</option>
-                ))}
-            </select>
-            <button
-                onClick={handleRegistration}
-                disabled={!username || !password || !selectedRole}
-                style={{ backgroundColor: !username || !password || !selectedRole ? 'grey' : '' }}
-            >
-                Register
-            </button>
+            <div className="forma-input">
+                <div className="container-reg-users">
+                    {errorMessage && <p>{errorMessage}</p>}
+                    <label className="input-column">
+                        <input
+                            className={`input-style ${usernameError ? 'input-error' : 'input-valid'}`}
+                            value={username}
+                            onChange={handleUsernameChange}
+                            type="text"
+                            placeholder="Имя"
+                        />
+                        <input
+                            className={`input-style ${passwordError ? 'input-error' : 'input-valid'}`}
+                            value={password}
+                            onChange={handlePasswordChange}
+                            type="password"
+                            placeholder="Пароль"
+                        />
+                        <select
+                            name="role"
+                            className={`input-style ${roleError ? 'input-error' : 'input-valid'}`}
+                            onChange={handleRoleChange}
+                            value={selectedRole}
+                        >
+                            <option value="" disabled hidden>Выберите роль</option>
+                            {roles.map(role => (
+                                <option key={role.role} value={role.role}>{role.role}</option>
+                            ))}
+                        </select>
+                        <button
+                            onClick={handleRegistration}
+                            disabled={!username || !password || !selectedRole}
+                            style={{ backgroundColor: !username || !password || !selectedRole ? 'grey' : '' }}
+                        >
+                            Register
+                        </button>
+                    </label>
+                </div>
+            </div>
         </div>
     );
 };
