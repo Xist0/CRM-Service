@@ -137,7 +137,8 @@ li a:hover {
     display: block;
     text-align: start;
 }
-.input-column>button{
+
+.input-column>button {
     display: flex;
     justify-content: center;
     width: 100%;
@@ -329,7 +330,7 @@ li a:hover {
     width: 25%;
 }
 
-.Warranty-Conteiner-nav > tbody > tr.expanded-row {
+.Warranty-Conteiner-nav>tbody>tr.expanded-row {
     box-shadow: none;
     border: 2px solid;
     cursor: default;
@@ -371,16 +372,18 @@ li a:hover {
     gap: 10px;
 }
 
-.container-reg{
+.container-reg {
     display: flex;
     width: 100%;
     justify-content: space-between;
 }
-.container-reg-main{
+
+.container-reg-main {
     width: 30%;
     display: flex;
 }
-.container-reg-users{
+
+.container-reg-users {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -390,29 +393,137 @@ li a:hover {
     width: 100%;
 
 }
+
 .forma-input-clouse {
-    display: none !important; 
-  }
-  
-  .forma-input.visible {
-    display: flex; 
-  }
-  
-  .rotate {
-    transition: transform 0.3s ease-in-out; 
-    
-  }
-  .container-user-register-header{
+    display: none !important;
+}
+
+.forma-input.visible {
+    display: flex;
+}
+
+.rotate {
+    transition: transform 0.3s ease-in-out;
+
+}
+
+.container-user-register-header {
     display: flex;
     align-items: center;
     width: 100%;
-  }
-  .image-reg {
+}
+
+.image-reg {
     cursor: pointer;
-  }
-  .rotate.rotate180 {
+}
+
+.rotate.rotate180 {
     transform: rotate(180deg);
-  }
+}
+
+.container-maxvi {
+    display: flex;
+    width: 100%;
+}
+
+.order-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.maxvi-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    width: 100%;
+    gap: 40px;
+}
+
+.section-order-maxvi>h1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.order-details-header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.order-details-header>.section-order-maxvi>.table-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-details-header>.section-order-maxvi>.table-row>.table-cell {
+    border: 1px solid #ccc;
+}
+.section, .section-seller > h1{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.order-details-main-container {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+}
+
+.order-details-main-container-sell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.section-seller,
+.section {
+    width: 35%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-row {
+    display: flex;
+    border: 1px solid #ccc;
+}
+
+.table-cell {
+    flex: 1;
+    padding: 5px;
+    border-right: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+}
+
+.table-cell:last-child {
+    border-right: none;
+}
+
+.order-details-main-container-zapchasti {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
 
 @media (max-width: 1280px) {
     .burger-menu-mav {
