@@ -423,6 +423,7 @@ li a:hover {
 
 .container-maxvi {
     display: flex;
+    padding: 20px 0;
     width: 100%;
 }
 
@@ -442,7 +443,6 @@ li a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
     width: 100%;
     gap: 40px;
 }
