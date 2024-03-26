@@ -520,7 +520,9 @@ li a:hover {
     display: flex;
     align-items: center;
 }
-
+.table-input{
+    width: 55% !important;
+}
 .table-cell:last-child {
     border-right: none;
 }

@@ -6,6 +6,8 @@ function Maxvi() {
     const [isLoading, setIsLoading] = useState(false);
     const [records, setRecords] = useState(null);
     const [searchValue, setSearchValue] = useState('');
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedRecords, setEditedRecords] = useState(null);
 
     const fetchMaxvi = async () => {
         if (searchValue.trim() === '') {
@@ -25,6 +27,25 @@ function Maxvi() {
         } finally {
             setIsLoading(false);
         }
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setEditedRecords(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const handleEdit = () => {
+        setIsEditing(true);
+        setEditedRecords(records);
+    };
+
+    const handleSave = () => {
+        // Здесь можно отправить editedRecords на сервер или выполнить другие действия
+        console.log('Сохранение данных:', editedRecords);
+        setIsEditing(false);
     };
 
     return (
@@ -49,10 +70,10 @@ function Maxvi() {
                         records && (
                             <div className="order-details">
                                 <div className="order-details-header">
-                                    <div className="section-order-maxvi ">
+                                    <div className="section-order-maxvi">
                                         <h1>Заказ {records.order_id}</h1>
                                         <div className="table-row">
-                                            <div className="table-cell" >Дата заказа: {records.order_date}</div>
+                                            <div className="table-cell">Дата заказа: {records.order_date}</div>
                                             <div className="table-cell">Тип заказа: {records.order_type}</div>
                                         </div>
                                     </div>
@@ -86,48 +107,162 @@ function Maxvi() {
                                             <h1>Устройство</h1>
                                             <div className="table-row">
                                                 <div className="table-cell">Номер устройства:</div>
-                                                <div className="table-cell">{records.device.device_id}</div>
+                                                {isEditing ? (
+                                                    <input
+                                                        type="text"
+                                                        name="device_id"
+                                                        value={editedRecords.device.device_id}
+                                                        onChange={handleChange}
+                                                        className='table-input'
+                                                    />
+                                                ) : (
+                                                    <div className="table-cell">{records.device.device_id}</div>
+                                                )}
                                             </div>
                                             <div className="table-row">
                                                 <div className="table-cell">Дата продажи:</div>
-                                                <div className="table-cell">{records.device.device_sale_date}</div>
+                                                {isEditing ? (
+                                                    <input
+                                                        type="text"
+                                                        name="device_sale_date"
+                                                        value={editedRecords.device.device_sale_date}
+                                                        onChange={handleChange}
+                                                        className='table-input'
+
+                                                    />
+                                                ) : (
+                                                    <div className="table-cell">{records.device.device_sale_date}</div>
+                                                )}
                                             </div>
                                             <div className="table-row">
                                                 <div className="table-cell">Полная модель:</div>
-                                                <div className="table-cell">{records.device.device_full_model}</div>
+                                                {isEditing ? (
+                                                    <input
+                                                        type="text"
+                                                        name="device_full_model"
+                                                        value={editedRecords.device.device_full_model}
+                                                        onChange={handleChange}
+                                                        className='table-input'
+
+                                                    />
+                                                ) : (
+                                                    <div className="table-cell">{records.device.device_full_model}</div>
+                                                )}
                                             </div>
                                             <div className="table-row">
                                                 <div className="table-cell">Тип устройства:</div>
-                                                <div className="table-cell">{records.device.device_type}</div>
+                                                {isEditing ? (
+                                                    <input
+                                                        type="text"
+                                                        name="device_type"
+                                                        value={editedRecords.device.device_type}
+                                                        onChange={handleChange}
+                                                        className='table-input'
+
+                                                    />
+                                                ) : (
+                                                    <div className="table-cell">{records.device.device_type}</div>
+                                                )}
                                             </div>
                                             <div className="table-row">
                                                 <div className="table-cell">Бренд:</div>
-                                                <div className="table-cell">{records.device.device_brand}</div>
+                                                {isEditing ? (
+                                                    <input
+                                                        type="text"
+                                                        name="device_brand"
+                                                        value={editedRecords.device.device_brand}
+                                                        onChange={handleChange}
+                                                        className='table-input'
+
+                                                    />
+                                                ) : (
+                                                    <div className="table-cell">{records.device.device_brand}</div>
+                                                )}
                                             </div>
                                             <div className="table-row">
                                                 <div className="table-cell">Модель:</div>
-                                                <div className="table-cell">{records.device.device_model}</div>
+                                                {isEditing ? (
+                                                    <input
+                                                        type="text"
+                                                        name="device_model"
+                                                        value={editedRecords.device.device_model}
+                                                        onChange={handleChange}
+                                                        className='table-input'
+
+                                                    />
+                                                ) : (
+                                                    <div className="table-cell">{records.device.device_model}</div>
+                                                )}
                                             </div>
                                             <div className="table-row">
                                                 <div className="table-cell">Серийник:</div>
-                                                <div className="table-cell">{records.device.device_sn}</div>
+                                                {isEditing ? (
+                                                    <input
+                                                        type="text"
+                                                        name="device_sn"
+                                                        value={editedRecords.device.device_sn}
+                                                        onChange={handleChange}
+                                                        className='table-input'
+
+                                                    />
+                                                ) : (
+                                                    <div className="table-cell">{records.device.device_sn}</div>
+                                                )}
                                             </div>
                                             <div className="table-row">
                                                 <div className="table-cell">IMEI:</div>
-                                                <div className="table-cell">{records.device.device_imei}</div>
+                                                {isEditing ? (
+                                                    <input
+                                                        type="text"
+                                                        name="device_imei"
+                                                        value={editedRecords.device.device_imei}
+                                                        onChange={handleChange}
+                                                        className='table-input'
+
+                                                    />
+                                                ) : (
+                                                    <div className="table-cell">{records.device.device_imei}</div>
+                                                )}
                                             </div>
                                             <div className="table-row">
                                                 <div className="table-cell">Состояние устройства:</div>
-                                                <div className="table-cell">{records.device.device_appearance}</div>
+                                                {isEditing ? (
+                                                    <input
+                                                        type="text"
+                                                        name="device_appearance"
+                                                        value={editedRecords.device.device_appearance}
+                                                        onChange={handleChange}
+                                                        className='table-input'
+
+                                                    />
+                                                ) : (
+                                                    <div className="table-cell">{records.device.device_appearance}</div>
+                                                )}
                                             </div>
                                             <div className="table-row">
                                                 <div className="table-cell">Комплектация:</div>
-                                                <div className="table-cell">{records.device.device_equipment}</div>
+                                                {isEditing ? (
+                                                    <input
+                                                        type="text"
+                                                        name="device_equipment"
+                                                        value={editedRecords.device.device_equipment}
+                                                        onChange={handleChange}
+                                                        className='table-input'
+
+                                                    />
+                                                ) : (
+                                                    <div className="table-cell">{records.device.device_equipment}</div>
+                                                )}
                                             </div>
                                             <div className="table-row-button">
-                                                <button>Редактировать</button>
+                                                {isEditing ? (
+                                                    <button onClick={handleSave}>Сохранить</button>
+                                                ) : (
+                                                    <button onClick={handleEdit}>Редактировать</button>
+                                                )}
                                             </div>
                                         </div>
+
                                         <div className="section">
                                             <h1>Покупатель</h1>
                                             <div className="table-row">
@@ -166,9 +301,13 @@ function Maxvi() {
                                         <div>Цена работы: {records.works.work_price}</div>
                                     </div>
                                 </div>
-                                <button>
-                                    Сохранить
-                                </button>
+                                <div className="table-row-button">
+                                    {isEditing ? (
+                                        <button onClick={handleSave}>Сохранить</button>
+                                    ) : (
+                                        <button onClick={handleEdit}>Редактировать</button>
+                                    )}
+                                </div>
                             </div>
                         )
                     )}
