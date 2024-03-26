@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch} from 'react-redux';
 import { regThunk } from '../../redux/regSlice';
-import { useNavigate } from 'react-router-dom';
 import { IoIosArrowDropdown } from "react-icons/io";
 
 
@@ -16,7 +15,6 @@ const Reg = ({ onAddUser }) => {
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [roles, setRoles] = useState([]);
     const dispatch = useDispatch();
-    const nav = useNavigate();
 
     useEffect(() => {
         const fetchRoles = async () => {

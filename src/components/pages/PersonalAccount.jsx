@@ -16,8 +16,6 @@ function PersonalAccount() {
             const decodedToken = jwtDecode(token);
             setStaffRole(decodedToken.role);
         }
-
-        // Генерируем приветствие в зависимости от времени суток
         const currentTime = new Date();
         const currentHour = currentTime.getHours();
         let greetingText = '';

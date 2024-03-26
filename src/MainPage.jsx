@@ -42,7 +42,7 @@ const MainPage = () => {
                 {role === "Мастер" && <Route path="/Calls" element={<Calls />} />}
                 {role === "Мастер" && <Route path="/SearcOrder" element={<SearcOrder />} />}
                 {role === "Мастер" && <Route path="/PersonalAccount" element={<PersonalAccount />} />}
-                {role === "Мастер" && <Route path="/Reg" element={<Reg />} />}
+                {role === "Стажёр" && <Route path="/Reg" element={<Reg />} />}
             </Routes>
             {/* {
                 role === "ADMIN" ? <p>УДАЛИТЬ ТОВАР</p> : <p>КУПИТЬ</p>

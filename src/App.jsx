@@ -16,6 +16,7 @@ import Calls from './components/pages/Calls.jsx';
 import Contractors from './components/pages/Contractors.jsx';
 import SearcOrder from './components/pages/SearcOrder.jsx';
 import PersonalAccount from './components/pages/PersonalAccount.jsx';
+import Maxvi from './components/pages/Maxvi.JSX'
 
 const router = createBrowserRouter([
   {
@@ -133,6 +134,10 @@ const authRouter = createBrowserRouter([
     path: '/PersonalAccount',
     element: <PersonalAccount />
   },
+  {
+    path: '/Maxvi',
+    element: <Maxvi/>
+  },
 ])
 
 const authRouterAdmin = createBrowserRouter([
@@ -146,15 +151,15 @@ const authRouterAdmin = createBrowserRouter([
   },
   {
     path: '/Reg',
-    element: <Reg/>
+    element: <Reg />
   },
-    {
+  {
     path: '/Works',
-    element: <Works/>
+    element: <Works />
   },
   {
     path: '/WarrantyRepair',
-    element: <WarrantyRepair/>
+    element: <WarrantyRepair />
   },
   {
     path: '/SpareParts',
@@ -162,7 +167,7 @@ const authRouterAdmin = createBrowserRouter([
   },
   {
     path: '/OrderStatus',
-    element: <OrderStatus/>
+    element: <OrderStatus />
   },
   {
     path: '/Orders',
@@ -178,7 +183,7 @@ const authRouterAdmin = createBrowserRouter([
   },
   {
     path: '/Calls',
-    element: <Calls/>
+    element: <Calls />
   },
   {
     path: '/Contractors',
@@ -186,11 +191,11 @@ const authRouterAdmin = createBrowserRouter([
   },
   {
     path: '/SearcOrder',
-    element: <SearcOrder/>
+    element: <SearcOrder />
   },
   {
     path: '/PersonalAccount',
-    element: <PersonalAccount/>
+    element: <PersonalAccount />
   },
 ])
 

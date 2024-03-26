@@ -205,6 +205,22 @@ app.get('/api/works1c/:Z_name', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+app.post(`/stud/hs/api/getfulorder/:numderMaxvi`, async (req, res ) => {
+  const {numberMaxvi} = req.params
+  try{
+    const {default: fetch} = await import ('node-fetch');
+    const response = await fetch(`http://192.168.1.50/stud/hs/api/getfulorder/${encodeURIComponent(numberMaxvi)}`)
+    if (!response.ok){
+      throw new Error(`HTTP error! Status: ${response.status}`)
+    }
+    const responseData = await response.json()
+    res.json(responseData)
+  } catch(error){
+    console.log(error);
+    res.status(500).send('Internet Server Error')
+  }
+
+})
 
 app.post('/api/1c/WarrantyOrder', async (req, res) => {
   try {
@@ -242,6 +258,7 @@ app.post('/api/parser/warrantyorder', upload.single('file'), async (req, res) =>
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 const start = async () => {
   // Создаем таблицы, если они не существуют

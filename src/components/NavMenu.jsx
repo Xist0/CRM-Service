@@ -48,13 +48,14 @@ function NavMenu() {
               <NavLink to="/SearcOrder">Поиск заказа</NavLink>
               {(role === "Бухгалтер" || role === "Директор" || role === "Администратор" || role === "Мастер" || role === "Стажёр") && (<NavLink to="/ChangeOrder">Изменить заказ</NavLink>)}
               {(role === "Бухгалтер" || role === "Директор" || role === "Администратор" || role === "Мастер") && (<NavLink to="/WarrantyRepair">Гарантия</NavLink> )}
+              {(role === "Бухгалтер" || role === "Директор" || role === "Администратор" || role === "Мастер") && (<NavLink to="/Maxvi">Гарантия Maxvi</NavLink> )}
             </div>
           </div>
         </li>
         {(role === "Бухгалтер" || role === "Директор" || role === "Администратор" || role === "Мастер") && (<li><NavLink to="/Contractors">Контрагенты</NavLink></li>)}
         <li><NavLink to="/SpareParts">Запчасти</NavLink></li>
         <li><NavLink to="/Works" >Работы</NavLink></li>
-        {(role === "Бухгалтер" || role === "Директор") && (<li><NavLink to="/Employees">Сотрудники</NavLink></li>)}
+        {(role === "Бухгалтер" || role === "Директор" || role === "Стажёр") && (<li><NavLink to="/Employees">Сотрудники</NavLink></li>)}
         {role === "ADMIN" && (<li><NavLink to="/">Терминал</NavLink></li>)}
         {(role === "Бухгалтер" || role === "Директор" || role === "Администратор" || role === "Мастер" || role === "Стажёр") && (<li ><NavLink to="/Calls">Звонки</NavLink></li>)}
         <li><NavLink to="/PersonalAccount">Личный кабинет</NavLink></li>
