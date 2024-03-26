@@ -39,9 +39,8 @@ function Maxvi() {
 
     const handleEdit = () => {
         setIsEditing(true);
-        setEditedRecords(records);
+        setEditedRecords(JSON.parse(JSON.stringify(records))); // Глубокая копия объекта records
     };
-
     const handleSave = () => {
         // Здесь можно отправить editedRecords на сервер или выполнить другие действия
         console.log('Сохранение данных:', editedRecords);
@@ -128,7 +127,6 @@ function Maxvi() {
                                                         value={editedRecords.device.device_sale_date}
                                                         onChange={handleChange}
                                                         className='table-input'
-
                                                     />
                                                 ) : (
                                                     <div className="table-cell">{records.device.device_sale_date}</div>
@@ -301,13 +299,7 @@ function Maxvi() {
                                         <div>Цена работы: {records.works.work_price}</div>
                                     </div>
                                 </div>
-                                <div className="table-row-button">
-                                    {isEditing ? (
-                                        <button onClick={handleSave}>Сохранить</button>
-                                    ) : (
-                                        <button onClick={handleEdit}>Редактировать</button>
-                                    )}
-                                </div>
+
                             </div>
                         )
                     )}
