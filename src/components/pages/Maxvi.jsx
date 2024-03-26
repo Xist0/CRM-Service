@@ -66,11 +66,11 @@ function Maxvi() {
                                                 <div className="table-cell">{records.retail_user.user_name}</div>
                                             </div>
                                             <div className="table-row">
-                                                <div className="table-cell">Номер телефона продавца:</div>
+                                                <div className="table-cell">Номер телефона:</div>
                                                 <div className="table-cell">{records.retail_user.user_phone}</div>
                                             </div>
                                             <div className="table-row">
-                                                <div className="table-cell">Адрес продавца:</div>
+                                                <div className="table-cell">Адрес:</div>
                                                 <div className="table-cell">{records.retail_user.user_address}</div>
                                             </div>
                                             <div className="table-row">
@@ -121,8 +121,11 @@ function Maxvi() {
                                                 <div className="table-cell">{records.device.device_appearance}</div>
                                             </div>
                                             <div className="table-row">
-                                                <div className="table-cell">Комплектация устройства:</div>
+                                                <div className="table-cell">Комплектация:</div>
                                                 <div className="table-cell">{records.device.device_equipment}</div>
+                                            </div>
+                                            <div className="table-row-button">
+                                                <button>Редактировать</button>
                                             </div>
                                         </div>
                                         <div className="section">
@@ -132,11 +135,11 @@ function Maxvi() {
                                                 <div className="table-cell">{records.end_user.user_name}</div>
                                             </div>
                                             <div className="table-row">
-                                                <div className="table-cell">Номер телефона покупателя:</div>
+                                                <div className="table-cell">Номер телефона:</div>
                                                 <div className="table-cell">{records.end_user.user_phone}</div>
                                             </div>
                                             <div className="table-row">
-                                                <div className="table-cell">Адрес покупателя:</div>
+                                                <div className="table-cell">Адрес:</div>
                                                 <div className="table-cell">{records.end_user.user_address}</div>
                                             </div>
                                             <div className="table-row">
@@ -163,6 +166,9 @@ function Maxvi() {
                                         <div>Цена работы: {records.works.work_price}</div>
                                     </div>
                                 </div>
+                                <button>
+                                    Сохранить
+                                </button>
                             </div>
                         )
                     )}

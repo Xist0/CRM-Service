@@ -453,7 +453,11 @@ li a:hover {
     justify-content: center;
     align-items: center;
 }
-
+.table-row-button{
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 0;
+}
 .order-details-header {
     display: flex;
     flex-direction: column;
@@ -468,7 +472,11 @@ li a:hover {
 }
 
 .order-details-header>.section-order-maxvi>.table-row>.table-cell {
-    border: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 .section, .section-seller > h1{
     display: flex;
@@ -479,13 +487,12 @@ li a:hover {
 .order-details-main-container {
     display: flex;
     flex-direction: column;
-
     width: 100%;
 }
 
 .order-details-main-container-sell {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: space-between;
     gap: 40px;
 }
