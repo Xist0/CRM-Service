@@ -66,60 +66,49 @@ th {
 td {
     border-top: 1px solid #47474727;
     text-align: center;
-    padding: 10px 0;
+    padding: 5px;
 
-}
-
-td img {
-    width: 150px;
-    height: 150px;
-    padding: 10px;
-}
-
-td>p {
-    max-width: 90%;
 }
 
 td>a {
     color: #16C1DF;
-    
+
 }
 
 td>a:hover {
     color: #0D7082;
 }
-#table-active{
-    background: #bebebe44;
-}
-.pagination-custom {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 40px;
-    gap: 20px;
-}
 
-.pagination-custom svg {
-    width: 30px;
-    height: 30px;
-    padding: 10px;
-    cursor: pointer;
-    background: #1776CD;
-    color: #FFFFFF;
-    border-radius: 6px;
+#table-active {
+    background: #bebebe44;
 }
 
 .search-results-active {
     background: #61616136;
 }
+
 .scaner {
     display: none;
 }
+
 .start-button {
-  display: none;
+    display: none;
 }
 
+td button {
+    background-color: #1776CD;
+    color: #FFF;
+    border: 0;
+    border-radius: 7px;
+    font-size: 20px;
+    padding: 5px 16px;
+    width: auto
+}
+
+/* Стили для модального окна */
+.modal-door {
+    display: none;
+}
 @media (max-width: 1280px) {
     .box-serah {
         width: calc(100% - 30%);
@@ -129,11 +118,13 @@ td>a:hover {
         cursor: pointer;
         width: 20px;
     }
+
     .scaner {
         display: none;
 
     }
-    .visible{
+
+    .visible {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -141,7 +132,8 @@ td>a:hover {
         gap: 20px;
         padding-top: 20px;
     }
-    .scaner.visible{
+
+    .scaner.visible {
         display: flex;
         justify-content: center;
         flex-direction: column;
@@ -149,21 +141,22 @@ td>a:hover {
         left: 0;
         width: 100%
     }
+
     .scaner.hidden {
         display: none;
     }
-    
+
     #qrCodeContainer {
         border-radius: 7px;
         height: 300px;
         overflow: hidden;
         width: 300px
     }
-    
+
     #qr-shaded-region {
         border-width: 50px !important
     }
-    
+
     video {
         left: 50%;
         min-height: 100%;
@@ -174,7 +167,7 @@ td>a:hover {
         transform: translate(-50%, -50%);
         width: auto !important
     }
-    
+
     .qr-message {
         align-items: center;
         background-color: rgba(0, 0, 0, .5);
@@ -189,20 +182,34 @@ td>a:hover {
         width: 100%;
         word-break: break-all
     }
-    
+
     .qr-message,
     .start-button {
         color: #fff;
     }
-    
+
     .start-button {
         background-color: #1776CD;
         display: flex;
         border: 0;
         border-radius: 7px;
         font-size: 20px;
-        padding: 5px 10px;
+        padding: 5px 16px;
         width: auto
     }
-}
 
+    td #FIO>p {
+        text-align: left;
+    }
+
+    td button {
+        background-color: #1776CD;
+        color: #FFF;
+        border: 0;
+        border-radius: 7px;
+        font-size: 11px;
+        padding: 4px 3px;
+        width: auto
+    }
+
+}

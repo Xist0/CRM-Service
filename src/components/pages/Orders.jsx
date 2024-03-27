@@ -3,8 +3,7 @@ import Header from '../Header';
 import { CiSearch } from 'react-icons/ci';
 import { SlArrowRight } from "react-icons/sl";
 import { SlArrowLeft } from "react-icons/sl";
-import './pages.css/pages.css';
-import QRScaner from './QRScaner';
+import Messenger from './messenger/Messenger';
 
 function Orders() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -13,32 +12,26 @@ function Orders() {
   const [originalData, setOriginalData] = useState([]);
   const [displayData, setDisplayData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true); // Добавляем состояние для отображения анимации загрузки
 
   useEffect(() => {
-    // Ваш блок кода для загрузки и обработки данных
-    // ...
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`api/order/${itemsPerPage}/${(currentPage - 1) * itemsPerPage}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const json = await response.json();
+        setOriginalData(json);
+        setDisplayData(json.slice(0, itemsPerPage));
+        setLoading(false); // Устанавливаем loading в false после загрузки данных
+      } catch (error) {
+        console.error('Ошибка загрузки данных:', error);
+      }
+    };
 
-    // Пример: Генерация фиктивных данных для отображения
-    const allData = Array.from({ length: 20 }, (_, index) => ({
-      id: index + 1,
-      client: `Client ${index + 1}`,
-      device: `Device ${index + 1}`,
-      model: `Model ${index + 1}`,
-      master: `Master ${index + 1}`,
-      status: `Status ${index + 1}`,
-    }));
-
-    // Вычисление индексов для отображаемых данных
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-
-    // Выборка данных для отображения на текущей странице
-    const currentDisplayData = allData.slice(startIndex, endIndex);
-
-    // Установка данных для отображения
-    setOriginalData(allData);
-    setDisplayData(currentDisplayData);
-  }, [currentPage, itemsPerPage]);
+    fetchData();
+  }, [itemsPerPage, currentPage]);
 
   const handlePrevPage = () => {
     setExpandedRowIndex(null); // Закрыть открытый список при переключении страницы
@@ -46,8 +39,7 @@ function Orders() {
   };
 
   const handleNextPage = () => {
-    setExpandedRowIndex(null); // Закрыть открытый список при переключении страницы
-    // Предполагается, что у вас есть общее количество данных или другой способ определения общего числа страниц
+    setExpandedRowIndex(null);
     const totalPages = Math.ceil(originalData.length / itemsPerPage);
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
   };
@@ -59,109 +51,85 @@ function Orders() {
   const handleSearch = () => {
     const filteredData = originalData.filter((item) => {
       const searchFields = [
-        item.client,
-        item.device,
-        item.model,
-        item.master,
-        item.status,
       ];
 
       return searchFields.some((field) =>
-        field.toLowerCase().includes(searchTerm.toLowerCase())
+        String(field).toLowerCase().includes(searchTerm.toLowerCase())
       );
     });
 
-    setDisplayData(filteredData);
+    setDisplayData(filteredData.slice(0, itemsPerPage));
   };
 
   return (
     <div>
       <Header />
-      <div className="box">
-
-        <div className="box-title">
-          <h1>Заказы</h1>
-        </div>
-        
-        <div className="box-line"></div>
-        
-        <div className="box-serah">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearchTermChange}
-          />
-          <CiSearch onClick={handleSearch} />
-        </div>
-        <QRScaner/>
-        <div className="box-main">
-          <table>
-            <thead>
-              <tr>
-                <th># Акта</th>
-                <th>Клиент</th>
-                <th>Аппарат</th>
-                <th>Модель</th>
-                <th>Мастер</th>
-                <th>Состояние</th>
-              </tr>
-            </thead>
-            <tbody id="search-results">
-              {displayData.map((item, index) => (
-                <React.Fragment key={index}>
-                  <tr onClick={() => setExpandedRowIndex((prevIndex) => (prevIndex === index ? null : index))}>
-                    <td>
-                      <p>{index + 1}</p>
-                    </td>
-                    <td>
-                      <p>{item.client}</p>
-                    </td>
-                    <td>
-                      <p>{item.device}</p>
-                    </td>
-                    <td>
-                      <p>{item.model}</p>
-                    </td>
-                    <td>
-                      <p>{item.master}</p>
-                    </td>
-                    <td>
-                      <p>{item.status}</p>
-                    </td>
-                  </tr>
-                  {expandedRowIndex === index && (
-                    <tr id='table-active'>
+      <div className="container-box">
+        <div className="box">
+          <div className="box-title">
+            <h1>Заказы</h1>
+          </div>
+          <div className="box-line"></div>
+          <div className="box-serah">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={handleSearchTermChange}
+            />
+            <CiSearch onClick={handleSearch} />
+          </div>
+          <div className="box-main">
+            <table>
+              <thead>
+                <tr>
+                  <th># Акта</th>
+                  <th>ФИО</th>
+                  <th>Аппарат</th>
+                  <th>Модель </th>
+                  <th>Мастер</th>
+                  <th>Состояние</th>
+                </tr>
+              </thead>
+              <tbody id="search-results">
+                {Array.isArray(displayData) && displayData.map((item, index) => (
+                  <React.Fragment key={index}>
+                    <tr onClick={() => setExpandedRowIndex((prevIndex) => (prevIndex === index ? null : index))}>
                       <td>
-                        <p>Доп. 1</p>
+                        <p>{item.id_order} </p>
+                      </td>
+                      <td id='FIO'>
+                        <p>{item.user.first_name} </p>
                       </td>
                       <td>
-                        <p>Доп. 2</p>
+                        <p>{item.device.type}</p>
                       </td>
                       <td>
-                        <p>Доп. 3</p>
+                        <p>{item.device.model}</p>
+                      </td>
+                      <td id='FIO'>
+                        <p>{item.staff.first_name}</p>
                       </td>
                       <td>
-                        <p>Доп. 4</p>
-                      </td>
-                      <td>
-                        <p>Доп. 5</p>
-                      </td>
-                      <td>
-                        <p>Доп. 6</p>
+                        <p>{item.status.status_order}</p>
                       </td>
                     </tr>
-                  )}
-                </React.Fragment>
-              ))}
-            </tbody>
-          </table>
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </table>
+            {loading && (
+              <div className="loading-animation"> <img src="/public/LogoAnims.svg" alt="" /></div>
+
+            )}
+          </div>
+        </div>
+        <div className="pagination-custom">
+          <SlArrowLeft onClick={handlePrevPage} disabled={currentPage === 1} />
+          <span>{currentPage}</span>
+          <SlArrowRight onClick={handleNextPage} disabled={currentPage === Math.ceil(originalData.length / itemsPerPage)} />
         </div>
       </div>
-      <div className="pagination-custom">
-        <SlArrowLeft onClick={handlePrevPage} disabled={currentPage === 1} />
-        <span>{currentPage}</span>
-        <SlArrowRight onClick={handleNextPage} disabled={currentPage === Math.ceil(originalData.length / itemsPerPage)} />
-      </div>
+      <Messenger />
     </div>
   );
 }
