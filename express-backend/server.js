@@ -215,55 +215,84 @@ app.get('/api/works1c/:Z_name', async (req, res) => {
 });
 
 
-app.get(`/api/WarrantyOrdermaxvi/:numderMaxvi`, async (req, res) => {
-  const { numderMaxvi } = req.params; 
+app.get(`/api/WarrantyOrdermaxvi/:numberMaxvi`, async (req, res) => {
+  const { numberMaxvi } = req.params;
   try {
-      const response = await fetch(`http://192.168.1.10/api/WarrantyOrdermaxvi/${numderMaxvi}`);
-      if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      const responseData = await response.json();
-      res.json(responseData);
+    const response = await fetch(`http://192.168.1.10/api/WarrantyOrdermaxvi/${numberMaxvi}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const responseData = await response.json();
+    res.json(responseData);
   } catch (error) {
-      console.log(error);
-      res.status(500).send('Internet Server Error');
+    console.log(error);
+    res.status(500).send('Internet Server Error');
   }
 });
 
-// Маршрут для получения ссылки от внешнего сервера и отправки IMEI
+let savedLink = ''; // Создаем переменную для хранения значения ссылки
+
 app.get(`/api/GetExternalLinkAndSendIMEI/:imei`, async (req, res) => {
-  const { imei } = req.params; 
-  try {
-      const response1 = await fetch(`http://192.168.1.76:8000/maxvi`, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'text/plain'
-          }
-      });
-      
-      if (!response1.ok) {
-          throw new Error(`HTTP error! Status: ${response1.status}`);
-      }
-      const link = await response1.text();
+    const { imei } = req.params;
+    try {
+        const response1 = await fetch(`http://192.168.1.76:8000/maxvi`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'text/plain'
+            }
+        });
 
-      const response2 = await fetch(`${link}imei?${imei}`, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'text/plain'
-          }
-      });
-      
-      if (!response2.ok) {
-          throw new Error(`HTTP error! Status: ${response2.status}`);
-      }
-      
-      const responseData = await response2.json();
-      res.json(responseData);
-  } catch (error) {
-      console.log(error);
-      res.status(500).send('Internet Server Error');
-  }
+        if (!response1.ok) {
+            throw new Error(`HTTP error! Status: ${response1.status}`);
+        }
+        const link = await response1.text();
+        savedLink = link; 
+
+        const response2 = await fetch(`${link}imei?${imei}`, {
+            method: 'GET'
+        });
+
+        if (!response2.ok) {
+            throw new Error(`HTTP error! Status: ${response2.status}`);
+        }
+
+        const responseData = await response2.json();
+        res.locals = { ...res.locals, url: link }; // Добавляем поле url в объект res.locals
+        res.json(responseData);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internet Server Error');
+    }
 });
+
+// Пример обработчика маршрута для отправки дефекта на внешнюю ссылку
+app.post(`/api/SendDefectToExternalLink`, async (req, res) => {
+    try {
+        const { device } = req.body;
+        
+        const response = await fetch(`${savedLink}defect`, { // Используем сохраненное значение ссылки
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ device })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const responseData = await response.json();
+        res.locals = { ...res.locals, url: savedLink }; // Добавляем поле url в объект res.locals
+        res.json(responseData);
+    } catch (error) {
+        console.error('Error sending defect to external link:', error);
+        res.status(500).send('Ошибка отправки дефекта на внешнюю ссылку');
+    }
+});
+
+
 
 app.post('/api/parser/warrantyorder', upload.single('file'), async (req, res) => {
   try {

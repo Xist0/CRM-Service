@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Messenger from './messenger/Messenger';
 import Header from '../Header';
+import Messenger from './messenger/Messenger';
+
 
 function Maxvi() {
     const [isLoading, setIsLoading] = useState(false);
@@ -8,10 +9,10 @@ function Maxvi() {
     const [searchValue, setSearchValue] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const [editedRecords, setEditedRecords] = useState(null);
-    const [selectedDefect, setSelectedDefect] = useState(''); // Состояние для выбранного дефекта
-    const [defectsList, setDefectsList] = useState([]); // Состояние для списка дефектов
+    const [selectedDefect, setSelectedDefect] = useState('');
+    const [defectsList, setDefectsList] = useState([]);
+
     useEffect(() => {
-        // Запрос для получения списка всех дефектов
         fetchAllDefects();
     }, []);
 
@@ -34,26 +35,19 @@ function Maxvi() {
         }
         setIsLoading(true);
         try {
-            // Получаем данные заказа от сервера Express
             const response = await fetch(`/api/WarrantyOrdermaxvi/${encodeURIComponent(searchValue)}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
-            const data = await response.json();
-
-            // Получаем ссылку и отправляем IMEI на внешний сервер
+            const data = await response.json();            
             const responseExternal = await fetch(`/api/GetExternalLinkAndSendIMEI/${encodeURIComponent(data.device.device_imei)}`);
             if (!responseExternal.ok) {
                 throw new Error(`HTTP error! Status: ${responseExternal.status}`);
             }
             const dataExternal = await responseExternal.json();
 
-            console.log('Data from external server:', dataExternal); // Выводим данные от внешнего сервера в консоль
-
-            // Устанавливаем список дефектов из данных от внешнего сервера
             setDefectsList(dataExternal.device.device_defects);
 
-            // Обновляем данные на фронтенде
             setRecords(data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -70,23 +64,42 @@ function Maxvi() {
         }));
     };
 
-    const handleEdit = () => {
+    const handleEdit = () => { // Добавлено объявление функции handleEdit
         setIsEditing(true);
-        setEditedRecords(JSON.parse(JSON.stringify(records))); // Глубокая копия объекта records
+        setEditedRecords(JSON.parse(JSON.stringify(records)));
     };
 
     const handleSave = () => {
-        // Здесь можно отправить editedRecords на сервер или выполнить другие действия
         console.log('Сохранение данных:', editedRecords);
         setIsEditing(false);
     };
 
-    const handleDefectChange = (e) => {
-        setSelectedDefect(e.target.value);
-        // После выбора дефекта отправляем его номер на сервер для обновления данных
-        fetchUpdatedData(e.target.value);
+    const handleDefectChange = async (e) => {
+        const { value } = e.target;
+        setSelectedDefect(value);
+        try {
+            const response = await fetch(`/api/SendDefectToExternalLink`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    link: records.url, // Используем полученную ранее ссылку
+                    device: {
+                        ...records.device, // Копируем остальные свойства устройства
+                        device_defects: [value] // Устанавливаем новое значение для свойства device_defects в виде массива
+                    }
+                })
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const responseData = await response.json();
+            console.log('Response from external server:', responseData);
+        } catch (error) {
+            console.error('Error sending defect to external link:', error);
+        }
     };
-
     return (
         <div>
             <Header />
@@ -181,7 +194,6 @@ function Maxvi() {
                                                         value={editedRecords?.device?.device_full_model || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
-
                                                     />
                                                 ) : (
                                                     <div className="table-cell">{records.device.device_full_model}</div>
@@ -196,7 +208,6 @@ function Maxvi() {
                                                         value={editedRecords?.device?.device_type || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
-
                                                     />
                                                 ) : (
                                                     <div className="table-cell">{records.device.device_type}</div>
@@ -211,7 +222,6 @@ function Maxvi() {
                                                         value={editedRecords?.device?.device_brand || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
-
                                                     />
                                                 ) : (
                                                     <div className="table-cell">{records.device.device_brand}</div>
@@ -226,7 +236,6 @@ function Maxvi() {
                                                         value={editedRecords?.device?.device_model || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
-
                                                     />
                                                 ) : (
                                                     <div className="table-cell">{records.device.device_model}</div>
@@ -241,7 +250,6 @@ function Maxvi() {
                                                         value={editedRecords?.device?.device_sn || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
-
                                                     />
                                                 ) : (
                                                     <div className="table-cell">{records.device.device_sn}</div>
@@ -256,7 +264,6 @@ function Maxvi() {
                                                         value={editedRecords?.device?.device_imei || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
-
                                                     />
                                                 ) : (
                                                     <div className="table-cell">{records.device.device_imei}</div>
@@ -271,7 +278,6 @@ function Maxvi() {
                                                         value={editedRecords?.device?.device_appearance || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
-
                                                     />
                                                 ) : (
                                                     <div className="table-cell">{records.device.device_appearance}</div>
@@ -286,7 +292,6 @@ function Maxvi() {
                                                         value={editedRecords?.device?.device_equipment || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
-
                                                     />
                                                 ) : (
                                                     <div className="table-cell">{records.device.device_equipment}</div>
