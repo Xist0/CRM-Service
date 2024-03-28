@@ -9,18 +9,26 @@ import axios from 'axios';
 import multer from 'multer';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
+import fetch from 'node-fetch';
 import { sql } from "./db.js";
 import { roleMiddleware } from './autch-express/utils/roleMiddleware.js';
 import { register, getRoles } from './autch-express/controllers/register.js';
 import { auth } from './autch-express/controllers/auth.js';
 import { getUsers } from "./autch-express/controllers/Users.js";
+import { log } from "console";
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(cors());
 
-
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 // Сертификат безопасности
 const options = {
   key: fs.readFileSync('./CRMServe-private.key'),
@@ -205,10 +213,11 @@ app.get('/api/works1c/:Z_name', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
 app.get(`/api/WarrantyOrdermaxvi/:numderMaxvi`, async (req, res) => {
-  const { numderMaxvi } = req.params; // Получаем значение параметра из URL
+  const { numderMaxvi } = req.params; 
   try {
-      const { default: fetch } = await import('node-fetch');
       const response = await fetch(`http://192.168.1.10/api/WarrantyOrdermaxvi/${numderMaxvi}`);
       if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -221,28 +230,40 @@ app.get(`/api/WarrantyOrdermaxvi/:numderMaxvi`, async (req, res) => {
   }
 });
 
-
-app.post('/api/1c/WarrantyOrder', async (req, res) => {
+// Маршрут для получения ссылки от внешнего сервера и отправки IMEI
+app.get(`/api/GetExternalLinkAndSendIMEI/:imei`, async (req, res) => {
+  const { imei } = req.params; 
   try {
-    const { default: fetch } = await import('node-fetch');
-    const response = await fetch(`http://192.168.1.10/api/1c/WarrantyOrder`, {
-      method: 'POST',
-      body: JSON.stringify(req.body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const responseData = await response.json();
-    res.json(responseData);
+      const response1 = await fetch(`http://192.168.1.76:8000/maxvi`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'text/plain'
+          }
+      });
+      
+      if (!response1.ok) {
+          throw new Error(`HTTP error! Status: ${response1.status}`);
+      }
+      const link = await response1.text();
+
+      const response2 = await fetch(`${link}imei?${imei}`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'text/plain'
+          }
+      });
+      
+      if (!response2.ok) {
+          throw new Error(`HTTP error! Status: ${response2.status}`);
+      }
+      
+      const responseData = await response2.json();
+      res.json(responseData);
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
+      console.log(error);
+      res.status(500).send('Internet Server Error');
   }
 });
-
 
 app.post('/api/parser/warrantyorder', upload.single('file'), async (req, res) => {
   try {

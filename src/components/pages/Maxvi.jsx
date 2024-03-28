@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Messenger from './messenger/Messenger';
 import Header from '../Header';
 
@@ -8,6 +8,25 @@ function Maxvi() {
     const [searchValue, setSearchValue] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const [editedRecords, setEditedRecords] = useState(null);
+    const [selectedDefect, setSelectedDefect] = useState(''); // Состояние для выбранного дефекта
+    const [defectsList, setDefectsList] = useState([]); // Состояние для списка дефектов
+    useEffect(() => {
+        // Запрос для получения списка всех дефектов
+        fetchAllDefects();
+    }, []);
+
+    const fetchAllDefects = async () => {
+        try {
+            const response = await fetch(`/api/GetAllDefects`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            setDefectsList(data.device_defects);
+        } catch (error) {
+            console.error('Error fetching defects:', error);
+        }
+    };
 
     const fetchMaxvi = async () => {
         if (searchValue.trim() === '') {
@@ -15,13 +34,27 @@ function Maxvi() {
         }
         setIsLoading(true);
         try {
+            // Получаем данные заказа от сервера Express
             const response = await fetch(`/api/WarrantyOrdermaxvi/${encodeURIComponent(searchValue)}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             const data = await response.json();
-            const firstObject = data[0];
-            setRecords(firstObject);
+
+            // Получаем ссылку и отправляем IMEI на внешний сервер
+            const responseExternal = await fetch(`/api/GetExternalLinkAndSendIMEI/${encodeURIComponent(data.device.device_imei)}`);
+            if (!responseExternal.ok) {
+                throw new Error(`HTTP error! Status: ${responseExternal.status}`);
+            }
+            const dataExternal = await responseExternal.json();
+
+            console.log('Data from external server:', dataExternal); // Выводим данные от внешнего сервера в консоль
+
+            // Устанавливаем список дефектов из данных от внешнего сервера
+            setDefectsList(dataExternal.device.device_defects);
+
+            // Обновляем данные на фронтенде
+            setRecords(data);
         } catch (error) {
             console.error('Error fetching data:', error);
         } finally {
@@ -41,10 +74,17 @@ function Maxvi() {
         setIsEditing(true);
         setEditedRecords(JSON.parse(JSON.stringify(records))); // Глубокая копия объекта records
     };
+
     const handleSave = () => {
         // Здесь можно отправить editedRecords на сервер или выполнить другие действия
         console.log('Сохранение данных:', editedRecords);
         setIsEditing(false);
+    };
+
+    const handleDefectChange = (e) => {
+        setSelectedDefect(e.target.value);
+        // После выбора дефекта отправляем его номер на сервер для обновления данных
+        fetchUpdatedData(e.target.value);
     };
 
     return (
@@ -110,7 +150,7 @@ function Maxvi() {
                                                     <input
                                                         type="text"
                                                         name="device_id"
-                                                        value={editedRecords.device.device_id}
+                                                        value={editedRecords?.device?.device_id || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
                                                     />
@@ -124,7 +164,7 @@ function Maxvi() {
                                                     <input
                                                         type="text"
                                                         name="device_sale_date"
-                                                        value={editedRecords.device.device_sale_date}
+                                                        value={editedRecords?.device?.device_sale_date || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
                                                     />
@@ -138,7 +178,7 @@ function Maxvi() {
                                                     <input
                                                         type="text"
                                                         name="device_full_model"
-                                                        value={editedRecords.device.device_full_model}
+                                                        value={editedRecords?.device?.device_full_model || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
 
@@ -153,7 +193,7 @@ function Maxvi() {
                                                     <input
                                                         type="text"
                                                         name="device_type"
-                                                        value={editedRecords.device.device_type}
+                                                        value={editedRecords?.device?.device_type || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
 
@@ -168,7 +208,7 @@ function Maxvi() {
                                                     <input
                                                         type="text"
                                                         name="device_brand"
-                                                        value={editedRecords.device.device_brand}
+                                                        value={editedRecords?.device?.device_brand || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
 
@@ -183,7 +223,7 @@ function Maxvi() {
                                                     <input
                                                         type="text"
                                                         name="device_model"
-                                                        value={editedRecords.device.device_model}
+                                                        value={editedRecords?.device?.device_model || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
 
@@ -198,7 +238,7 @@ function Maxvi() {
                                                     <input
                                                         type="text"
                                                         name="device_sn"
-                                                        value={editedRecords.device.device_sn}
+                                                        value={editedRecords?.device?.device_sn || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
 
@@ -213,7 +253,7 @@ function Maxvi() {
                                                     <input
                                                         type="text"
                                                         name="device_imei"
-                                                        value={editedRecords.device.device_imei}
+                                                        value={editedRecords?.device?.device_imei || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
 
@@ -228,7 +268,7 @@ function Maxvi() {
                                                     <input
                                                         type="text"
                                                         name="device_appearance"
-                                                        value={editedRecords.device.device_appearance}
+                                                        value={editedRecords?.device?.device_appearance || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
 
@@ -243,7 +283,7 @@ function Maxvi() {
                                                     <input
                                                         type="text"
                                                         name="device_equipment"
-                                                        value={editedRecords.device.device_equipment}
+                                                        value={editedRecords?.device?.device_equipment || ''}
                                                         onChange={handleChange}
                                                         className='table-input'
 
@@ -293,6 +333,16 @@ function Maxvi() {
                                         <div>Название запчасти: {records.parts.part_name}</div>
                                         <div>Цена запчасти: {records.parts.part_price}</div>
                                     </div>
+                                    {records && records.device && defectsList && (
+                                        <div className="defect-dropdown">
+                                            <select value={selectedDefect} onChange={handleDefectChange}>
+                                                <option value="">Выберите дефект</option>
+                                                {defectsList.map((defect, index) => (
+                                                    <option key={index} value={defect}>{defect}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    )}
                                     <div className="section">
                                         <h1>Работы</h1>
                                         <div>Название работы: {records.works.work_name}</div>

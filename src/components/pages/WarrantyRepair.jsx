@@ -9,7 +9,7 @@ function WarrantyRepair() {
   const [receivedData, setReceivedData] = useState(null);
   const [expandedRow, setExpandedRow] = useState(null);
   const [editMode, setEditMode] = useState(false);
-  const [isEditing, setIsEditing] = useState(false); 
+  const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState(null);
   const [isValid, setIsValid] = useState(false);
   const [errors, setErrors] = useState({
@@ -20,6 +20,7 @@ function WarrantyRepair() {
     endUserAddress: '',
     endUserPhone: '',
   });
+  const [imei, setImei] = useState(''); // Добавлено состояние для IMEI
   const minInputLength = 3;
 
   useEffect(() => {
@@ -31,7 +32,7 @@ function WarrantyRepair() {
       const isValidEndUserAddress = end_user.user_address && end_user.user_address.trim().length >= minInputLength;
       const isValidEndUserPhone = end_user.user_phone && end_user.user_phone.trim().length >= minInputLength;
       setIsValid(
-        isValidDeviceEquipment && isValiddeviceSn && isValidDeviceAppearance  && isValidEndUserAddress && isValidEndUserPhone
+        isValidDeviceEquipment && isValiddeviceSn && isValidDeviceAppearance && isValidEndUserAddress && isValidEndUserPhone
       );
       setErrors({
         deviceAppearance: isValidDeviceAppearance ? '' : `Поле должно содержать не менее ${minInputLength} символов`,
@@ -70,14 +71,14 @@ function WarrantyRepair() {
 
       setReceivedData(data);
     } catch (error) {
-      console.error('Ошибка загрузики:', error);
+      console.error('Ошибка загрузки:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
   const toggleExpandedRow = (index) => {
-    if (isEditing) return; 
+    if (isEditing) return;
 
     if (expandedRow === index) {
       setExpandedRow(null);
@@ -89,7 +90,8 @@ function WarrantyRepair() {
   const handleEditClick = (data) => {
     setEditedData(data);
     setEditMode(true);
-    setIsEditing(true); 
+    setIsEditing(true);
+    setImei(data.device.device_imei); // Устанавливаем IMEI в состояние при редактировании
   };
 
   const handleSaveClick = async () => {
@@ -97,13 +99,17 @@ function WarrantyRepair() {
       console.log('Please fill in all required fields.');
       return;
     }
-  
+
     try {
-      const response = await axios.post('/api/1c/WarrantyOrder', editedData); 
+      const dataToSend = { ...editedData };
+      if (imei) {
+        dataToSend.device.device_imei = imei;
+      }
+      const response = await axios.post('/api/1c/WarrantyOrder', dataToSend);
 
       const order_id = response.data.order_id || '';
       const order_Error = response.data.order_Error || '';
-  
+
       console.log('Данные успешно сохранены:', order_id);
       alert(`Номер заказа: ${order_id}\nСтатус: ${order_Error}`);
       setEditMode(false);
@@ -112,11 +118,14 @@ function WarrantyRepair() {
       console.error('Error saving data:', error);
     }
   };
-  
 
   const handleCancelClick = () => {
     setEditMode(false);
     setIsEditing(false);
+  };
+
+  const handleImeiChange = (e) => {
+    setImei(e.target.value);
   };
 
   const renderEditButtons = () => {
@@ -166,7 +175,6 @@ function WarrantyRepair() {
               onChange={handleDeviceAppearance}
               style={{ borderColor: errors.deviceAppearance ? 'red' : '' }}
             />
-
           </div>
         </div>
         <div className='expanded-content-main'>
@@ -178,7 +186,16 @@ function WarrantyRepair() {
               onChange={handleDeviceSn}
               style={{ borderColor: errors.deviceSn ? 'red' : '' }}
             />
-
+          </div>
+        </div>
+        <div className='expanded-content-main'>
+          <h1>IMEI</h1>
+          <div className="expanded-content-main-inpit">
+            <input
+              type="text"
+              value={imei}
+              onChange={handleImeiChange}
+            />
           </div>
         </div>
         <div className='expanded-content-main'>
@@ -315,11 +332,11 @@ function WarrantyRepair() {
                         <td>{data.device.device_brand}</td>
                         <td>{data.device.device_model}</td>
                         <td><label>{data.device.device_sn} </label></td>
-                        <td><label>{data.device.device_imei} </label></td>
+                        <td><label>{data.device.device_imei} </label></td> {/* Добавлен вывод IMEI */}
                         <td><label>{data.device.device_defect}</label></td>
                       </tr>
                       {expandedRow === index && (
-                        <tr className="expanded-row"  key={`expanded-${index}`} >
+                        <tr className="expanded-row" key={`expanded-${index}`} >
                           <td colSpan="9">
                             {editMode ? renderEditModeContent() : renderViewModeContent(data)}
                           </td>

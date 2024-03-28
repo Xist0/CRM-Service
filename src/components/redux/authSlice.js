@@ -54,7 +54,7 @@ export const loginThunk = createAsyncThunk("logThunk", async (data, { rejectWith
     const { username, password } = data
 
     try {
-        const result = await fetch('https://localhost:3000/auth', {
+        const result = await fetch('https://192.168.1.247:3000/auth', {
             method: 'POST',
             mode: "cors",
             headers: {
